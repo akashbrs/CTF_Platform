@@ -53,11 +53,11 @@
 .top-tab {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   color: var(--text-gray);
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   height: 100%;
   position: relative;
   transition: color 0.2s ease;
@@ -434,16 +434,16 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 10px;
+  padding: 14px 12px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid transparent;
   border-radius: 12px;
   color: var(--text-gray);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 75px;
+  min-width: 80px;
   text-align: center;
 }
 
@@ -552,7 +552,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
+  padding: 16px 20px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
   cursor: pointer;
@@ -576,8 +576,8 @@
 }
 
 .challenge-icon {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -603,13 +603,13 @@
 }
 
 .challenge-title {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-white);
 }
 
 .challenge-category {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-dim);
 }
 
@@ -620,9 +620,9 @@
 }
 
 .challenge-points {
-  font-size: 13px;
+  font-size: 15px;
   color: #bef264;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* Challenge Detail Panel */

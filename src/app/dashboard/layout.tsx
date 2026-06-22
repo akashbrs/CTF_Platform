@@ -63,28 +63,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               href="/dashboard/challenges"
               className={`top-tab ${pathname.includes("challenges") ? "active" : ""}`}
             >
-              <Target size={18} className="tab-icon" />
+              <Target size={20} className="tab-icon" />
               Challenges
             </Link>
             <Link 
               href="/dashboard/leaderboard"
               className={`top-tab ${pathname.includes("leaderboard") ? "active" : ""}`}
             >
-              <Trophy size={18} className="tab-icon" />
+              <Trophy size={20} className="tab-icon" />
               Leaderboard
             </Link>
             <Link 
               href="/dashboard/notifications"
               className={`top-tab ${pathname.includes("notifications") ? "active" : ""}`}
             >
-              <Bell size={18} className="tab-icon" />
+              <Bell size={20} className="tab-icon" />
               Notification
             </Link>
             <Link 
               href="/dashboard/users"
               className={`top-tab ${pathname.includes("users") ? "active" : ""}`}
             >
-              <Users size={18} className="tab-icon" />
+              <Users size={20} className="tab-icon" />
               User's
             </Link>
           </div>

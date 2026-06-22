@@ -15,7 +15,7 @@ export default function TopHeader() {
             alt="Blindspot CTF Platform"
             className="blindspot-logo"
             width={320}
-            height={160}
+            height={120}
             style={{
               objectFit: 'contain',
               filter: 'drop-shadow(0 0 12px rgba(139, 92, 246, 0.9)) drop-shadow(0 0 24px rgba(59, 130, 246, 0.7)) drop-shadow(0 0 36px rgba(139, 92, 246, 0.5))'

@@ -171,9 +171,9 @@ export default function ChallengesPage() {
       {/* Left Sidebar for Categories & Challenge List */}
       <div className="challenges-sidebar">
         <div className="leaderboard-header" style={{ marginBottom: "0", display: "flex", alignItems: "center" }}>
-          <Flag size={20} className="trophy-icon" style={{ color: "#a855f7", fill: "#a855f7" }} />
-          <h1 style={{ fontSize: "16px", marginLeft: "8px" }}>CHALLENGES</h1>
-          <span className="challenges-count" style={{ marginLeft: "auto", background: "rgba(139, 92, 246, 0.2)", color: "#c084fc", padding: "4px 10px", borderRadius: "12px", fontSize: "12px", fontWeight: "bold" }}>{filteredChallenges.length}</span>
+          <Flag size={24} className="trophy-icon" style={{ color: "#a855f7", fill: "#a855f7" }} />
+          <h1 style={{ fontSize: "20px", marginLeft: "12px", fontWeight: "800" }}>CHALLENGES</h1>
+          <span className="challenges-count" style={{ marginLeft: "auto", background: "rgba(139, 92, 246, 0.2)", color: "#c084fc", padding: "4px 12px", borderRadius: "12px", fontSize: "14px", fontWeight: "bold" }}>{filteredChallenges.length}</span>
         </div>
 
         <div className="category-slider-container" style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
@@ -240,16 +240,16 @@ export default function ChallengesPage() {
             >
               <div className="challenge-item-left">
                 <div className="challenge-icon">
-                  <chal.Icon size={18} className={chal.iconClass} />
+                  <chal.Icon size={22} className={chal.iconClass} />
                 </div>
-                <div className="challenge-info">
+                <div className="challenge-info" style={{ marginLeft: '4px' }}>
                   <div className="challenge-title">{chal.title}</div>
                   <div className="challenge-category">{chal.category}</div>
                 </div>
               </div>
               <div className="challenge-item-right">
                 <div className="challenge-points">{chal.points}</div>
-                <ChevronRight size={16} style={{ color: "rgba(255,255,255,0.2)" }} />
+                <ChevronRight size={20} style={{ color: "rgba(255,255,255,0.2)" }} />
               </div>
             </div>
           )) : (
