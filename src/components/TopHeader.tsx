@@ -9,13 +9,14 @@ export default function TopHeader() {
   return (
     <>
       <header className="top-header animate-fade-in" style={{ width: '100%', maxWidth: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 20, marginBottom: '15px', padding: '0 24px' }}>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '10px' }}>
+        <div className="main-logo-container" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '10px' }}>
           <Image
-            src="/blindspot.png"
+            src="/blindspot_horizontal_logo.png"
             alt="Blindspot CTF Platform"
+            className="blindspot-logo"
             width={320}
-            height={85}
-            style={{ 
+            height={160}
+            style={{
               objectFit: 'contain',
               filter: 'drop-shadow(0 0 12px rgba(139, 92, 246, 0.9)) drop-shadow(0 0 24px rgba(59, 130, 246, 0.7)) drop-shadow(0 0 36px rgba(139, 92, 246, 0.5))'
             }}

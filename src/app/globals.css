@@ -487,13 +487,14 @@ body {
   }
 }
 
-.university-logo {
+.university-logo, .blindspot-logo {
   animation: cyberpunk-logo-glow 4s ease-in-out infinite;
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   cursor: pointer;
 }
 
-.logo-container:hover .university-logo {
+.logo-container:hover .university-logo,
+.main-logo-container:hover .blindspot-logo {
   filter: drop-shadow(0 0 30px rgba(139, 92, 246, 1)) drop-shadow(0 0 45px rgba(67, 97, 238, 0.8)) brightness(1.2) !important;
   transform: scale(1.06) !important;
   animation-play-state: paused;
