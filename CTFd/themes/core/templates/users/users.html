@@ -1,140 +1,167 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="jumbotron">
-    <div class="container">
-      <h1>{% trans %}Users{% endtrans %}</h1>
-    </div>
-  </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        {% if q and field %}
-          <h5 class="text-muted text-center">
-            {% trans %}Searching for users with <strong>{{ field }}</strong> matching <strong>{{ q }}</strong>{% endtrans %}
-          </h5>
-          <h6 class="text-muted text-center pb-3">
-            {% trans page=users.page, total=users.total %}Page {{ page }} of {{ total }} results{% endtrans %}
-          </h6>
-        {% endif %}
+<div class="cyber-container py-5">
+  <div class="container pb-5">
+    {% include "components/errors.html" %}
 
-        {% with form = Forms.users.PublicUserSearchForm(field=field, q=q) %}
-          <form method="GET" class="row justify-content-around align-items-center">
-            <div class="mb-3 col-md-2">
-              {{ form.field(class="form-select w-100") }}
-            </div>
-            <div class="mb-3 col-md-8">
-              {{ form.q(class="form-control w-100", placeholder=form.q.description) }}
-            </div>
-            <div class="mb-3 col-md-2">
-              <button type="submit" class="btn btn-primary w-100">
-                <i class="fas fa-search" aria-hidden="true"></i>
-              </button>
-            </div>
-          </form>
-        {% endwith %}
-      </div>
+    <div class="text-center mb-5 mt-4">
+      <h1 class="scoreboard-title glow-text-purple d-flex justify-content-center align-items-center" style="letter-spacing: 2px;">
+        USERS
+      </h1>
     </div>
 
-    <hr>
-
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table table-striped align-middle">
-          <thead>
-          <tr>
-            <th>{% trans %}User{% endtrans %}</th>
-            <th>{% trans %}Website{% endtrans %}</th>
-            <th class="d-none d-md-table-cell">{% trans %}Affiliation{% endtrans %}</th>
-            <th class="d-none d-md-table-cell">{% trans %}Country{% endtrans %}</th>
-          </tr>
-          </thead>
-          <tbody>
-          {% for user in users.items %}
-            <tr>
-              <td>
-                {% if scores_visible() %}
-                  <a href="{{ url_for('users.public', user_id=user.id) }}">
-                    {{ user.name | truncate(50) }}
-                  </a>
-                {% else %}
-                  <span>{{ user.name | truncate(50) }}</span>
-                {% endif %}
-
-                {% if user.bracket_id %}
-                  <span class="badge bg-secondary ms-2">{{ user.bracket.name }}</span>
-                {% endif %}
-
-                {% if user.oauth_id %}
-                  <a href="https://majorleaguecyber.org/u/{{ user.name }}">
-                    <span class="badge bg-primary ms-2">{% trans %}Official{% endtrans %}</span>
-                  </a>
-                {% endif %}
-              </td>
-
-              <td class="text-center" style="width: 10px;">
-                {% if user.website and (user.website.startswith('http://') or user.website.startswith('https://')) %}
-                  <a href="{{ user.website }}" target="_blank" rel="noopener">
-                    <i
-                        class="fas fa-external-link-alt" data-toggle="tooltip" data-placement="top"
-                        title="{{ user.website }}"
-                    ></i>
-                  </a>
-                {% endif %}
-              </td>
-
-              <td class="d-none d-md-table-cell d-lg-table-cell">
-                {% if user.affiliation %}
-                  {% if user.affiliation | length > 50 %}
-                    <span data-toggle="tooltip" data-placement="top" title="{{ user.affiliation }}">
-									{% if user.affiliation %}{{ user.affiliation | truncate(50) }}{% endif %}
-								</span>
-                  {% else %}
-                    <span>
-									{% if user.affiliation %}{{ user.affiliation | truncate(50) }}{% endif %}
-								</span>
-                  {% endif %}
-                {% endif %}
-              </td>
-              <td class="d-none d-md-table-cell d-lg-table-cell">
-								<span>
-									{% if user.country %}
-                    <i class="flag-{{ user.country.lower() }}"></i>
-                    {{ lookup_country_code(user.country) }}
-                  {% endif %}
-								</span>
-              </td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    {% if users.pages > 1 %}
-      <div class="row">
-        <div class="col-md-12">
-          <div class="text-center">
-            {% trans %}Page{% endtrans %} <br>
-
-            {% if users.page != 1 %}
-              <a href="{{ prev_page }}">&lt;&lt;&lt;</a>
-            {% endif %}
-
-            <select class="page-select">
-              {% for page in range(1, users.pages + 1) %}
-                <option {% if users.page == page %}selected{% endif %}>{{ page }}</option>
-              {% endfor %}
-            </select>
-
-            {% if users.next_num %}
-              <a href="{{ next_page }}">&gt;&gt;&gt;</a>
-            {% endif %}
-          </div>
+    <!-- Controls Bar -->
+    <div class="d-flex justify-content-between align-items-center mb-4 cyber-controls">
+      {% with form = Forms.users.PublicUserSearchForm(field=field, q=q) %}
+      <form method="GET" class="d-flex w-100 align-items-center m-0">
+        <div class="dropdown-wrapper cyber-dropdown position-relative me-3" style="width: 200px;">
+          <!-- Using a standard select for the roles, styled to match the dropdown in the image -->
+          <select name="field" class="form-select cyber-select bg-transparent text-white w-100" style="height: 45px; border-color: #3b0070;">
+            <option value="name" {% if field == 'name' %}selected{% endif %}>All Roles</option>
+            <option value="affiliation" {% if field == 'affiliation' %}selected{% endif %}>Affiliation</option>
+            <option value="website" {% if field == 'website' %}selected{% endif %}>Website</option>
+          </select>
         </div>
+        
+        <div class="flex-grow-1 position-relative me-3">
+          <input type="text" name="q" class="form-control cyber-input w-100" placeholder="Search by username, roll number or email..." value="{{ q if q else '' }}" style="height: 45px; background: rgba(10, 0, 20, 0.5); border: 1px solid #3b0070; color: white;">
+        </div>
+
+        <button type="submit" class="btn btn-cyber-purple d-flex align-items-center justify-content-center me-3" style="height: 45px; width: 140px; background: #b026ff; color: white; border: none; font-weight: 500;">
+          <i class="fas fa-search me-2"></i> Search
+        </button>
+
+        {% if is_admin() %}
+        <a href="{{ url_for('admin.users_listing') }}" class="btn btn-cyber-outline d-flex align-items-center justify-content-center text-decoration-none" style="height: 45px; width: 140px; border: 1px solid #b026ff; color: white; background: transparent;">
+          <i class="fas fa-download me-2"></i> Export
+        </a>
+        {% endif %}
+      </form>
+      {% endwith %}
+    </div>
+
+    <!-- Main Table -->
+    <div class="cyber-table-wrapper">
+      <table class="table cyber-table align-middle m-0 text-white" style="border-color: #3b0070;">
+        <thead>
+          <tr style="border-bottom: 2px solid #5a00a8;">
+            <th class="ps-4 py-3 text-uppercase" style="color: #b026ff; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px;">USER</th>
+            <th class="py-3 text-uppercase" style="color: #b026ff; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px;">ROLL NO.</th>
+            <th class="py-3 text-uppercase" style="color: #b026ff; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px;">ROLE</th>
+            <th class="text-center pe-4 py-3 text-uppercase" style="color: #b026ff; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px;">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users.items %}
+          <tr class="cyber-row" style="border-bottom: 1px solid rgba(176, 38, 255, 0.2);">
+            <td class="ps-4 py-3">
+              <div class="d-flex align-items-center">
+                <div class="cyber-avatar user-avatar me-3 position-relative d-flex justify-content-center align-items-center" style="width: 45px; height: 45px; border-radius: 50%; border: 1px solid #b026ff; background: rgba(176, 38, 255, 0.1);">
+                   <!-- Avatar Icon -->
+                   <i class="fas fa-user-ninja" style="color: #b026ff; font-size: 1.2rem;"></i>
+                </div>
+                <div>
+                   <a href="{{ url_for('users.public', user_id=user.id) }}" class="text-white text-decoration-none fw-semibold username-text d-block" style="font-size: 1rem; letter-spacing: 0.5px;">{{ user.name | truncate(50) }}</a>
+                   {% if is_admin() and user.email %}
+                   <small class="text-muted" style="font-size: 0.75rem;">{{ user.email }}</small>
+                   {% endif %}
+                </div>
+              </div>
+            </td>
+            
+            <td class="text-white roll-no fw-semibold py-3" style="font-size: 0.9rem;">
+              {{ user.roll_no or 'N/A' }}
+            </td>
+            
+            <td class="py-3">
+              {% if user.type == 'admin' %}
+              <span class="cyber-badge badge-admin" style="border: 1px solid #5a00a8; color: #b026ff; background: rgba(90, 0, 168, 0.15); padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px;">ADMIN</span>
+              {% else %}
+              <span class="cyber-badge badge-participant" style="border: 1px solid #00a8ff; color: #00a8ff; background: rgba(0, 168, 255, 0.15); padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px;">PARTICIPANT</span>
+              {% endif %}
+            </td>
+
+            <td class="text-center pe-4 py-3">
+              <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('users.public', user_id=user.id) }}" class="action-btn view-btn d-flex justify-content-center align-items-center text-decoration-none" title="View Profile" style="width: 32px; height: 32px; border: 1px solid rgba(176, 38, 255, 0.3); border-radius: 4px; color: #b026ff; transition: all 0.2s;">
+                  <i class="fas fa-eye" style="font-size: 0.9rem;"></i>
+                </a>
+                {% if is_admin() %}
+                <a href="{{ url_for('admin.users_detail', user_id=user.id) }}" class="action-btn edit-btn d-flex justify-content-center align-items-center text-decoration-none" title="Edit User" style="width: 32px; height: 32px; border: 1px solid rgba(176, 38, 255, 0.3); border-radius: 4px; color: #b026ff; transition: all 0.2s;">
+                  <i class="fas fa-pencil-alt" style="font-size: 0.9rem;"></i>
+                </a>
+                <a href="{{ url_for('admin.users_detail', user_id=user.id) }}" class="action-btn delete-btn d-flex justify-content-center align-items-center text-decoration-none" title="Delete User" style="width: 32px; height: 32px; border: 1px solid rgba(255, 50, 50, 0.3); border-radius: 4px; color: #ff3232; transition: all 0.2s; cursor: pointer;">
+                  <i class="fas fa-trash-alt" style="font-size: 0.9rem;"></i>
+                </a>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if not users.items %}
+      <div class="col-md-12 my-5">
+        <h3 class="text-center text-muted">No users found matching your criteria.</h3>
       </div>
     {% endif %}
+
+    <!-- Pagination -->
+    {% if users.pages > 1 %}
+    <div class="d-flex justify-content-center mt-5 cyber-pagination">
+      <!-- Previous -->
+      <a href="{{ prev_page if users.page != 1 else '#' }}" class="btn btn-page {% if users.page == 1 %}disabled{% endif %} d-flex justify-content-center align-items-center mx-1 text-decoration-none" style="width: 40px; height: 40px; border: 1px solid rgba(176, 38, 255, 0.3); background: transparent; color: white;">
+        <i class="fas fa-chevron-left"></i>
+      </a>
+      
+      <!-- Logic to show limited pages like the mockup (1, 2, 3, ..., 10) -->
+      {% for page in users.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+        {% if page %}
+          <a href="{{ url_for('users.listing', page=page, q=q, field=field) }}" class="btn btn-page d-flex justify-content-center align-items-center mx-1 text-decoration-none" style="width: 40px; height: 40px; border: 1px solid {% if users.page == page %}#b026ff{% else %}rgba(176, 38, 255, 0.3){% endif %}; background: {% if users.page == page %}rgba(176, 38, 255, 0.2){% else %}transparent{% endif %}; color: white; font-weight: 500; transition: all 0.2s;">
+            {{ page }}
+          </a>
+        {% else %}
+          <span class="d-flex justify-content-center align-items-center mx-1" style="width: 40px; height: 40px; color: rgba(176, 38, 255, 0.5);">...</span>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Next -->
+      <a href="{{ next_page if users.next_num else '#' }}" class="btn btn-page {% if not users.next_num %}disabled{% endif %} d-flex justify-content-center align-items-center mx-1 text-decoration-none" style="width: 40px; height: 40px; border: 1px solid rgba(176, 38, 255, 0.3); background: transparent; color: white;">
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+    {% endif %}
+
   </div>
+</div>
+
+<style>
+  /* Hover effects for action buttons */
+  .action-btn:hover { background: rgba(176, 38, 255, 0.2); }
+  .action-btn.view-btn:hover { border-color: #b026ff !important; }
+  .action-btn.edit-btn:hover { border-color: #b026ff !important; }
+  .action-btn.delete-btn:hover { background: rgba(255, 50, 50, 0.2) !important; border-color: #ff3232 !important; }
+
+  /* Input focus states */
+  .cyber-input:focus, .cyber-select:focus {
+    
+    outline: none;
+    border-color: #b026ff !important;
+  }
+
+  /* Table row hover */
+  .cyber-row { transition: all 0.2s; }
+  .cyber-row:hover { background-color: rgba(176, 38, 255, 0.05); }
+
+  /* Pagination hover */
+  .btn-page:not(.disabled):hover {
+    background: rgba(176, 38, 255, 0.2) !important;
+    border-color: #b026ff !important;
+  }
+</style>
 {% endblock %}
 
 {% block scripts %}

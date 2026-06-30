@@ -54,6 +54,32 @@ class ChallengeSchema(ma.ModelSchema):
         ],
     )
 
+    author = field_for(
+        Challenges,
+        "author",
+        allow_none=True,
+        validate=[
+            validate.Length(
+                min=0,
+                max=80,
+                error="Challenge could not be saved. Challenge author too long",
+            )
+        ],
+    )
+
+    difficulty = field_for(
+        Challenges,
+        "difficulty",
+        allow_none=True,
+        validate=[
+            validate.Length(
+                min=0,
+                max=80,
+                error="Challenge could not be saved. Challenge difficulty too long",
+            )
+        ],
+    )
+
     description = field_for(
         Challenges,
         "description",
@@ -65,6 +91,25 @@ class ChallengeSchema(ma.ModelSchema):
                 error="Challenge could not be saved. Challenge description too long",
             )
         ],
+    )
+
+    hint = field_for(
+        Challenges,
+        "hint",
+        allow_none=True,
+        validate=[
+            validate.Length(
+                min=0,
+                max=65535,
+                error="Challenge could not be saved. Challenge hint too long",
+            )
+        ],
+    )
+
+    hint_enabled = field_for(
+        Challenges,
+        "hint_enabled",
+        allow_none=True,
     )
 
     position = field_for(

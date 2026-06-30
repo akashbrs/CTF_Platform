@@ -26,6 +26,30 @@
 	</div>
 	{% endblock %}
 
+	{% block author %}
+	<div class="form-group">
+		<label>
+			Author:<br>
+			<small class="form-text text-muted">
+				The author of your challenge
+			</small>
+		</label>
+		<input type="text" class="form-control" name="author" placeholder="Enter challenge author">
+	</div>
+	{% endblock %}
+
+	{% block difficulty %}
+	<div class="form-group">
+		<label>
+			Difficulty:<br>
+			<small class="form-text text-muted">
+				The difficulty of your challenge (e.g. Easy, Medium, Hard)
+			</small>
+		</label>
+		<input type="text" class="form-control" name="difficulty" placeholder="Enter challenge difficulty">
+	</div>
+	{% endblock %}
+
 
 	{% block message %}
 	<div class="form-group">
@@ -36,6 +60,23 @@
 			</small>
 		</label>
 		<textarea id="new-desc-editor" class="form-control markdown" name="description" rows="10"></textarea>
+	</div>
+	{% endblock %}
+
+	{% block hint %}
+	<div class="form-group">
+		<label>
+			Hint:<br>
+			<small class="form-text text-muted">
+				Use this to give a hint to users who are struggling with the challenge.
+			</small>
+		</label>
+		<textarea id="new-hint-editor" class="form-control markdown" name="hint" rows="5"></textarea>
+		<div class="form-check mt-2">
+			<input type="hidden" name="hint_enabled" value="false">
+			<input type="checkbox" class="form-check-input" id="hint_enabled" name="hint_enabled" value="true">
+			<label class="form-check-label" for="hint_enabled">Enable Hint for Participants</label>
+		</div>
 	</div>
 	{% endblock %}
 

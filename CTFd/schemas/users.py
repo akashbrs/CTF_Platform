@@ -52,6 +52,7 @@ class UserSchema(ma.ModelSchema):
     )
     language = field_for(Users, "language", validate=[validate_language])
     country = field_for(Users, "country", validate=[validate_country_code])
+    roll_no = field_for(Users, "roll_no")
     password = field_for(Users, "password", required=True, allow_none=False)
     bracket_id = field_for(Users, "bracket_id")
     fields = Nested(
@@ -359,6 +360,7 @@ class UserSchema(ma.ModelSchema):
             "country",
             "affiliation",
             "bracket_id",
+            "roll_no",
             "id",
             "oauth_id",
             "fields",
@@ -372,6 +374,7 @@ class UserSchema(ma.ModelSchema):
             "country",
             "affiliation",
             "bracket_id",
+            "roll_no",
             "id",
             "oauth_id",
             "password",
@@ -398,6 +401,7 @@ class UserSchema(ma.ModelSchema):
             "change_password",
             "fields",
             "team_id",
+            "roll_no",
         ],
     }
 

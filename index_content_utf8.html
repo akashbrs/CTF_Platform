@@ -1,0 +1,497 @@
+ * Loaded module, <module 'CTFd.plugins.challenges' from '/opt/CTFd/CTFd/plugins/challenges/__init__.py'>
+ * Loaded module, <module 'CTFd.plugins.dynamic_challenges' from '/opt/CTFd/CTFd/plugins/dynamic_challenges/__init__.py'>
+ * Loaded module, <module 'CTFd.plugins.flags' from '/opt/CTFd/CTFd/plugins/flags/__init__.py'>
+<div class="row" style="position: relative; z-index: 1;">
+    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <!-- Logo -->
+        <div class="text-center" style="padding-top: 10vh; margin-bottom: 20px;">
+            <div class="logo-wrapper">
+                <img class="img-fluid mx-auto blindspot-logo" src="/themes/core/static/img/Mainpagelogo.png" alt="Blindspot CTF Logo" />
+            </div>
+        </div>
+        
+        <!-- MRU Branding -->
+        <h2 class="text-center fw-bolder mb-1">
+            BLINDSPOT CTF
+        </h2>
+        <p class="text-center text-white fw-medium mb-4" style="opacity: 0.8;">
+            Malla Reddy University ┬╖ Department of Cybersecurity
+        </p>
+
+        <!-- Countdown Timer -->
+        <p class="text-center fw-bold" style="font-size:13px; letter-spacing:3px; text-transform:uppercase; margin-bottom:15px; color: #c084fc;">
+            Competition Starts In
+        </p>
+        <div class="d-flex justify-content-center flex-wrap mb-5" style="gap:16px;">
+            <div style="border-radius:12px; padding:15px 20px; text-align:center; min-width:80px;">
+                <div id="cd-d" style="font-size:32px; font-weight:800; line-height:1; color: #b026ff; ">00</div>
+                <div style="font-size:12px; color: rgba(255,255,255,0.7); margin-top:6px; letter-spacing:2px; font-weight: 600;">DAYS</div>
+            </div>
+            <div style="border-radius:12px; padding:15px 20px; text-align:center; min-width:80px;">
+                <div id="cd-h" style="font-size:32px; font-weight:800; line-height:1; color: #b026ff; ">00</div>
+                <div style="font-size:12px; color: rgba(255,255,255,0.7); margin-top:6px; letter-spacing:2px; font-weight: 600;">HOURS</div>
+            </div>
+            <div style="border-radius:12px; padding:15px 20px; text-align:center; min-width:80px;">
+                <div id="cd-m" style="font-size:32px; font-weight:800; line-height:1; color: #b026ff; ">00</div>
+                <div style="font-size:12px; color: rgba(255,255,255,0.7); margin-top:6px; letter-spacing:2px; font-weight: 600;">MINS</div>
+            </div>
+            <div style="border-radius:12px; padding:15px 20px; text-align:center; min-width:80px;">
+                <div id="cd-s" style="font-size:32px; font-weight:800; line-height:1; color: #b026ff; ">00</div>
+                <div style="font-size:12px; color: rgba(255,255,255,0.7); margin-top:6px; letter-spacing:2px; font-weight: 600;">SECS</div>
+            </div>
+        </div>
+
+        <!-- Information Cards -->
+        <div class="row mt-5 mb-5 g-4">
+            <!-- Why Participate Card (Purple) -->
+            <div class="col-md-6">
+                <div class="cyber-panel cyber-panel-purple">
+                    <div class="tech-dot-p dp1"></div>
+                    <div class="tech-dot-p dp2"></div>
+                    <div class="tech-dot-p dp3"></div>
+                    <div class="tech-dot-p dp4"></div>
+                    
+                    <h3 class="fw-bold d-flex align-items-center mb-4 text-white" style="font-size: 1.5rem;">
+                        <div class="cyber-icon-box icon-purple">
+                            <i class="fas fa-crosshairs"></i>
+                        </div>
+                        Why Participate?
+                    </h3>
+                    
+                    <p class="text-white" style="line-height: 1.8; font-size: 1.05rem; opacity: 0.85; text-align: justify;">
+                        <span class="text-glow-purple">Blindspot CTF</span> is an exclusive, high-stakes Capture The Flag competition designed specifically for <span class="text-glow-purple">2nd and 3rd-year students</span> in the Department of Cybersecurity. This event bridges the gap between theoretical knowledge and real-world application, challenging you to uncover hidden vulnerabilities, exploit complex systems, and defend against advanced threats in a simulated adversarial environment.
+                    </p>
+                </div>
+            </div>
+
+            <!-- How It's Different Card (Red) -->
+            <div class="col-md-6">
+                <div class="cyber-panel cyber-panel-red">
+                    <div class="tech-dot-r dr1"></div>
+                    <div class="tech-dot-r dr2"></div>
+                    <div class="tech-dot-r dr3"></div>
+                    <div class="tech-dot-r dr4"></div>
+                    
+                    <h3 class="fw-bold d-flex align-items-center mb-4 text-white" style="font-size: 1.5rem;">
+                        <div class="cyber-icon-box icon-red">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        How It's Different
+                    </h3>
+                    
+                    <p class="text-white" style="line-height: 1.8; font-size: 1.05rem; opacity: 0.85; text-align: justify;">
+                        Unlike standard entry-level competitions, we have engineered custom, scenario-based challenges tailored to your advanced curriculum. By focusing on <span class="text-glow-red">"blindspots"</span>ΓÇöthose easily overlooked security gaps in networks, web apps, and cryptographyΓÇöthis CTF pushes you to think like an elite adversary. It goes beyond simple puzzles, requiring multi-stage exploitation and deep, out-of-the-box critical thinking.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competition Domains Cyberpunk Version -->
+        <div class="cyber-header mt-5">
+            <div class="cyber-line"></div>
+            <h3 class="fw-bold mx-4 mb-0 d-flex align-items-center" style="font-size: 1.6rem; letter-spacing: 2px; color: #fff;  text-transform: uppercase;">
+                <i class="fas fa-flag" style="color: #b026ff; margin-right: 12px; "></i> 
+                Competition Domains
+            </h3>
+            <div class="cyber-line right"></div>
+        </div>
+
+        <div class="row justify-content-center g-4 mb-5 px-md-3">
+            <!-- WEB -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new card-web-new">
+                    <div class="card-frame-tl"></div><div class="card-frame-tr"></div>
+                    <div class="card-frame-bl"></div><div class="card-frame-br"></div>
+                    <div class="card-side-dots left-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-side-dots right-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-content-layout">
+                        <div class="card-icon-area"><i class="fas fa-globe"></i></div>
+                        <div class="card-divider"></div>
+                        <div class="card-text-area">
+                            <h4 class="card-title-new">WEB</h4>
+                            <div class="title-underline"></div>
+                            <p class="card-desc-new">Find and exploit vulnerabilities in web applications.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- OSINT -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new card-osint-new">
+                    <div class="card-frame-tl"></div><div class="card-frame-tr"></div>
+                    <div class="card-frame-bl"></div><div class="card-frame-br"></div>
+                    <div class="card-side-dots left-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-side-dots right-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-content-layout">
+                        <div class="card-icon-area"><i class="fas fa-search"></i></div>
+                        <div class="card-divider"></div>
+                        <div class="card-text-area">
+                            <h4 class="card-title-new">OSINT</h4>
+                            <div class="title-underline"></div>
+                            <p class="card-desc-new">Gather and analyze publicly available information.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CRYPTO -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new card-crypto-new">
+                    <div class="card-frame-tl"></div><div class="card-frame-tr"></div>
+                    <div class="card-frame-bl"></div><div class="card-frame-br"></div>
+                    <div class="card-side-dots left-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-side-dots right-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-content-layout">
+                        <div class="card-icon-area"><i class="fas fa-lock"></i></div>
+                        <div class="card-divider"></div>
+                        <div class="card-text-area">
+                            <h4 class="card-title-new">CRYPTO</h4>
+                            <div class="title-underline"></div>
+                            <p class="card-desc-new">Solve cryptographic challenges and break the code.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- REVERSE ENGINEERING -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new card-re-new">
+                    <div class="card-frame-tl"></div><div class="card-frame-tr"></div>
+                    <div class="card-frame-bl"></div><div class="card-frame-br"></div>
+                    <div class="card-side-dots left-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-side-dots right-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-content-layout">
+                        <div class="card-icon-area"><i class="fas fa-cog"></i></div>
+                        <div class="card-divider"></div>
+                        <div class="card-text-area">
+                            <h4 class="card-title-new" style="font-size: 0.9rem; line-height: 1.2; letter-spacing: 0px;">REVERSE<br>ENGINEERING</h4>
+                            <div class="title-underline"></div>
+                            <p class="card-desc-new">Analyze binaries and reverse engineer software.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MISC -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new card-misc-new">
+                    <div class="card-frame-tl"></div><div class="card-frame-tr"></div>
+                    <div class="card-frame-bl"></div><div class="card-frame-br"></div>
+                    <div class="card-side-dots left-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-side-dots right-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-content-layout">
+                        <div class="card-icon-area"><i class="fas fa-puzzle-piece"></i></div>
+                        <div class="card-divider"></div>
+                        <div class="card-text-area">
+                            <h4 class="card-title-new">MISC</h4>
+                            <div class="title-underline"></div>
+                            <p class="card-desc-new">A diverse set of challenges across multiple topics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SANITY -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new card-sanity-new">
+                    <div class="card-frame-tl"></div><div class="card-frame-tr"></div>
+                    <div class="card-frame-bl"></div><div class="card-frame-br"></div>
+                    <div class="card-side-dots left-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-side-dots right-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="card-content-layout">
+                        <div class="card-icon-area"><i class="fas fa-cube"></i></div>
+                        <div class="card-divider"></div>
+                        <div class="card-text-area">
+                            <h4 class="card-title-new">SANITY</h4>
+                            <div class="title-underline"></div>
+                            <p class="card-desc-new">Test your logic, reasoning and lateral thinking.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rules and Regulations Cyberpunk Redesign -->
+        <div class="cyber-rules-container mt-5 mb-5 mx-auto" style="max-width: 900px;">
+            <div class="rules-corner rules-corner-tl"></div>
+            <div class="rules-corner rules-corner-tr"></div>
+            <div class="rules-corner rules-corner-bl"></div>
+            <div class="rules-corner rules-corner-br"></div>
+            
+            <div class="rules-top-accent">
+                <span>000</span>
+            </div>
+
+            <div class="text-center mb-5">
+                <div class="rules-header-icon">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <h3 class="fw-bold text-white mb-2" style="font-family: 'Orbitron', sans-serif; font-size: 2rem; letter-spacing: 2px; ">
+                    Rules & Regulations
+                </h3>
+                <p class="text-white" style="opacity: 0.7; font-size: 0.95rem;">Please read and strictly adhere to the following guidelines.</p>
+            </div>
+
+            <div class="rules-list d-flex flex-column gap-3">
+                <!-- Rule 1: No Flag Sharing -->
+                <div class="rule-card rule-red">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">No Flag Sharing:</span>
+                        <p class="rule-text">Collaboration outside of your assigned team is strictly prohibited. Do not share flags, hints, or solutions.</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Rule 2: No Infrastructure Attacks -->
+                <div class="rule-card rule-cyan">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">No Infrastructure Attacks:</span>
+                        <p class="rule-text">Do not attack the CTF platform or infrastructure. This includes DoS/DDoS attacks, directory brute-forcing against the main site, or unauthorized scanning.</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Rule 3: Eligibility -->
+                <div class="rule-card rule-purple">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">Eligibility:</span>
+                        <p class="rule-text">Only registered 2nd and 3rd-year cybersecurity students from MRU are allowed to compete. Impersonation or using outside help is forbidden.</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Rule 4: No Flag Bruteforcing -->
+                <div class="rule-card rule-orange">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">No Flag Bruteforcing:</span>
+                        <p class="rule-text">Do not use automated tools to guess flags on the submission form. Rate limits are in place and violations will be logged.</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Rule 5: Learn & Have Fun -->
+                <div class="rule-card rule-green">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">Learn & Have Fun:</span>
+                        <p class="rule-text">The primary goal of this CTF is education and skill development. Be respectful to fellow participants and admins!</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organizing Team (CYBER HUD PURPLE DESIGN) -->
+        <div class="mb-5 mt-5">
+            <div class="text-center mb-5 position-relative">
+                <div class="mb-3 d-flex justify-content-center">
+                    <div style="background: rgba(176,38,255,0.1); border: 1px solid rgba(176,38,255,0.5); padding: 12px 22px; border-radius: 12px;  display: inline-block;">
+                        <i class="fas fa-users" style="color: #b026ff; font-size: 1.6rem; "></i>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-center gap-3 mb-2">
+                    <div style="height: 2px; width: 60px; background: linear-gradient(90deg, transparent, #b026ff);"></div>
+                    <h2 class="fw-bold text-white mb-0" style="font-family: 'Orbitron', sans-serif; letter-spacing: 4px; font-size: 2rem; ">
+                        ORGANIZING TEAM
+                    </h2>
+                    <div style="height: 2px; width: 60px; background: linear-gradient(-90deg, transparent, #b026ff);"></div>
+                </div>
+                <p class="mb-0" style="color: #b026ff; opacity: 0.9; font-size: 0.95rem; letter-spacing: 1px;">The minds behind BlindSpot CTF</p>
+            </div>
+            
+            <div class="row justify-content-center g-4">
+                <!-- Generating Cards dynamically -->
+                <script>
+                    const teamMembers = [
+                        "Syed Ata Ur\nRahaman", "K.SreeCharan", "Pranay\nChakravarthy",
+                        "V.Aswith", "Rohith", "Shreya", 
+                        "SreeHari", "M.Akash Reddy", "Pradeep"
+                    ];
+                    
+                    teamMembers.forEach(name => {
+                        const formattedName = name.replace('\n', '<br>');
+                        document.write(`
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="cyber-team-card">
+                                    <div class="team-brackets"></div>
+                                    <div class="team-avatar-container">
+                                        <div class="team-target-wrapper"></div>
+                                        <div class="team-inner-circle">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="crosshair-line crosshair-top"></div>
+                                        <div class="crosshair-line crosshair-bottom"></div>
+                                        <div class="crosshair-line crosshair-left"></div>
+                                        <div class="crosshair-line crosshair-right"></div>
+                                    </div>
+                                    <h5 class="team-name-cyber">${formattedName}</h5>
+                                    <div class="team-role-cyber">Organizer</div>
+                                    <div class="team-socials">
+                                        <a href="#" class="team-social-btn"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" class="team-social-btn"><i class="fas fa-envelope"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                    });
+                </script>
+            </div>
+
+            </div>
+        
+    </div>
+</div>
+
+<script>
+const target = new Date('2026-06-27T10:30:00');
+function update() {
+    const diff = target - new Date();
+    if (diff <= 0) return;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const elD = document.getElementById('cd-d');
+    const elH = document.getElementById('cd-h');
+    const elM = document.getElementById('cd-m');
+    const elS = document.getElementById('cd-s');
+    if(elD) elD.textContent = String(d).padStart(2,'0');
+    if(elH) elH.textContent = String(h).padStart(2,'0');
+    if(elM) elM.textContent = String(m).padStart(2,'0');
+    if(elS) elS.textContent = String(s).padStart(2,'0');
+}
+update();
+setInterval(update, 1000);
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&display=swap');
+
+/* Base Styles */
+.logo-wrapper { display: inline-flex; padding: 8px; border-radius: 24px; background-color: transparent; transition: all 0.4s ease; border: 2px solid rgba(176, 38, 255, 0.3); }
+.blindspot-logo { max-height: 280px; border-radius: 16px; transition: all 0.4s ease; }
+.logo-wrapper:hover { transform: scale(1.02); border-color: rgba(176, 38, 255, 0.6); }
+
+/* Information Panels */
+.cyber-panel { background: #1a1a24; border-radius: 16px; padding: 35px; border-top: 4px solid; position: relative; overflow: hidden; height: 100%; transition: all 0.4s ease; }
+.cyber-panel:hover { transform: translateY(-4px); }
+.cyber-panel-purple { border-color: #b026ff; }
+.cyber-panel-red { border-color: #ff3366; }
+.cyber-icon-box { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-right: 15px; }
+.icon-purple { background: rgba(176,38,255,0.1); color: #b026ff; border: 1px solid rgba(176,38,255,0.3); }
+.icon-red { background: rgba(255,51,102,0.1); color: #ff3366; border: 1px solid rgba(255,51,102,0.3); }
+.text-glow-purple { color: #c084fc; font-weight: 600; }
+.text-glow-red { color: #ff6b8b; font-weight: 600; }
+
+/* Competition Domains Matte Stylization */
+.domain-card-new { position: relative; background-color: #1a1a24; border: 1px solid var(--domain-color); border-radius: 8px; padding: 25px 15px; transition: all 0.4s ease; height: 100%; display: flex; align-items: center; }
+.domain-card-new:hover { background-color: #252533; transform: translateY(-4px); }
+.card-frame-tl, .card-frame-tr, .card-frame-bl, .card-frame-br { position: absolute; width: 15px; height: 15px; opacity: 0.7; pointer-events: none; transition: all 0.3s ease; }
+.card-frame-tl { top: 10px; left: 10px; border-top: 2px solid var(--domain-color); border-left: 2px solid var(--domain-color); }
+.card-frame-tr { top: 10px; right: 10px; border-top: 2px solid var(--domain-color); border-right: 2px solid var(--domain-color); }
+.card-frame-bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--domain-color); border-left: 2px solid var(--domain-color); }
+.card-frame-br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--domain-color); border-right: 2px solid var(--domain-color); }
+.domain-card-new:hover .card-frame-tl, .domain-card-new:hover .card-frame-tr, .domain-card-new:hover .card-frame-bl, .domain-card-new:hover .card-frame-br { width: 20px; height: 20px; opacity: 1; }
+.card-side-dots { position: absolute; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; opacity: 0.6; }
+.card-side-dots.left-dots { left: 8px; }
+.card-side-dots.right-dots { right: 8px; }
+.card-side-dots span { width: 3px; height: 3px; border-radius: 50%; background-color: var(--domain-color); }
+.card-content-layout { display: flex; align-items: center; width: 100%; padding: 0 10px; }
+.card-icon-area { flex: 0 0 35%; text-align: center; }
+.card-icon-area i { font-size: 3.5rem; color: var(--domain-color); transition: all 0.3s ease; }
+.domain-card-new:hover .card-icon-area i { transform: scale(1.05); }
+.card-divider { flex: 0 0 2px; height: 90px; background-color: var(--domain-color); opacity: 0.5; margin: 0 15px; }
+.card-text-area { flex: 1; text-align: left; }
+.card-title-new { font-family: 'Orbitron', sans-serif; color: #ffffff; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+.title-underline { width: 30px; height: 2px; background-color: var(--domain-color); margin-bottom: 12px; }
+.card-desc-new { font-size: 0.85rem; line-height: 1.5; color: rgba(255,255,255,0.75); margin: 0; }
+.card-web-new { --domain-color: #9d00ff; }
+.card-osint-new { --domain-color: #00e5ff; }
+.card-crypto-new { --domain-color: #ff3366; }
+.card-re-new { --domain-color: #ffaa00; }
+.card-misc-new { --domain-color: #00ff88; }
+.card-sanity-new { --domain-color: #0077ff; }
+
+.cyber-header { display: flex; align-items: center; justify-content: center; margin-bottom: 3.5rem; }
+.cyber-line { height: 2px; flex: 1; max-width: 150px; background: #b026ff; opacity: 0.5; }
+.cyber-line.right { background: #b026ff; opacity: 0.5; }
+
+/* Rules & Regulations */
+.cyber-rules-container { position: relative; background: #1a1a24; border: 1px solid rgba(176, 38, 255, 0.3); border-radius: 16px; padding: 3rem 2.5rem; }
+.cyber-rules-container .rules-corner { position: absolute; width: 50px; height: 50px; border: 2px solid; border-radius: 16px; z-index: 10; pointer-events: none; opacity: 0.8; }
+.cyber-rules-container .rules-corner-tl { top: -2px; left: -2px; border-color: #ffaa00; border-right: none; border-bottom: none; }
+.cyber-rules-container .rules-corner-tr { top: -2px; right: -2px; border-color: #ffaa00; border-left: none; border-bottom: none; }
+.cyber-rules-container .rules-corner-bl { bottom: -2px; left: -2px; border-color: #b026ff; border-right: none; border-top: none; }
+.cyber-rules-container .rules-corner-br { bottom: -2px; right: -2px; border-color: #b026ff; border-left: none; border-top: none; }
+.rules-top-accent { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #1a1a24; padding: 0 15px; color: #ffaa00; font-size: 0.8rem; letter-spacing: 3px; font-weight: bold; display: flex; align-items: center; gap: 12px; z-index: 2; }
+.rules-top-accent::before, .rules-top-accent::after { content: ''; display: inline-block; width: 40px; height: 2px; background: #ffaa00; opacity: 0.8; }
+.rules-header-icon { display: inline-flex; justify-content: center; align-items: center; width: 70px; height: 70px; border-radius: 50%; border: 2px solid #ffaa00; background: rgba(255, 170, 0, 0.1); color: #ffaa00; font-size: 2rem; margin-bottom: 1.2rem; }
+.rule-card { display: flex; align-items: center; background: #252533; border: 1px solid var(--rule-color); border-radius: 12px; padding: 1.2rem 1.5rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
+.rule-red { border-color: rgba(255, 51, 102, 0.3); } .rule-red .rule-icon-box { color: #ff3366; border-color: #ff3366; background: rgba(255, 51, 102, 0.1); } .rule-red .rule-title { color: #ff3366; } .rule-red:hover { border-color: rgba(255, 51, 102, 0.6); }
+.rule-cyan { border-color: rgba(0, 229, 255, 0.3); } .rule-cyan .rule-icon-box { color: #00e5ff; border-color: #00e5ff; background: rgba(0, 229, 255, 0.1); } .rule-cyan .rule-title { color: #00e5ff; } .rule-cyan:hover { border-color: rgba(0, 229, 255, 0.6); }
+.rule-purple { border-color: rgba(176, 38, 255, 0.3); } .rule-purple .rule-icon-box { color: #b026ff; border-color: #b026ff; background: rgba(176, 38, 255, 0.1); } .rule-purple .rule-title { color: #b026ff; } .rule-purple:hover { border-color: rgba(176, 38, 255, 0.6); }
+.rule-orange { border-color: rgba(255, 170, 0, 0.3); } .rule-orange .rule-icon-box { color: #ffaa00; border-color: #ffaa00; background: rgba(255, 170, 0, 0.1); } .rule-orange .rule-title { color: #ffaa00; } .rule-orange:hover { border-color: rgba(255, 170, 0, 0.6); }
+.rule-green { border-color: rgba(0, 255, 136, 0.3); } .rule-green .rule-icon-box { color: #00ff88; border-color: #00ff88; background: rgba(0, 255, 136, 0.1); } .rule-green .rule-title { color: #00ff88; } .rule-green:hover { border-color: rgba(0, 255, 136, 0.6); }
+.rule-icon-box { flex-shrink: 0; width: 60px; height: 60px; border-radius: 14px; border: 2px solid; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; margin-right: 1.5rem; }
+.rule-content { flex-grow: 1; }
+.rule-title { font-size: 1.1rem; font-weight: 700; margin-right: 0.3rem; letter-spacing: 0.5px; }
+.rule-text { color: rgba(255,255,255,0.75); font-size: 0.95rem; line-height: 1.6; margin: 0; display: inline; }
+.rule-chevron { flex-shrink: 0; margin-left: 1rem; font-size: 1.2rem; opacity: 0.5; transition: all 0.3s ease; }
+.rule-red .rule-chevron { color: #ff3366; } .rule-cyan .rule-chevron { color: #00e5ff; } .rule-purple .rule-chevron { color: #b026ff; } .rule-orange .rule-chevron { color: #ffaa00; } .rule-green .rule-chevron { color: #00ff88; }
+.rule-card:hover { transform: translateX(4px); background: #2d2d3a; } .rule-card:hover .rule-chevron { opacity: 1; }
+.rule-card::before { content: ''; position: absolute; left: 5px; top: 50%; transform: translateY(-50%); width: 4px; height: 15px; border-radius: 2px; opacity: 0.6; }
+.rule-red::before { background: #ff3366; } .rule-cyan::before { background: #00e5ff; } .rule-purple::before { background: #b026ff; } .rule-orange::before { background: #ffaa00; } .rule-green::before { background: #00ff88; }
+
+/* TEAM SECTION MATTE STYLING */
+.cyber-team-card { background: #1a1a24; border: 1px solid rgba(176, 38, 255, 0.3); border-radius: 12px; padding: 35px 20px; text-align: center; transition: all 0.4s ease; position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; }
+.cyber-team-card:hover { border-color: #b026ff; transform: translateY(-4px); background: #252533; }
+.team-brackets { position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; pointer-events: none; }
+.team-brackets::before, .team-brackets::after { content: ''; position: absolute; width: 15px; height: 15px; border-color: rgba(176, 38, 255, 0.4); border-style: solid; transition: all 0.3s ease; }
+.team-brackets::before { top: 0; left: 0; border-width: 2px 0 0 2px; border-top-left-radius: 4px; }
+.team-brackets::after { bottom: 0; right: 0; border-width: 0 2px 2px 0; border-bottom-right-radius: 4px; }
+.cyber-team-card:hover .team-brackets::before, .cyber-team-card:hover .team-brackets::after { border-color: #b026ff; width: 20px; height: 20px; }
+.team-avatar-container { position: relative; width: 120px; height: 120px; margin: 0 auto 25px auto; display: flex; align-items: center; justify-content: center; }
+.team-target-wrapper { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px dashed rgba(176, 38, 255, 0.4); transition: all 0.3s ease; }
+.cyber-team-card:hover .team-target-wrapper { border-color: #b026ff; }
+.team-inner-circle { position: absolute; width: 60px; height: 60px; border-radius: 50%; border: 2px solid #b026ff; display: flex; align-items: center; justify-content: center; background: rgba(176, 38, 255, 0.05); z-index: 2; transition: all 0.3s ease; }
+.team-inner-circle i { font-size: 1.8rem; color: #b026ff; margin-top: 2px; }
+.cyber-team-card:hover .team-inner-circle { background: rgba(176, 38, 255, 0.15); transform: scale(1.05); }
+.crosshair-line { position: absolute; background: rgba(176, 38, 255, 0.5); transition: all 0.3s ease; }
+.crosshair-top, .crosshair-bottom { width: 2px; height: 8px; left: 50%; transform: translateX(-50%); }
+.crosshair-left, .crosshair-right { width: 8px; height: 2px; top: 50%; transform: translateY(-50%); }
+.crosshair-top { top: -4px; } .crosshair-bottom { bottom: -4px; }
+.crosshair-left { left: -4px; } .crosshair-right { right: -4px; }
+.cyber-team-card:hover .crosshair-line { background: #b026ff; }
+.team-name-cyber { color: #fff; font-size: 1rem; font-family: 'Orbitron', sans-serif; font-weight: 700; margin-bottom: 8px; line-height: 1.4; letter-spacing: 0.5px; }
+.team-role-cyber { color: #b026ff; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+.team-socials { display: flex; justify-content: center; gap: 12px; z-index: 5; position: relative; }
+.team-social-btn { display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 8px; background: transparent; color: #b026ff; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(176, 38, 255, 0.3); }
+.team-social-btn i { font-size: 1rem; }
+.team-social-btn:hover { background: rgba(176, 38, 255, 0.15); color: #fff; border-color: #b026ff; transform: translateY(-3px); }
+</style>

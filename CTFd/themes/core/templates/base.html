@@ -1,72 +1,533 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="dark">
+
 <head>
   <title>{{ title or Configs.ctf_name }}</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="{{ Configs.ctf_small_icon }}" type="image/x-icon">
+  <link rel="shortcut icon" href="{{ url_for('views.themes', path='img/logoctf.png') }}" type="image/png">
 
   {{ meta | safe }}
 
   {% block stylesheets %}
-    {{ Assets.css("assets/scss/main.scss") }}
+  {{ Assets.css("assets/scss/main.scss") }}
   {% endblock %}
 
   {{ Plugins.styles }}
 
-  {{ Assets.js("assets/js/color_mode_switcher.js", type=None) }}
-
   <script type="text/javascript">
-      window.init = {
-          'urlRoot': "{{ request.script_root }}",
-          'csrfNonce': "{{ Session.nonce }}",
-          'userMode': "{{ Configs.user_mode }}",
-          'userId': {{ Session.id }},
-          'userName': {{ User.name | tojson }},
-          'userEmail': {{ User.email | tojson }},
-          'userVerified': {{ User.verified | tojson }},
-          'teamId': {{ Team.id | tojson }},
-          'teamName': {{ Team.name | tojson }},
-          'start': {{ Configs.start | tojson }},
-          'end': {{ Configs.end | tojson }},
-          'themeSettings': {{ Configs.theme_settings | tojson }},
-          'eventSounds': [
-            "/themes/core/static/sounds/notification.webm",
-            "/themes/core/static/sounds/notification.mp3",
-          ],
+    window.init = {
+      'urlRoot': "{{ request.script_root }}",
+      'csrfNonce': "{{ Session.nonce }}",
+      'userMode': "{{ Configs.user_mode }}",
+      'userId': {{ Session.id }},
+    'userName': {{ User.name | tojson }},
+    'userEmail': {{ User.email | tojson }},
+    'userVerified': {{ User.verified | tojson }},
+    'teamId': {{ Team.id | tojson }},
+    'teamName': {{ Team.name | tojson }},
+    'start': {{ Configs.start | tojson }},
+    'end': {{ Configs.end | tojson }},
+    'themeSettings': {{ Configs.theme_settings | tojson }},
+    'eventSounds': [
+      "/themes/core/static/sounds/notification.webm",
+      "/themes/core/static/sounds/notification.mp3",
+    ],
       }
   </script>
 
+  <style>
+    body {
+      background-color: #0d001a;
+      background-image: radial-gradient(ellipse at 50% 0%, #461274 0%, #1a0033 45%, #05000a 100%);
+      background-attachment: fixed;
+      background-size: cover;
+      min-height: 100vh;
+      margin: 0;
+      position: relative;
+    }
+
+    /* ==============================================================
+       CYBERPUNK GLOBAL COMPONENT STYLES (Scoreboard, Users, Settings)
+       ============================================================== */
+
+    /* Layout Gap Fixes */
+    main>.container,
+    main>.jumbotron {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+
+    /* Override any default 14vh padding on CTFd index page */
+    main .container>.row>div>img {
+      padding-top: 20px !important;
+    }
+
+    /* Jumbotron / Page Headers */
+    .jumbotron {
+      background: transparent !important;
+      padding: 1rem 0 1rem !important;
+      position: relative;
+      text-align: center;
+      margin-top: 0 !important;
+    }
+
+    .jumbotron h1 {
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 2px;
+      
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 0;
+    }
+
+    .jumbotron h1::after {
+      content: '';
+      display: block;
+      width: 100px;
+      border-top: 3px solid #b026ff;
+      
+      margin: 15px auto 0;
+    }
+
+    /* Global Forms & Search Bars */
+    .form-control,
+    .form-select {
+      background: rgba(8, 2, 15, 0.6) !important;
+      border: 1px solid #7a00ff !important;
+      color: #fff !important;
+      border-radius: 4px;
+      
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      
+      border-color: #b026ff !important;
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #7a00ff, #b026ff) !important;
+      border: none !important;
+      
+      transition: 0.3s ease;
+      color: #fff !important;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      
+    }
+
+    /* Global Data Tables */
+    .table {
+      background: rgba(8, 2, 15, 0.7);
+      border: 1px solid #7a00ff;
+      border-radius: 8px;
+      
+      color: #e0e0e0;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+
+    .table> :not(caption)>*>* {
+      background-color: transparent !important;
+      color: inherit;
+      border-bottom-color: rgba(122, 0, 255, 0.2);
+    }
+
+    .table thead th {
+      background: rgba(122, 0, 255, 0.15) !important;
+      color: #b026ff !important;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #7a00ff !important;
+      border-top: none !important;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .table tbody tr {
+      transition: 0.3s ease;
+      border-bottom: 1px solid rgba(122, 0, 255, 0.2);
+    }
+
+    .table tbody tr:hover td,
+    .table tbody tr:hover th {
+      background: rgba(176, 38, 255, 0.1) !important;
+      
+    }
+
+    .table tbody td {
+      border: none !important;
+      padding: 1rem 0.75rem;
+      vertical-align: middle;
+    }
+
+    .table a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s ease;
+    }
+
+    .table a:hover {
+      color: #b026ff;
+      
+    }
+
+    /* Navigation Pills (Scoreboard/Settings Tabs) */
+    .nav-pills .nav-link {
+      color: #fff;
+      border: 1px solid rgba(176, 38, 255, 0.3);
+      margin: 0 5px;
+      transition: 0.3s ease;
+      background: rgba(8, 2, 15, 0.5);
+    }
+
+    .nav-pills .nav-link.active,
+    .nav-pills .nav-link:hover {
+      background: rgba(176, 38, 255, 0.2) !important;
+      border-color: #b026ff;
+      
+      color: #b026ff !important;
+    }
+
+    /* Challenge Board Buttons Override */
+    .challenge-button {
+      background: rgba(8, 2, 15, 0.6) !important;
+      border: 1px solid #7a00ff !important;
+      border-radius: 8px;
+      
+      color: #fff !important;
+      transition: 0.3s ease !important;
+    }
+
+    .challenge-button:hover {
+      border-color: #b026ff !important;
+      
+      transform: scale(1.02);
+    }
+
+    .challenge-solved {
+      background: rgba(0, 209, 64, 0.1) !important;
+      border-color: #00d140 !important;
+      
+    }
+
+    .challenge-solved:hover {
+      
+    }
+
+    /* Pagination */
+    .page-select {
+      background: rgba(8, 2, 15, 0.8);
+      border: 1px solid #7a00ff;
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 4px;
+    }
+  </style>
+
   {{ Configs.theme_header }}
 </head>
+
 <body>
-{% include "components/navbar.html" %}
+  {% include "components/navbar.html" %}
 
-<main role="main">
-  {% block content %}
-  {% endblock %}
-</main>
+  <main role="main">
+    {% block content %}
+    {% endblock %}
+  </main>
 
-{% include "components/snackbar.html" %}
+  {% include "components/snackbar.html" %}
 
-<footer class="footer">
-  <div class="container text-center">
-    <a href="https://ctfd.io" class="text-secondary">
-      <small class="text-muted">
-        {% trans %}Powered by CTFd{% endtrans %}
-      </small>
-    </a>
-  </div>
-</footer>
+  <footer class="mt-auto">
+    <style>
+      .cyber-footer {
+        background: linear-gradient(135deg, rgba(40, 18, 65, 0.7), rgba(20, 5, 35, 0.9));
+        border-top: 1px solid rgba(176, 38, 255, 0.25);
+        border-bottom: 1px solid rgba(176, 38, 255, 0.25);
+        
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        position: relative;
+        padding: 25px 0;
+        margin-top: 60px;
+        display: flex;
+        justify-content: center;
+      }
 
-{% include "components/notifications.html" %}
+      .footer-content-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 1400px;
+        padding: 0 20px;
+      }
 
-{% block scripts %}
+      .footer-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .footer-section.left {
+        justify-content: flex-start;
+        border-right: 1px solid rgba(176, 38, 255, 0.3);
+      }
+
+      .footer-section.center {
+        justify-content: center;
+        border-right: 1px solid rgba(176, 38, 255, 0.3);
+      }
+
+      .footer-section.right {
+        justify-content: flex-end;
+      }
+
+      .footer-logo {
+        max-height: 50px;
+        margin-right: 20px;
+        
+      }
+
+      .footer-malla-logo {
+        max-height: 55px;
+        margin-right: 20px;
+        mix-blend-mode: screen;
+      }
+
+      .footer-text-block {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .footer-title {
+        color: #fff;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        font-size: 1.4rem;
+        letter-spacing: 2px;
+        line-height: 1.1;
+      }
+
+      .footer-title span {
+        color: #b026ff;
+        
+      }
+
+      .footer-tagline {
+        color: #b026ff;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        font-weight: 600;
+        margin-top: 4px;
+      }
+
+      .footer-center-text {
+        color: #b026ff;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        letter-spacing: 0.5px;
+        
+      }
+
+      .footer-email-box {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .footer-email-icon {
+        width: 48px;
+        height: 48px;
+        border: 2px solid #b026ff;
+        border-radius: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        background: rgba(176, 38, 255, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .footer-email-icon:hover {
+        
+        background: rgba(176, 38, 255, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .footer-email-icon svg {
+        width: 26px;
+        fill: #b026ff;
+        
+      }
+
+      .footer-email-text {
+        color: #d0d0d0;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+      }
+
+      .ctfd-credit {
+        text-align: center;
+        margin-top: 35px;
+        padding-bottom: 20px;
+      }
+
+      .ctfd-credit small {
+        color: #fff;
+        opacity: 0.02;
+        /* Extremely subtle, looks like it's barely there */
+        font-size: 0.75rem;
+        font-family: 'Inter', sans-serif;
+        transition: opacity 0.3s ease;
+        cursor: default;
+      }
+
+      .ctfd-credit small:hover {
+        opacity: 0.4;
+      }
+
+      @media (max-width: 1024px) {
+        .footer-content-wrapper {
+          flex-direction: column;
+          gap: 30px;
+        }
+
+        .footer-section.left,
+        .footer-section.center {
+          border-right: none;
+          border-bottom: 1px solid rgba(176, 38, 255, 0.3);
+          padding-bottom: 25px;
+          width: 100%;
+          justify-content: center;
+        }
+
+        .footer-section.right {
+          justify-content: center;
+          width: 100%;
+        }
+
+        .footer-text-block {
+          align-items: center;
+          text-align: center;
+        }
+
+        .footer-logo,
+        .footer-malla-logo {
+          margin-right: 15px;
+        }
+      }
+    </style>
+
+    <div class="cyber-footer">
+      <div class="footer-content-wrapper">
+        <!-- LEFT: Logo & Title -->
+        <div class="footer-section left">
+          <img src="{{ url_for('views.themes', path='img/blindspot.png') }}" class="footer-logo" alt="Blindspot Eye">
+          <div class="footer-text-block">
+            <div class="footer-title" style="line-height: 1;">
+              BLIND<span>S</span>P<svg viewBox="0 0 24 24"
+                style="width: 0.95em; height: 0.95em; vertical-align: -0.1em; fill: none; stroke: #b026ff; stroke-width: 3;  margin: 0 2px;">
+                <circle cx="12" cy="12" r="6" />
+                <path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke-linecap="round" />
+              </svg>T<span style="font-size: 0.75em; margin-left: 5px;">-CTF-</span>
+            </div>
+            <div style="display: flex; align-items: center; margin-top: 6px;">
+              <div
+                style="height: 2px; width: 25px; background: #b026ff;  border-radius: 2px;">
+              </div>
+              <div
+                style="color: #fff; font-family: 'Inter', sans-serif; font-size: 0.65rem; letter-spacing: 1.5px; font-weight: 700; margin: 0 8px; text-transform: none;">
+                Find what others <span style="color: #b026ff; ">miss</span>
+              </div>
+              <div
+                style="height: 2px; width: 15px; background: #b026ff;  border-radius: 2px;">
+              </div>
+              <div style="display: flex; gap: 4px; margin-left: 6px;">
+                <div
+                  style="width: 7px; height: 10px; background: #b026ff; transform: skewX(-30deg); ">
+                </div>
+                <div
+                  style="width: 7px; height: 10px; background: #b026ff; transform: skewX(-30deg); ">
+                </div>
+                <div
+                  style="width: 7px; height: 10px; background: #b026ff; transform: skewX(-30deg); ">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER: Malla Reddy text -->
+        <div class="footer-section center" style="flex-direction: column;">
+          <div style="display: flex; align-items: center;">
+            <img src="{{ url_for('views.themes', path='img/MRUH.jpg') }}" class="footer-malla-logo"
+              alt="Malla Reddy University">
+            <div class="footer-text-block footer-center-text" style="text-align: left;">
+              <div>BlindspotCTF by Malla Reddy University</div>
+              <div>Department of Cyber Security</div>
+            </div>
+          </div>
+          <div class="footer-center-text" style="opacity: 0.15; margin-top: 10px; text-align: center;  transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='0.15'">
+            Inspired by CTFd
+          </div>
+        </div>
+
+        <!-- RIGHT: Contact Email -->
+        <div class="footer-section right">
+          <div class="footer-email-box">
+            <div class="footer-email-icon">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+              </svg>
+            </div>
+            <div class="footer-email-text">mruhblindspotctf@gmail.com</div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- Inspired by CTFd moved to center section -->
+  </footer>
+
+  {% include "components/notifications.html" %}
+
+  {% block scripts %}
   {{ Assets.js("assets/js/page.js") }}
-{% endblock %}
+  {% endblock %}
 
-{{ Plugins.scripts }}
+  {{ Plugins.scripts }}
+  
+  <!-- Full Screen Image Modal -->
+  <div class="modal fade" id="profileImageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content" style="background: transparent; border: none; ">
+        <div class="modal-body text-center position-relative p-0">
+          <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1050; padding: 10px; background-color: rgba(176,38,255,0.6); border-radius: 50%; "></button>
+          <img src="{{ url_for('views.themes', path='img/anand_kumar.jpg') }}" class="img-fluid" style="max-height: 90vh; border-radius: 16px; border: 2px solid #b026ff; " alt="G. Anand Kumar">
+        </div>
+      </div>
+    </div>
+  </div>
 
-{{ Configs.theme_footer }}
 </body>
+
 </html>

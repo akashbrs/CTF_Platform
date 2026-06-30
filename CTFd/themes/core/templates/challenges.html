@@ -1,15 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="jumbotron">
+  <div class="jumbotron cyber-jumbotron text-center pt-5 pb-3">
     <div class="container">
-      <h1>
-        {% trans %}Challenges{% endtrans %}
+      <h1 class="cyber-page-title text-purple" style="letter-spacing: 4px; ">
+        CHALLENGES
       </h1>
+      <div class="cyber-title-decor d-flex justify-content-center gap-2 mt-2">
+        <div style="width: 15px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
+        <div style="width: 15px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
+        <div style="width: 30px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
+      </div>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container cyber-container pb-5">
     <div class="row">
       <div class="col-md-12">
         {% include "components/errors.html" %}
@@ -29,47 +34,393 @@
       <div x-show="!loaded">
         <div class="min-vh-50 d-flex align-items-center">
           <div class="text-center w-100">
-            <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+            <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner text-purple"></i>
           </div>
         </div>
       </div>
 
-      <div x-show="loaded">
-        <template x-for="(category, idx) in getCategories()" :key="idx">
-          <div class="pt-5">
-            <div class="category-header mb-3">
-              <h3 x-text="category"></h3>
+      <div x-show="loaded" style="display: none;"
+           x-data="ChallengeFilters"
+           x-init="$watch('searchQuery', () => { currentPage = 1 }); $watch('selectedDomain', () => { currentPage = 1 }); $watch('selectedDifficulty', () => { currentPage = 1 }); $watch('selectedStatus', () => { currentPage = 1 });"
+      >
+        <!-- FILTERS -->
+        <div class="cyber-filters-container mb-4">
+          <!-- Domain Buttons -->
+          <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+            <button class="cyber-domain-btn" :class="{ 'active': selectedDomain === 'All Domains' }" @click="selectedDomain = 'All Domains'">
+              <i class="fas fa-th-large me-2"></i> All Domains
+            </button>
+            <template x-for="cat in getCategories()" :key="cat">
+              <button class="cyber-domain-btn" :class="{ 'active': selectedDomain === cat }" @click="selectedDomain = cat">
+                <i class="fas me-2" :class="getCategoryConfig(cat).icon" :style="'color: ' + getCategoryConfig(cat).color"></i>
+                <span x-text="cat"></span>
+              </button>
+            </template>
+          </div>
+
+          <!-- Secondary Filters -->
+          <div class="d-flex flex-wrap gap-3 align-items-center cyber-secondary-filters p-3 rounded">
+            <div class="flex-grow-1 position-relative" style="min-width: 250px;">
+              <i class="fas fa-search position-absolute text-muted" style="left: 15px; top: 12px;"></i>
+              <input type="text" class="form-control cyber-search-input w-100 ps-5" placeholder="Search challenges..." x-model="searchQuery">
             </div>
-
-            <div class="category-challenges d-flex flex-column">
-              <div class="challenges-row row">
-                <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
-                  <div class="col-sm-6 col-md-4 col-lg-3 my-3">
-                    <button
-                        class="challenge-button btn btn-dark w-100 h-100"
-                        :class="[
-                          c.solved_by_me ? 'challenge-solved' : '',
-                          ...c.tags.map((tag) => `tag-${tag.value.replace(/ /g, '-')}`),
-                        ];"
-                        :value="c.id" @click="loadChallenge(c.id)"
-                    >
-
-                      <div class="challenge-inner my-3">
-                        <p x-text="c.name"></p>
-                        <span x-text="c.value"></span>
-                      </div>
-                    </button>
-                  </div>
-                </template>
-              </div>
+            
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-muted small">Difficulty</span>
+              <select class="form-select cyber-select" x-model="selectedDifficulty" style="width: auto;">
+                <option>All</option>
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+              </select>
+            </div>
+            
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-muted small">Status</span>
+              <select class="form-select cyber-select" x-model="selectedStatus" style="width: auto;">
+                <option>All</option>
+                <option>Solved</option>
+                <option>Unsolved</option>
+              </select>
+            </div>
+            
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-muted small">Sort By</span>
+              <select class="form-select cyber-select" x-model="sortBy" style="width: auto;">
+                <option>Points (High to Low)</option>
+                <option>Points (Low to High)</option>
+                <option>Name (A-Z)</option>
+                <option>Name (Z-A)</option>
+              </select>
             </div>
           </div>
-        </template>
+        </div>
+
+        <!-- CHALLENGE LIST -->
+        <div class="cyber-challenge-list d-flex flex-column gap-3">
+          <template x-if="getFiltered(challenges).length === 0">
+            <div class="text-center p-5 cyber-row">
+              <h4 class="text-muted">No challenges found matching your criteria.</h4>
+            </div>
+          </template>
+
+          <template x-for="c in getPaginated(challenges)" :key="c.id">
+            <div class="cyber-row p-3 d-flex flex-column flex-md-row align-items-md-center gap-3 gap-md-4 position-relative" 
+                 :class="{ 'cyber-solved-row': c.solved_by_me }"
+                 :style="'--cat-color: ' + getCategoryConfig(c.category).color">
+              
+              <!-- Icon Box -->
+              <div class="cyber-row-icon flex-shrink-0 d-flex align-items-center justify-content-center">
+                <i class="fas fs-3" :class="getCategoryConfig(c.category).icon"></i>
+              </div>
+              
+              <!-- Info Box (Name, Desc) -->
+              <div class="cyber-row-info flex-grow-1">
+                <div class="d-flex align-items-center gap-3 mb-1">
+                  <h4 class="m-0 text-white font-weight-bold" x-text="c.name"></h4>
+                  <span class="cyber-badge-new">NEW</span>
+                </div>
+                <div class="text-muted small cyber-row-desc">
+                  <template x-if="c.author">
+                    <span x-text="'by ' + c.author"></span>
+                  </template>
+                </div>
+              </div>
+              
+              <!-- Category & Difficulty -->
+              <div class="cyber-row-cat text-md-center d-flex flex-row flex-md-column align-items-center align-items-md-center gap-3 gap-md-1" style="min-width: 140px;">
+                <div class="cyber-category-pill" :style="'color: ' + getCategoryConfig(c.category).color + '; border-color: ' + getCategoryConfig(c.category).color">
+                  <span x-text="c.category"></span>
+                </div>
+                <div class="d-flex align-items-center gap-2 mt-md-2">
+                  <div class="d-flex cyber-difficulty-bars">
+                    <div class="cyber-bar" :class="getDifficulty(c) === 'Easy' ? 'cyber-bar-easy' : (getDifficulty(c) === 'Medium' ? 'cyber-bar-med' : 'cyber-bar-hard')"></div>
+                    <div class="cyber-bar" :class="(getDifficulty(c) === 'Medium' || getDifficulty(c) === 'Hard') ? (getDifficulty(c) === 'Medium' ? 'cyber-bar-med' : 'cyber-bar-hard') : 'cyber-bar-inactive'"></div>
+                    <div class="cyber-bar" :class="getDifficulty(c) === 'Hard' ? 'cyber-bar-hard' : 'cyber-bar-inactive'"></div>
+                  </div>
+                  <span class="small font-weight-bold" :class="getDifficulty(c) === 'Easy' ? 'text-success' : (getDifficulty(c) === 'Medium' ? 'text-warning' : 'text-danger')" x-text="getDifficulty(c).toUpperCase()"></span>
+                </div>
+              </div>
+              
+              <!-- Points -->
+              <div class="cyber-row-points text-center d-flex flex-row flex-md-column align-items-center justify-content-between" style="min-width: 80px;">
+                <div class="fs-4 text-purple font-monospace mb-md-0" x-text="c.value"></div>
+                <div class="text-muted small" style="letter-spacing: 1px; font-size: 0.65rem;">POINTS</div>
+              </div>
+              
+              <div class="cyber-row-solves text-center d-flex flex-row flex-md-column align-items-center justify-content-between" style="min-width: 80px;">
+                <div class="fs-4 text-success font-monospace mb-md-0" x-text="c.solves || 0"></div>
+                <div class="text-muted small" style="letter-spacing: 1px; font-size: 0.65rem;">SOLVES</div>
+              </div>
+              
+              <!-- Action Button -->
+              <div class="cyber-row-action ms-md-3 mt-3 mt-md-0">
+                <button class="btn cyber-view-btn w-100" @click="loadChallenge(c.id)">
+                  <span x-show="!c.solved_by_me">View Challenge <i class="fas fa-chevron-right ms-2 small"></i></span>
+                  <span x-show="c.solved_by_me" class="text-success"><i class="fas fa-check me-2"></i> Solved</span>
+                </button>
+              </div>
+              
+            </div>
+          </template>
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="d-flex justify-content-center mt-5" x-show="getTotalPages(challenges) > 1">
+          <ul class="pagination cyber-pagination gap-2">
+            <li class="page-item" :class="{ 'disabled': currentPage === 1 }">
+              <button class="page-link" @click="currentPage--" :disabled="currentPage === 1"><i class="fas fa-chevron-left"></i></button>
+            </li>
+            
+            <template x-for="page in getTotalPages(challenges)" :key="page">
+              <li class="page-item" :class="{ 'active': currentPage === page }">
+                <button class="page-link" @click="currentPage = page" x-text="page"></button>
+              </li>
+            </template>
+            
+            <li class="page-item" :class="{ 'disabled': currentPage === getTotalPages(challenges) }">
+              <button class="page-link" @click="currentPage++" :disabled="currentPage === getTotalPages(challenges)"><i class="fas fa-chevron-right"></i></button>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 {% endblock %}
 
 {% block scripts %}
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('ChallengeFilters', () => ({
+        searchQuery: '',
+        selectedDomain: 'All Domains',
+        selectedDifficulty: 'All',
+        selectedStatus: 'All',
+        sortBy: 'Points (High to Low)',
+        currentPage: 1,
+        itemsPerPage: 6,
+        
+        getFiltered(challenges) {
+            return (challenges || []).filter(c => {
+                if (this.selectedDomain !== 'All Domains' && c.category !== this.selectedDomain) return false;
+                if (this.searchQuery && !c.name.toLowerCase().includes(this.searchQuery.toLowerCase())) return false;
+                if (this.selectedStatus === 'Solved' && !c.solved_by_me) return false;
+                if (this.selectedStatus === 'Unsolved' && c.solved_by_me) return false;
+                if (this.selectedDifficulty !== 'All') {
+                    const diff = this.getDifficulty(c).toLowerCase();
+                    if (diff !== this.selectedDifficulty.toLowerCase()) return false;
+                }
+                return true;
+            }).sort((a, b) => {
+                if (this.sortBy === 'Points (High to Low)') return b.value - a.value;
+                if (this.sortBy === 'Points (Low to High)') return a.value - b.value;
+                if (this.sortBy === 'Name (A-Z)') return a.name.localeCompare(b.name);
+                if (this.sortBy === 'Name (Z-A)') return b.name.localeCompare(a.name);
+                return 0;
+            });
+        },
+        
+        getPaginated(challenges) {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            return this.getFiltered(challenges).slice(start, start + this.itemsPerPage);
+        },
+        
+        getTotalPages(challenges) {
+            return Math.ceil(this.getFiltered(challenges).length / this.itemsPerPage) || 1;
+        },
+
+        getCategoryConfig(category) {
+            const cat = category ? category.toLowerCase() : '';
+            if (cat.includes('web')) return { color: '#b026ff', icon: 'fa-globe', textClass: 'text-purple' };
+            if (cat.includes('osint')) return { color: '#00f0ff', icon: 'fa-search', textClass: 'text-info' };
+            if (cat.includes('crypto')) return { color: '#ff003c', icon: 'fa-key', textClass: 'text-danger' };
+            if (cat.includes('reverse') || cat.includes('pwn')) return { color: '#ff9d00', icon: 'fa-cogs', textClass: 'text-warning' };
+            return { color: '#00ff00', icon: 'fa-puzzle-piece', textClass: 'text-success' }; 
+        },
+        
+        getDifficulty(c) {
+            let diff = c.difficulty || 'Medium';
+            let val = diff.toLowerCase();
+            if(val === 'easy') return 'Easy';
+            if(val === 'medium') return 'Medium';
+            if(val === 'hard') return 'Hard';
+            return diff;
+        }
+      }));
+    });
+  </script>
   {{ Assets.js("assets/js/challenges.js") }}
+  <style>
+    /* CYBERPUNK CHALLENGES BOARD STYLES */
+    body {
+      background-color: #05050a;
+      color: #fff;
+    }
+    
+    .text-purple { color: #b026ff !important; }
+    
+    /* Filters */
+    .cyber-domain-btn {
+      background: rgba(15, 10, 25, 0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #aaa;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .cyber-domain-btn:hover {
+      border-color: rgba(176,38,255,0.5);
+      color: #fff;
+    }
+    .cyber-domain-btn.active {
+      border-color: #b026ff;
+      background: rgba(176,38,255,0.1);
+      color: #fff;
+      
+    }
+    
+    .cyber-secondary-filters {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .cyber-search-input, .cyber-select {
+      background: rgba(0,0,0,0.5) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      color: #fff !important;
+      border-radius: 4px;
+    }
+    .cyber-search-input:focus, .cyber-select:focus {
+      border-color: #b026ff !important;
+      
+    }
+    .cyber-select option {
+      background: #111;
+      color: #fff;
+    }
+    
+    /* Rows */
+    .cyber-row {
+      background: rgba(15, 10, 25, 0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      position: relative;
+      transition: 0.3s;
+      overflow: hidden;
+    }
+    .cyber-row:hover {
+      border-color: var(--cat-color, #b026ff);
+      
+      transform: translateX(5px);
+    }
+    
+    /* Corner cuts on rows */
+    .cyber-row::after {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px; bottom: -1px;
+      width: 4px;
+      background: var(--cat-color, #b026ff);
+      
+    }
+    
+    .cyber-row-icon {
+      width: 70px;
+      height: 70px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: var(--cat-color, #b026ff);
+      background: rgba(255,255,255,0.02);
+      position: relative;
+    }
+    /* Add corner brackets to icon */
+    .cyber-row-icon::before {
+      content: '';
+      position: absolute;
+      top: 5px; left: 5px; width: 10px; height: 10px;
+      border-top: 2px solid var(--cat-color, #b026ff);
+      border-left: 2px solid var(--cat-color, #b026ff);
+      opacity: 0.5;
+    }
+    .cyber-row-icon::after {
+      content: '';
+      position: absolute;
+      bottom: 5px; right: 5px; width: 10px; height: 10px;
+      border-bottom: 2px solid var(--cat-color, #b026ff);
+      border-right: 2px solid var(--cat-color, #b026ff);
+      opacity: 0.5;
+    }
+    
+    .cyber-badge-new {
+      background: rgba(176,38,255,0.2);
+      border: 1px solid #b026ff;
+      color: #d285ff;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+    
+    .cyber-category-pill {
+      border: 1px solid;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      background: rgba(255,255,255,0.03);
+    }
+    
+    /* Bars */
+    .cyber-difficulty-bars { gap: 2px; }
+    .cyber-bar { width: 10px; height: 5px; transform: skewX(-20deg); }
+    .cyber-bar-easy { background: #00ff00;  }
+    .cyber-bar-med { background: #ffc107;  }
+    .cyber-bar-hard { background: #ff003c;  }
+    .cyber-bar-inactive { background: #333; }
+    
+    /* View Button */
+    .cyber-view-btn {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(176,38,255,0.5);
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-weight: 600;
+      transition: 0.3s;
+      white-space: nowrap;
+    }
+    .cyber-view-btn:hover {
+      background: rgba(176,38,255,0.2);
+      border-color: #b026ff;
+      
+    }
+    
+    /* Solved State */
+    .cyber-solved-row {
+      opacity: 0.6;
+    }
+    .cyber-solved-row:hover {
+      opacity: 1;
+    }
+    
+    /* Pagination */
+    .cyber-pagination .page-link {
+      background: rgba(15, 10, 25, 0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    .cyber-pagination .page-item.active .page-link {
+      background: #b026ff;
+      border-color: #b026ff;
+      
+    }
+    .cyber-pagination .page-link:hover:not(:disabled) {
+      background: rgba(176,38,255,0.2);
+      border-color: #b026ff;
+    }
+    .cyber-pagination .page-item.disabled .page-link {
+      background: rgba(0,0,0,0.5);
+      color: #555;
+    }
+  </style>
 {% endblock %}

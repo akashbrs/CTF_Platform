@@ -52,6 +52,17 @@
 
             <div class="mb-3">
               <b>
+                {{ form.roll_no.label(class="form-label") }}
+                <span class="text-danger">*</span>
+              </b>
+              {{ form.roll_no(class="form-control", value=roll_no) }}
+              <small class="form-text text-muted">
+                {% trans %}Your 12-character Roll Number{% endtrans %}
+              </small>
+            </div>
+
+            <div class="mb-3">
+              <b>
                 {{ form.password.label(class="form-label") }}
                 <span class="text-danger">*</span>
               </b>

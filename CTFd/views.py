@@ -199,7 +199,6 @@ def setup():
             # Splice in our banner
             index = f"""<div class="row">
     <div class="col-md-6 offset-md-3">
-        <img class="w-100 mx-auto d-block" style="max-width: 500px;padding: 50px;padding-top: 14vh;" src="{default_ctf_banner_location}" />
         <h3 class="text-center">
             <p>A cool CTF platform from <a href="https://ctfd.io">ctfd.io</a></p>
             <p>Follow us on social media:</p>
@@ -338,6 +337,7 @@ def settings():
         language=user.language,
         website=user.website,
         affiliation=user.affiliation,
+        roll_no=user.roll_no,
         country=user.country,
         tokens=tokens,
         prevent_name_change=prevent_name_change,

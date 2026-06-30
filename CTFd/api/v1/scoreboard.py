@@ -42,6 +42,7 @@ class ScoreboardList(Resource):
                         Users.hidden,
                         Users.banned,
                         Users.bracket_id,
+                        Users.roll_no,
                         Brackets.name.label("bracket_name"),
                     ]
                 )
@@ -59,12 +60,23 @@ class ScoreboardList(Resource):
                         "score": 0,
                         "bracket_id": u.bracket_id,
                         "bracket_name": u.bracket_name,
+                        "roll_no": u.roll_no,
                     }
 
             # Get user_standings as a dict so that we can more quickly get member scores
             user_standings = get_user_standings()
             for u in user_standings:
                 membership[u.team_id][u.user_id]["score"] = int(u.score)
+        
+        # In user mode, we need to fetch roll_no for the standings
+        roll_nos = {}
+        if mode != TEAMS_MODE:
+            account_ids = [x.account_id for x in standings]
+            if account_ids:
+                users_q = db.session.query(Users.id, Users.roll_no).filter(Users.id.in_(account_ids)).all()
+                for u in users_q:
+                    roll_nos[u.id] = u.roll_no
+
 
         for i, x in enumerate(standings):
             entry = {
@@ -77,6 +89,7 @@ class ScoreboardList(Resource):
                 "score": int(x.score),
                 "bracket_id": x.bracket_id,
                 "bracket_name": x.bracket_name,
+                "roll_no": roll_nos.get(x.account_id) if mode != TEAMS_MODE else None,
             }
 
             if mode == TEAMS_MODE:

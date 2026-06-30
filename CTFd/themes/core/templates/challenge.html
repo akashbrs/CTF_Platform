@@ -1,359 +1,620 @@
-<div :class="getStyles()" role="document" x-data="Challenge" x-init='id = {{ challenge.id }}; max_attempts = {{ max_attempts }}; attempts = {{ attempts }}; ratingValue = {{ (rating.get('value') if rating else None) | tojson }}; ratingReview = {{ (rating.get('review', '') if rating else None) | tojson }};'>
-  <div class="modal-content">
-    <div class="modal-body py-4 px-4 px-sm-5">
+<div class="modal-dialog modal-xl cyber-challenge-dialog" role="document" x-data="Challenge" x-init='id = {{ challenge.id }}; max_attempts = {{ max_attempts }}; attempts = {{ attempts }}; ratingValue = {{ (rating.get("value") if rating else None) | tojson }}; ratingReview = {{ (rating.get("review", "") if rating else None) | tojson }};'>
+  <div class="cyber-modal-wrapper">
+    <div class="cyber-frame-tl"></div>
+    <div class="cyber-frame-tr"></div>
+    <div class="cyber-frame-bl"></div>
+    <div class="cyber-frame-br"></div>
+    
+    <div class="modal-content cyber-modal-content">
+      <div class="modal-body p-0 position-relative cyber-modal-body">
+        
+        {% set cat_lower = challenge.category | lower if challenge.category else '' %}
+        {% set cat_color = '#00ff00' %}
+        {% set cat_icon = 'fa-puzzle-piece' %}
+        {% if 'web' in cat_lower %}
+            {% set cat_color = '#b026ff' %}
+            {% set cat_icon = 'fa-globe' %}
+        {% elif 'osint' in cat_lower %}
+            {% set cat_color = '#00f0ff' %}
+            {% set cat_icon = 'fa-search' %}
+        {% elif 'crypto' in cat_lower %}
+            {% set cat_color = '#ff003c' %}
+            {% set cat_icon = 'fa-key' %}
+        {% elif 'reverse' in cat_lower or 'pwn' in cat_lower %}
+            {% set cat_color = '#ff9d00' %}
+            {% set cat_icon = 'fa-cogs' %}
+        {% endif %}
 
-      <div>
-        <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
-
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <button class="nav-link active" data-bs-target="#challenge" @click="showChallenge()">
-              {% trans %}Challenge{% endtrans %}
+        {% set diff_text = challenge.difficulty if challenge.difficulty else 'Medium' %}
+        {% set diff_color = '#ff9d00' %}
+        {% set diff_bars = 2 %}
+        {% set t_val = diff_text | lower %}
+        {% if t_val == 'easy' %}
+            {% set diff_color = '#00ff00' %}
+            {% set diff_bars = 1 %}
+        {% elif t_val == 'hard' %}
+            {% set diff_color = '#ff003c' %}
+            {% set diff_bars = 3 %}
+        {% endif %}
+        <!-- HEADER -->
+        <div class="cyber-header d-flex justify-content-between align-items-center p-3 px-4 pt-4">
+          <button class="btn btn-link cyber-back-btn text-decoration-none d-flex align-items-center gap-2 p-0" data-bs-dismiss="modal" aria-label="Close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> 
+            <span>BACK TO CHALLENGES</span>
+          </button>
+          <div class="cyber-header-stats d-flex align-items-center">
+            <div class="cyber-difficulty me-5 d-flex align-items-center">
+              <span class="cyber-stat-label">DIFFICULTY</span>
+              <span class="cyber-badge-medium ms-3" style="border-color: {{ diff_color }}; color: {{ diff_color }};  background: {{ diff_color }}0D;">{{ diff_text | upper }}</span>
+              <div class="ms-3 d-flex cyber-difficulty-bars">
+                <div class="cyber-bar" style="{% if diff_bars >= 1 %}background: {{ diff_color }}; {% else %}border: 1px solid rgba(255,255,255,0.2);{% endif %}"></div>
+                <div class="cyber-bar" style="{% if diff_bars >= 2 %}background: {{ diff_color }}; {% else %}border: 1px solid rgba(255,255,255,0.2);{% endif %}"></div>
+                <div class="cyber-bar" style="{% if diff_bars >= 3 %}background: {{ diff_color }}; {% else %}border: 1px solid rgba(255,255,255,0.2);{% endif %}"></div>
+                <div class="cyber-bar cyber-bar-inactive"></div>
+              </div>
+            </div>
+            <div class="cyber-points d-flex align-items-center">
+              <div class="d-flex flex-column align-items-end me-3">
+                <span class="cyber-stat-label">POINTS</span>
+                <span class="cyber-points-val">{{ challenge.value }}</span>
+              </div>
+            </div>
+            <!-- Close Button per Mockup -->
+            <button class="btn ms-4 p-0 border-0" data-bs-dismiss="modal" aria-label="Close" style="background: transparent; outline: none; " onmouseover="this.querySelector('svg').style.filter='drop-shadow(0 0 8px #b026ff)'" onmouseout="this.querySelector('svg').style.filter='drop-shadow(0 0 4px #b026ff)'">
+              <svg width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="#b026ff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" style=" transition: all 0.2s;">
+                <path d="M 25 20 L 50 45 L 75 20 L 80 25 L 55 50 L 80 75 L 75 80 L 50 55 L 25 80 L 20 75 L 45 50 L 20 25 Z" />
+                <line x1="22.5" y1="22.5" x2="12" y2="12" stroke-width="6"/>
+                <line x1="77.5" y1="22.5" x2="88" y2="12" stroke-width="6"/>
+                <line x1="77.5" y1="77.5" x2="88" y2="88" stroke-width="6"/>
+                <line x1="22.5" y1="77.5" x2="12" y2="88" stroke-width="6"/>
+              </svg>
             </button>
-          </li>
-
-          {% block submissions %}
-            {% if Configs.view_self_submissions %}
-            <li class="nav-item">
-              <button class="nav-link challenge-submissions" data-bs-target="#submissions" @click="showSubmissions()">
-                {% if solves != None %}
-                  Submissions
-                {% endif %}
-              </button>
-            </li>
-            {% endif %}
-          {% endblock %}
-
-          {% block solution %}
-            <li class="nav-item" x-show="getSolutionId()">
-              <button class="nav-link challenge-solution" data-bs-target="#solution" @click="showSolution()">
-                {% trans %}Solution{% endtrans %}
-              </button>
-            </li>
-          {% endblock %}
-
-          {% block solves %}
-            {% if solves != None %}
-            <li class="nav-item">
-              <button class="nav-link challenge-solves" data-bs-target="#solves" @click="showSolves()">
-                  {{ ngettext("%(num)d Solve", "%(num)d Solves", solves) }}
-              </button>
-            </li>
-            {% endif %}
-          {% endblock %}
-        </ul>
-      </div>
-
-      <div>
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane fade show active" id="challenge">
-            <h2 class="challenge-name text-center pt-3">
-              {{ challenge.name }}
-            </h2>
-            <h3 class="challenge-value text-center">
-              {{ challenge.value }}
-            </h3>
-
-
-            {% if tags %}
-              <div class="challenge-tags text-center pt-2 pb-3">
-                {% block tags %}
-                  {% for tag in tags %}
-                    <span class="challenge-tag badge bg-info">{{ tag }}</span>
-                  {% endfor %}
-                {% endblock %}
+          </div>
+        </div>
+        
+        <div class="cyber-body row g-4 px-4 pb-4 m-0">
+          <!-- LEFT COLUMN -->
+          <div class="col-lg-7 d-flex flex-column gap-3 p-0 pe-lg-3">
+            
+            <!-- HEADER BOX: Icon, Category, Title -->
+            <div class="d-flex flex-column flex-sm-row gap-4 align-items-start mt-2">
+              <div class="cyber-icon-box flex-shrink-0 d-flex align-items-center justify-content-center" style="border-color: {{ cat_color }}66; background: radial-gradient(circle at center, {{ cat_color }}26 0%, transparent 70%);">
+                <i class="fas {{ cat_icon }}" style="font-size: 3.5rem; color: {{ cat_color }};"></i>
+                <div class="cyber-icon-corners top-left" style="border-color: {{ cat_color }}"></div>
+                <div class="cyber-icon-corners top-right" style="border-color: {{ cat_color }}"></div>
+                <div class="cyber-icon-corners bottom-left" style="border-color: {{ cat_color }}"></div>
+                <div class="cyber-icon-corners bottom-right" style="border-color: {{ cat_color }}"></div>
+                <div class="cyber-icon-base" style="border-top-color: {{ cat_color }}; "></div>
               </div>
-            {% endif %}
-
-            <small class="challenge-attribution text-center text-muted">
-              {% block attribution %}{{ challenge.byline }}{% endblock %}
-            </small>
-
-            {% if Configs.challenge_ratings == "public" %}
-            <small class="challenge-ratings text-center text-muted d-block">
-              {% block ratings %}
-                {% if ratings %}
-                  <span><i class="fa-solid fa-thumbs-up"></i> {{ ratings.up }}</span>
-                  <span class="text-center px-2">
-                    {% if ratings.count %}
-                    ({{ ((ratings.up / (ratings.count)) * 100) | int }}% liked)
-                    {% endif %}
-                  </span>
-                  <span><i class="fa-solid fa-thumbs-down"></i> {{ ratings.down }}</span>
-                {% endif %}
-              {% endblock %}
-            </small>
-            {% endif %}
-
-            <span class="challenge-desc">{% block description %}{{ challenge.html }}{% endblock %}</span>
-
-            {% if challenge.connection_info %}
-              <div class="mb-2">
-                <span class="challenge-connection-info">
-                  {% block connection_info %}
-                    {% set conn = challenge.connection_info %}
-                    {% if not conn %}
-                    {% elif conn.startswith("http") %}
-                      {{ conn | urlize(target="_blank") }}
-                    {% else %}
-                      <code>{{ conn }}</code>
-                    {% endif %}
-                  {% endblock %}
-                </span>
+              <div>
+                <div class="cyber-category-badge mb-2 d-inline-flex align-items-center gap-2" style="background: {{ cat_color }}26; color: {{ cat_color }};">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  {{ challenge.category | upper }}
+                </div>
+                <h1 class="cyber-challenge-title text-white mb-2">{{ challenge.name }}</h1>
+                <div class="cyber-title-underline mb-3" style="background: {{ cat_color }}; "></div>
               </div>
-            {% endif %}
-
-            {% if hints %}
-              <div class="challenge-hints hint-row row">
-                <div class="col-12 mb-3">
-                {% for hint in hints | sort(attribute="cost") %}
-                  <div x-data="Hint" x-init="id = {{ hint.id }}">
-                    {% if hint.content %}
-                    <details>
-                      <summary>{% trans %}View Hint{% endtrans %}{% if hint.title %}: {{ hint.title }}{% endif %}</summary>
-                      <div>{{ hint.html | safe }}</div>
-                    </details>
-                    {% else %}
-                    <details @toggle="showHint(event)">
-                      {% if hint.title %}
-                      <summary>{{ hint.title }} (Cost: {{ hint.cost }} point{{ hint.cost|pluralize }})</summary>
-                      {% else %}
-                      <summary>Unlock Hint for {{ hint.cost }} point{{ hint.cost|pluralize }}</summary>
-                      {% endif %}
-                      <div x-html="html"></div>
-                    </details>
-                    {% endif %}
-                  </div>
-                {% endfor %}
+            </div>
+            
+            <!-- DESCRIPTION BOX -->
+            <div class="cyber-panel p-4 mt-3">
+              <h5 class="cyber-section-title text-purple mb-4 d-flex align-items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                DESCRIPTION <span class="cyber-decorative-dots">....</span>
+              </h5>
+              
+              <div class="text-light mb-4 cyber-desc-text">
+                {{ challenge.html | safe }}
+              </div>
+              
+              <!-- NOTE BOX -->
+              <div class="cyber-note-box mt-4 p-3">
+                <div class="cyber-note-title d-flex align-items-center gap-2 mb-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  NOTE
+                </div>
+                <div class="cyber-note-text">
+                  The flag is in the format: <span class="text-purple">BSCTF{*********}</span>
                 </div>
               </div>
-            {% endif %}
+            </div>
+            
+          </div>
+          
+          <!-- RIGHT COLUMN -->
+          <div class="col-lg-5 d-flex flex-column gap-3 p-0 ps-lg-3 mt-4 mt-lg-0">
+            <!-- INFO BOX -->
+            <div class="cyber-panel p-4 h-100">
+              <h5 class="cyber-section-title text-purple mb-4 d-flex align-items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                CHALLENGE INFO
+              </h5>
+              <ul class="list-unstyled text-light m-0 cyber-info-list">
+                <li class="d-flex justify-content-between mb-4 pb-2">
+                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Category</span>
+                  <span class="text-purple">{{ challenge.category }}</span>
+                </li>
+                <li class="d-flex justify-content-between mb-4 pb-2">
+                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ diff_color }}" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Difficulty</span>
+                  <span style="color: {{ diff_color }}; font-weight: 600;">{{ diff_text }}</span>
+                </li>
+                <li class="d-flex justify-content-between mb-4 pb-2">
+                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b026ff" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> Points</span>
+                  <span class="text-purple">{{ challenge.value }}</span>
+                </li>
+                <li class="d-flex justify-content-between mb-4 pb-2">
+                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Solves</span>
+                  <span class="text-info">{{ solves if solves != None else 0 }}</span>
+                </li>
+                <li class="d-flex justify-content-between {% if challenge.hint and challenge.hint_enabled %}mb-4 pb-2{% endif %}">
+                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff00" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Author</span>
+                  <span class="text-success">{{ challenge.author if challenge.author else "CyberNinja_07" }}</span>
+                </li>
 
-            {% if files %}
-              <div class="row challenge-files text-center pb-3">
-                {% for file in files %}
-                  <div class="col-md-4 col-sm-4 col-xs-12 file-button-wrapper d-block">
-                    {% set segments = file.split('/') %}
-                    {% set token = file.split('?') | last %}
-                    {% if token %}
-                      {% set filename = segments | last | replace("?" + token, "") %}
-                    {% else %}
-                      {% set filename = segments | last %}
-                    {% endif %}
-                    <a
-                        class="btn btn-info btn-file mb-1 d-inline-block px-2 w-100 text-truncate"
-                        href="{{ file }}"
-                        title="{{ filename }}"
-                    >
-                      <i class="fas fa-download"></i>
-                      <small>
-                        {{ filename }}
-                      </small>
-                    </a>
+                {% if challenge.hint and challenge.hint_enabled %}
+                <li class="d-flex flex-column mt-3 pt-3" style="border-top: 1px dashed rgba(255,255,255,0.1);" x-data="{ hintRevealed: false }">
+                  <div class="cyber-hint-box" 
+                       @click="hintRevealed = !hintRevealed"
+                       style="cursor: pointer; background: rgba(10,10,15,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);"
+                       :style="hintRevealed ? 'border-color: rgba(255, 234, 0, 0.6);  background: rgba(255, 234, 0, 0.03);' : ''">
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="hint-icon-wrapper" 
+                           style="width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; transition: all 0.4s ease; border: 1px solid;"
+                           :style="hintRevealed ? 'background: rgba(255, 234, 0, 0.1); border-color: rgba(255, 234, 0, 0.4); ' : 'background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1);'">
+                        <!-- Off Bulb -->
+                        <i class="far fa-lightbulb" x-show="!hintRevealed" style="font-size: 1.4rem; color: rgba(255,255,255,0.4);"></i>
+                        <!-- Glowing Bulb -->
+                        <i class="fas fa-lightbulb" x-show="hintRevealed" style="font-size: 1.4rem; color: #ffea00;  display: none;"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 2px; transition: all 0.3s ease;"
+                             :style="hintRevealed ? 'color: #ffea00;' : 'color: rgba(255,255,255,0.4);'">
+                          Intelligence
+                        </div>
+                        <div class="fw-bold" style="font-size: 1.05rem; transition: all 0.3s ease;" :style="hintRevealed ? 'color: #fff; ' : 'color: rgba(255,255,255,0.8);'">
+                          <span x-text="hintRevealed ? 'Classified Hint Revealed' : 'Access Encrypted Hint'"></span>
+                        </div>
+                      </div>
+                      <div class="hint-toggle-icon" style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;"
+                           :style="hintRevealed ? 'background: rgba(255, 234, 0, 0.15); color: #ffea00; ' : 'background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5);'">
+                        <i class="fas" :class="hintRevealed ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                      </div>
+                    </div>
+                    
+                    <div x-show="hintRevealed" 
+                         x-transition:enter="transition ease-out duration-300" 
+                         x-transition:enter-start="opacity-0 transform scale-95" 
+                         x-transition:enter-end="opacity-100 transform scale-100" 
+                         class="mt-4 pt-3" 
+                         style="border-top: 1px dashed rgba(255, 234, 0, 0.3); display: none;">
+                      <div class="hint-content p-3 rounded" style="background: rgba(0,0,0,0.4); border-left: 3px solid #ffea00; color: rgba(255,255,255,0.9); font-size: 0.95rem; line-height: 1.7; letter-spacing: 0.3px; ">
+                        <div class="d-flex align-items-center gap-2 mb-2" style="color: #ffea00; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">
+                          <i class="fas fa-lock-open" style=""></i> Decrypted Data
+                        </div>
+                        <div style="word-break: break-word;">
+                          {{ challenge.hint | safe }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                {% endfor %}
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+            
+            <!-- FILES BOX -->
+            <div class="cyber-panel p-4 h-100 mt-3" {% if not files %}style="display:none;"{% endif %}>
+              <h5 class="cyber-section-title text-purple mb-4 d-flex align-items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                FILES
+              </h5>
+              {% if files %}
+              {% for file in files %}
+              {% set segments = file.split('/') %}
+              {% set token = file.split('?') | last %}
+              {% if token %}
+                {% set filename = segments | last | replace("?" + token, "") %}
+              {% else %}
+                {% set filename = segments | last %}
+              {% endif %}
+              <div class="cyber-file-item d-flex justify-content-between align-items-center p-3 mb-3">
+                <div class="d-flex align-items-center gap-3">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d285ff" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                  <div>
+                    <div class="text-light text-truncate" style="max-width: 150px; font-weight: 500;">{{ filename }}</div>
+                    <div class="text-muted small">FILE</div>
+                  </div>
+                </div>
+                <a href="{{ file }}" class="btn btn-outline-info cyber-download-btn px-3 d-flex align-items-center gap-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> DOWNLOAD
+                </a>
               </div>
-            {% endif %}
-
-            <template x-if="max_attempts > 0">
-              <p class="text-center">
-                <span x-text="attempts"></span>/<span x-text="max_attempts"></span> {% trans c=max_attempts %}attempt{% pluralize %}attempts{% endtrans %}
-              </p>
-            </template>
-
-            <div class="row submit-row">
-              <div class="col-12 col-sm-8">
-                {% block input %}
-                  <input
-                      id="challenge-id" class="challenge-id" type="hidden"
-                      value="{{ challenge.id }}"
-                  >
-                  <input
-                      id="challenge-input" class="challenge-input form-control"
-                      type="text" name="submission"
-                      @keyup.enter="submitChallenge()"
-                      placeholder="{% trans %}Flag{% endtrans %}" x-model="submission"
-                  >
-                {% endblock %}
-              </div>
-
-              <div class="col-12 col-sm-4 mt-3 mt-sm-0 key-submit">
-                {% block submit %}
-                  <button
-                      id="challenge-submit"
-                      class="challenge-submit btn btn-outline-secondary w-100 h-100" type="submit"
-                      @click.debounce.500ms="submitChallenge()"
-                  >
-                    {% trans %}Submit{% endtrans %}
+              {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+          
+          <!-- FULL WIDTH FOOTER (SUBMIT FLAG) -->
+          <div class="col-12 p-0 mt-4">
+            <div class="cyber-panel p-4">
+              <h5 class="cyber-section-title text-purple mb-4 d-flex align-items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                SUBMIT FLAG
+              </h5>
+              
+              <div class="d-flex flex-column flex-md-row gap-4 align-items-md-center">
+                <div class="flex-grow-1 position-relative cyber-input-wrapper">
+                  <input type="text" class="form-control cyber-input w-100" :placeholder="$store.challenge.data.solved_by_me ? 'Challenge already solved' : 'Enter flag here...'" x-model="submission" @keyup.enter="submitChallenge()" :disabled="$store.challenge.data.solved_by_me || (response && (response.data.status === 'correct' || response.data.status === 'already_solved'))">
+                  <div class="cyber-input-corner"></div>
+                </div>
+                
+                <div class="d-flex gap-3 shrink-0">
+                  <button class="btn btn-purple cyber-submit-btn px-4 d-flex align-items-center gap-2" @click.debounce.500ms="submitChallenge()" :disabled="$store.challenge.data.solved_by_me || (response && (response.data.status === 'correct' || response.data.status === 'already_solved'))">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> SUBMIT FLAG
                   </button>
-                {% endblock %}
-              </div>
-            </div>
-
-            <div class="row notification-row">
-              <div class="col-12">
-                <template x-if="response">
-                  {# This alert is re-used for all alerts, so it's important not to make it dismissible #}
-                  <div class="alert text-center w-100 mt-3"
-                      :class="{
-                        'alert-success': response.data.status == 'correct',
-                        'alert-info': response.data.status == 'already_solved',
-                        'alert-danger': response.data.status == 'incorrect',
-                        'alert-warning': response.data.status == 'paused',
-                      }" role="alert"
-                  >
-                    <strong x-text="response.data.message"></strong>
-                    <div x-show="(response.data.status == 'correct' || response.data.status == 'already_solved')">
-                      <div x-show="getNextId()">
-                        <button @click="nextChallenge()" class="btn btn-info mt-3">
-                          {% trans %}Next Challenge{% endtrans %}
-                        </button>
-                      </div>
-
-                      {% if Configs.social_shares %}
-                      <div>
-                        <button x-show="!share_url" @click="getShareUrl()" class="btn btn-sm btn-outline-info mt-3">
-                          {% trans %}Share{% endtrans %}
-                        </button>
-                        <div class="btn-group mt-3" role="group" x-show="share_url">
-                          <button type="button" class="btn btn-sm btn-outline-secondary" @click="copyShareUrl()" data-bs-toggle="tooltip" data-bs-title="Copied!">
-                            <i class="fa-solid fa-copy"></i>
-                          </button>
-                          <a :href="'https://twitter.com/intent/tweet?url=' + encodeURIComponent(share_url)" role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
-                            <i class="fa-brands fa-twitter"></i>
-                          </a>
-                          <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(share_url)" role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
-                            <i class="fa-brands fa-facebook-f"></i>
-                          </a>
-                          <a :href="'http://www.linkedin.com/shareArticle?url=' + encodeURIComponent(share_url)" role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
-                            <i class="fa-brands fa-linkedin-in"></i>
-                          </a>
-                        </div>
-                      </div>
-                      {% endif %}
-
-                      {% if Configs.challenge_ratings != "disabled" %}
-                      <div class="mt-3">
-                        <hr>
-                        <div class="text-center">
-                          <p class="mb-2">{% trans %}Rate this challenge:{% endtrans %}</p>
-                          <div class="rating-buttons mb-2" x-init="selectedRating = ratingValue || 0;">
-                            <button 
-                              class="btn btn-outline-success me-2" 
-                              :class="{ 'active': selectedRating === 1 }"
-                              @click="selectedRating = 1"
-                            >
-                              <i class="fa-solid fa-thumbs-up"></i>
-                            </button>
-                            <button 
-                              class="btn btn-outline-danger" 
-                              :class="{ 'active': selectedRating === -1 }"
-                              @click="selectedRating = -1"
-                            >
-                              <i class="fa-solid fa-thumbs-down"></i>
-                            </button>
-                          </div>
-                          <div class="mt-3">
-                            <textarea 
-                              class="form-control" 
-                              rows="2" 
-                              x-model="ratingReview"
-                              placeholder="{% trans %}Write a review (optional){% endtrans %}"
-                              maxlength="2000"
-                            ></textarea>
-                          </div>
-                          <div class="mt-3">
-                            <button 
-                              @click="submitRating()"
-                              class="btn btn-primary"
-                              :disabled="!selectedRating"
-                            >
-                              {% trans %}Submit{% endtrans %}
-                            </button>
-                          </div>
-                          <div x-show="ratingSubmitted" class="text-success mt-2">
-                            <small>{% trans %}Thank you for your rating!{% endtrans %}</small>
-                          </div>
-                        </div>
-                      </div>
-                      {% endif %}
-                    </div>
-                  </div>
-                </template>
-              </div>
-            </div>
-          </div>
-
-          <div role="tabpanel" class="tab-pane fade" id="submissions">
-            <div class="row">
-              <div class="col-md-12">
-                <table class="table table-striped align-middle text-center">
-                  <thead>
-                  <tr>
-                    <th>{% trans %}Submission{% endtrans %}</th>
-                    <th>{% trans %}Type{% endtrans %}</th>
-                    <th>{% trans %}Date{% endtrans %}</th>
-                  </tr>
-                  </thead>
-                  <tbody id="challenge-submission-names">
-                  <template x-for="submission in submissions">
-                    <tr>
-                      <td x-data="{ truncate: true }">
-                        <code x-text="truncate ? '*'.repeat(submission.provided.length) : submission.provided"></code>
-                        <button class="btn btn-link p-0 pl-1" @click="truncate = !truncate">
-                          <i :class="truncate ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
-                        </button>
-                      </td>
-                      <td x-text="submission.type"></td>
-                      <td x-text="submission.date"></td>
-                    </tr>
-                  </template>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <div role="tabpanel" class="tab-pane fade" id="solves">
-            <div class="row">
-              <div class="col-md-12">
-                <table class="table table-striped align-middle text-center">
-                  <thead>
-                  <tr>
-                    <th>{% trans %}Name{% endtrans %}</th>
-                    <th>{% trans %}Date{% endtrans %}</th>
-                  </tr>
-                  </thead>
-                  <tbody id="challenge-solves-names">
-                  <template x-for="solve in solves">
-                    <tr>
-                      <td>
-                        <a :href="solve.account_url" x-text="solve.name"></a>
-                      </td>
-                      <td x-text="solve.date"></td>
-                    </tr>
-                  </template>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <div role="tabpanel" class="tab-pane fade" id="solution">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="challenge-solution-content pt-3">
-                  <template x-if="solution">
-                    <div x-html="solution" style="white-space: pre-wrap;">
-                    </div>
-                  </template>
                 </div>
               </div>
+              
+              <!-- ALERT RESPONSES -->
+              <template x-if="response">
+                <div class="alert text-center w-100 cyber-alert mt-4 mb-0"
+                    :class="{
+                      'alert-success': response.data.status == 'correct',
+                      'alert-info': response.data.status == 'already_solved',
+                      'alert-danger': response.data.status == 'incorrect',
+                      'alert-warning': response.data.status == 'paused',
+                    }" role="alert">
+                  <strong x-text="response.data.message"></strong>
+                </div>
+              </template>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+/* FULL SCREEN MODAL BEHAVIOR */
+.modal-backdrop {
+  background-color: #05010a !important;
+}
+.modal-backdrop.show {
+  opacity: 0.98 !important;
+}
+
+.cyber-challenge-dialog {
+  max-width: 1200px !important;
+  margin: 1.75rem auto;
+}
+
+/* CYBERPUNK HUD WRAPPER */
+.cyber-modal-wrapper {
+  position: relative;
+  background: #05010a;
+  padding: 3px;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+/* Decorative SVG-like border using absolute positioning */
+.cyber-modal-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 1px solid #b026ff;
+  border-radius: 8px;
+  
+  pointer-events: none;
+  clip-path: polygon(
+    0% 30px, 30px 0%, 
+    calc(100% - 30px) 0%, 100% 30px, 
+    100% calc(100% - 30px), calc(100% - 30px) 100%, 
+    30px 100%, 0% calc(100% - 30px)
+  );
+}
+
+.cyber-frame-tl, .cyber-frame-tr, .cyber-frame-bl, .cyber-frame-br {
+  position: absolute;
+  width: 30px; height: 30px;
+  border: 2px solid #b026ff;
+  pointer-events: none;
+  z-index: 3;
+}
+.cyber-frame-tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+.cyber-frame-tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+.cyber-frame-bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+.cyber-frame-br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+.cyber-modal-content {
+  background-color: transparent !important;
+  border: none !important;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* HEADER STATS */
+.cyber-back-btn {
+  color: #b026ff;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  font-size: 0.9rem;
+}
+.cyber-back-btn:hover {
+  color: #d285ff;
+}
+
+.cyber-stat-label {
+  letter-spacing: 2px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.cyber-badge-medium {
+  border: 1px solid #ff9d00;
+  color: #ff9d00;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  font-weight: 600;
+  
+  background: rgba(255, 157, 0, 0.05);
+}
+
+.cyber-difficulty-bars {
+  gap: 4px;
+}
+.cyber-bar {
+  width: 18px;
+  height: 8px;
+  transform: skewX(-30deg);
+}
+.cyber-bar-active {
+  background: #ff9d00;
+  
+}
+.cyber-bar-inactive {
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.cyber-points-val {
+  line-height: 1;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #d285ff;
+  
+  font-family: 'Orbitron', sans-serif;
+}
+
+.cyber-target-icon {
+  
+}
+
+/* PANELS */
+.cyber-panel {
+  background: rgba(12, 8, 20, 0.8);
+  border: 1px solid rgba(176,38,255,0.2);
+  border-radius: 12px;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+.cyber-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 15px; height: 15px;
+  border-bottom: 2px solid #b026ff;
+  border-right: 2px solid #b026ff;
+  border-bottom-right-radius: 12px;
+}
+.cyber-panel::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px;
+  width: 15px; height: 15px;
+  border-top: 2px solid #b026ff;
+  border-left: 2px solid #b026ff;
+  border-top-left-radius: 12px;
+}
+
+/* ICON BOX */
+.cyber-icon-box {
+  width: 130px;
+  height: 130px;
+  border: 1px solid rgba(176,38,255,0.4);
+  border-radius: 16px;
+  position: relative;
+  background: radial-gradient(circle at center, rgba(176,38,255,0.15) 0%, rgba(176,38,255,0) 70%);
+}
+.cyber-icon-corners {
+  position: absolute;
+  width: 12px; height: 12px;
+  border-color: #b026ff;
+  border-style: solid;
+}
+.top-left { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.top-right { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+.bottom-left { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+.bottom-right { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+.cyber-icon-base {
+  position: absolute;
+  bottom: -5px;
+  width: 70%;
+  height: 10px;
+  border-top: 2px solid #b026ff;
+  border-radius: 50%;
+  
+  opacity: 0.5;
+}
+
+.cyber-category-badge {
+  background: rgba(176,38,255,0.15);
+  color: #d285ff;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.cyber-challenge-title {
+  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  
+}
+
+.cyber-title-underline {
+  width: 100px;
+  height: 2px;
+  background: #b026ff;
+  
+}
+.cyber-title-underline::after {
+  content: '///';
+  color: #b026ff;
+  font-size: 0.5rem;
+  letter-spacing: 4px;
+  margin-left: 110px;
+  position: absolute;
+  margin-top: -6px;
+}
+
+/* SECTION TITLES */
+.cyber-section-title {
+  font-weight: 600;
+  letter-spacing: 2px;
+  font-size: 0.95rem;
+  color: #d285ff !important;
+  
+}
+.cyber-decorative-dots {
+  letter-spacing: 4px;
+  color: rgba(176,38,255,0.5);
+}
+
+.cyber-desc-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #e0e0e0 !important;
+}
+
+/* NOTE BOX */
+.cyber-note-box {
+  background: rgba(176,38,255,0.05);
+  border: 1px solid rgba(176,38,255,0.3);
+  border-radius: 8px;
+  position: relative;
+}
+.cyber-note-title {
+  color: #d285ff;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+.cyber-note-text {
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+/* INFO LIST */
+.cyber-info-list li {
+  font-size: 1rem;
+  border-bottom: 1px dashed rgba(255,255,255,0.1);
+}
+.cyber-info-list li:last-child {
+  border-bottom: none;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* FILES */
+.cyber-file-item {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(176,38,255,0.2);
+  border-radius: 8px;
+}
+.cyber-download-btn {
+  color: #00f0ff;
+  border: 1px solid #00f0ff;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  
+  transition: all 0.3s ease;
+}
+.cyber-download-btn:hover {
+  background: rgba(0, 240, 255, 0.1);
+  color: #00f0ff;
+  
+}
+
+/* SUBMIT FLAG */
+.cyber-input-wrapper {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(176,38,255,0.3);
+  border-radius: 8px;
+}
+.cyber-input {
+  background: transparent !important;
+  border: none !important;
+  color: #fff !important;
+  padding: 15px 20px;
+  font-family: 'Orbitron', monospace;
+  
+}
+.cyber-input:focus {
+  
+}
+.cyber-input-corner {
+  position: absolute;
+  right: 15px;
+  bottom: 12px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid rgba(176,38,255,0.5);
+  border-right: 2px solid rgba(176,38,255,0.5);
+}
+
+.btn-purple {
+  background: rgba(176,38,255,0.1);
+  color: #d285ff;
+  border: 1px solid #b026ff;
+  
+  transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 12px 20px;
+}
+.btn-purple:hover {
+  background: rgba(176,38,255,0.25);
+  color: #fff;
+  
+}
+
+.cyber-help-btn {
+  color: #00f0ff;
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 12px 20px;
+}
+.cyber-help-btn:hover {
+  background: rgba(0, 240, 255, 0.1);
+  color: #00f0ff;
+  
+}
+
+.cyber-alert {
+  background: rgba(0,0,0,0.8);
+  border-left: 4px solid;
+}
+.alert-success { border-color: #00ff00; color: #00ff00; }
+.alert-danger { border-color: #ff003c; color: #ff003c; }
+.alert-warning { border-color: #ffc107; color: #ffc107; }
+.alert-info { border-color: #00f0ff; color: #00f0ff; }
+</style>

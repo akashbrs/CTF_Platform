@@ -36,6 +36,11 @@ def RegistrationForm(*args, **kwargs):
             description="Never shown to the public",
             validators=[InputRequired()],
         )
+        roll_no = StringField(
+            _l("Roll No"),
+            description="Your 12-character Roll Number",
+            validators=[InputRequired()],
+        )
         password = PasswordField(
             _l("Password"),
             description=password_description,

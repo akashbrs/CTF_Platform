@@ -1,16 +1,127 @@
-<div x-data>
-  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <div x-ref="toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-      <div class="toast-header">
-        <strong class="me-auto" x-text="$store.toast.title"></strong>
-        <small>just now</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+<div x-data="{
+    timeLeft: 3,
+    timer: null,
+    showCountdown() {
+        this.timeLeft = 3;
+        if(this.timer) clearInterval(this.timer);
+        this.timer = setInterval(() => {
+            if(this.timeLeft > 0) this.timeLeft--;
+            else clearInterval(this.timer);
+        }, 1000);
+    }
+}" @show-toast.window="showCountdown()">
+  <div class="position-fixed p-3" style="z-index: 1060; top: 70px; right: 20px; pointer-events: none;">
+    <div x-ref="toast" class="toast cyber-toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="3000" style="pointer-events: auto; width: 450px;">
+      
+      <div class="cyber-toast-wrapper">
+        <div class="d-flex position-relative">
+          <!-- Left Icon -->
+          <div class="cyber-toast-icon-wrapper p-3 d-flex align-items-center justify-content-center">
+            <div class="cyber-toast-icon">
+              <i class="fas fa-globe text-purple fs-3"></i>
+            </div>
+          </div>
+          
+          <!-- Body -->
+          <div class="flex-grow-1 py-3 pe-2">
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="toast" aria-label="Close" style="font-size: 0.6rem; z-index: 10;"></button>
+            
+            <div class="d-flex align-items-center mb-2 pe-4">
+              <span class="cyber-badge-new me-2">NEW</span>
+              <strong class="text-white fs-6" style="letter-spacing: 1px;" x-text="$store.toast.title"></strong>
+            </div>
+            
+            <div class="text-light mb-3 cyber-toast-text" style="font-size: 0.9rem;" x-html="$store.toast.html"></div>
+            
+            <div class="d-flex align-items-center justify-content-between mb-2 pe-3">
+              <span class="text-success fw-bold font-monospace" style="font-size: 0.85rem;">+250 POINTS</span>
+              <button class="btn cyber-view-btn-small" data-bs-dismiss="toast" onclick="window.location.href='/challenges'">VIEW CHALLENGE</button>
+            </div>
+          </div>
+
+          <!-- Right Icon -->
+          <div class="p-3 d-flex align-items-center justify-content-center opacity-50">
+            <div class="cyber-toast-icon" style="border-radius: 50%;">
+              <i class="fas fa-trophy text-purple fs-2"></i>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="cyber-toast-footer text-center py-2">
+          <small class="text-muted" style="font-size: 0.75rem;">This message will disappear in <span class="text-purple">0<span x-text="timeLeft"></span>s</span></small>
+        </div>
       </div>
-      <div class="toast-body" x-html="$store.toast.html">
-      </div>
+
     </div>
   </div>
 </div>
+
+<style>
+/* CYBERPUNK TOAST STYLES */
+.cyber-toast {
+  background: rgba(10, 5, 20, 0.95);
+  border: 1px solid #b026ff;
+  border-radius: 8px;
+  
+  overflow: hidden;
+  position: relative;
+}
+.cyber-toast::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 2px solid rgba(176,38,255,0.5);
+  pointer-events: none;
+  clip-path: polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  margin: 3px;
+}
+.cyber-toast-icon {
+  width: 50px;
+  height: 50px;
+  border: 1px dashed rgba(176,38,255,0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+.cyber-badge-new {
+  background: #b026ff;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+}
+.cyber-toast-text {
+  line-height: 1.4;
+  color: #ccc !important;
+}
+.cyber-toast-text p {
+  margin: 0;
+}
+.cyber-view-btn-small {
+  background: transparent;
+  color: #b026ff;
+  border: 1px solid #b026ff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+.cyber-view-btn-small:hover {
+  background: rgba(176,38,255,0.2);
+  color: #fff;
+  
+}
+.cyber-toast-footer {
+  border-top: 1px solid rgba(176,38,255,0.2);
+  background: rgba(0,0,0,0.3);
+}
+</style>
 
 
 <div x-data>

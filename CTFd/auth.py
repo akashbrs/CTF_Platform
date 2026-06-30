@@ -257,6 +257,7 @@ def register():
         website = request.form.get("website")
         affiliation = request.form.get("affiliation")
         country = request.form.get("country")
+        roll_no = request.form.get("roll_no")
         registration_code = str(request.form.get("registration_code", ""))
         bracket_id = request.form.get("bracket_id", None)
 
@@ -320,6 +321,11 @@ def register():
         else:
             valid_affiliation = True
 
+        if roll_no:
+            valid_roll_no = len(roll_no) < 128
+        else:
+            valid_roll_no = True
+
         if bracket_id:
             valid_bracket = bool(
                 Brackets.query.filter_by(id=bracket_id, type="users").first()
@@ -360,6 +366,8 @@ def register():
             errors.append(_l("Invalid country"))
         if valid_affiliation is False:
             errors.append(_l("Please provide a shorter affiliation"))
+        if valid_roll_no is False:
+            errors.append(_l("Please provide a shorter roll number"))
         if valid_bracket is False:
             errors.append(_l("Please provide a valid bracket"))
 
@@ -386,6 +394,8 @@ def register():
                     user.affiliation = affiliation
                 if country:
                     user.country = country
+                if roll_no:
+                    user.roll_no = roll_no
 
                 db.session.add(user)
                 db.session.commit()

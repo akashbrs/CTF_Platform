@@ -1,211 +1,292 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a href="{{ url_for('views.static_html', route='/') }}" class="navbar-brand">
-      {% if Configs.ctf_logo %}
-        <img
-            class="img-responsive ctf_logo"
-            src="{{ url_for('views.files', path=Configs.ctf_logo) }}"
-            alt="{{ Configs.ctf_name }}"
-            height="25"
-        >
-      {% else %}
-        {{ Configs.ctf_name }}
-      {% endif %}
-    </a>
+<div id="sticky-nav-wrapper" class="sticky-top" style="z-index: 1030; top: 0; padding: 0; width: 100%; background: rgba(13, 0, 26, 0.9); backdrop-filter: blur(10px); transition: top 0.2s ease-out;">
+  <div class="glass-navbar">
+    <div id="glass-navbar-top-section" class="glass-navbar-top d-flex flex-column flex-md-row justify-content-between align-items-center px-4 py-3">
+      <!-- Left Section -->
+      <a href="{{ url_for('views.static_html', route='/') }}" class="d-flex align-items-center justify-content-center justify-content-md-start mb-3 mb-md-0 text-decoration-none" style="flex: 1; cursor: pointer;">
+        <img src="{{ url_for('views.themes', path='img/logoctf.png') }}" style="height: 50px; margin-right: 15px; " alt="Blindspot CTF Logo">
+        <div class="text-start">
+          <div style="line-height: 1.1; margin-bottom: 2px; display: flex; align-items: center;">
+            <span style="color: #e0e0e0; font-weight: 800; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; font-size: 1.4rem;">BLIND</span>
+            <span style="color: #b026ff; font-weight: 800; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; font-size: 1.4rem; ">S</span>
+            <span style="color: #e0e0e0; font-weight: 800; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; font-size: 1.4rem;">P</span>
+            <i class="fas fa-crosshairs" style="color: #b026ff; font-size: 1.1rem; margin: 0 3px; "></i>
+            <span style="color: #e0e0e0; font-weight: 800; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; font-size: 1.4rem;">T</span>
+            <span style="color: #b026ff; font-size: 1.1rem; margin-left: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; "> -CTF-</span>
+          </div>
+          <div style="display: flex; align-items: center; margin-top: 4px;">
+            <div style="height: 2px; width: 30px; background: linear-gradient(90deg, transparent, #b026ff); margin-right: 10px; "></div>
+            <div style="color: #fff; font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; font-weight: 600;">
+              Find what others <span style="color: #b026ff; ">miss</span>
+            </div>
+            <div style="height: 2px; width: 30px; background: linear-gradient(270deg, transparent, #b026ff); margin: 0 10px; "></div>
+            <div style="display: flex; gap: 4px;">
+              <div style="width: 7px; height: 12px; background: #b026ff; transform: skewX(-30deg); "></div>
+              <div style="width: 7px; height: 12px; background: #b026ff; transform: skewX(-30deg); "></div>
+              <div style="width: 7px; height: 12px; background: #b026ff; transform: skewX(-30deg); "></div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Center Section (Malla Reddy Logo) -->
+      <div class="d-flex justify-content-center align-items-center mb-2 mb-md-0" style="flex: 1;">
+        <img src="{{ url_for('views.themes', path='img/malla_reddy_logo.png') }}" class="logo-hover-glow" style="max-height: 50px; transition: all 0.3s ease;" alt="Malla Reddy University">
+      </div>
+      
+      <!-- Right Section (Department Info) -->
+      <div class="d-none d-lg-flex justify-content-end align-items-center" style="flex: 1;">
+        <div class="text-end pe-3">
+          <div style="color: #e0e0e0; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 1px; ">
+            G.Anand Kumar
+          </div>
+          <div style="color: #b026ff; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; ">
+            Department of Cyber Security
+          </div>
+        </div>
+        <img src="{{ url_for('views.themes', path='img/anand_kumar.jpg') }}" style="height: 50px; width: 50px; object-fit: cover; border-radius: 50%; border: 2px solid #b026ff;  cursor: pointer;" alt="G. Anand Kumar" data-bs-toggle="modal" data-bs-target="#profileImageModal">
 
-    <button
-        class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#base-navbars"
-        aria-controls="base-navbars" aria-expanded="false" aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      </div>
+    </div>
+    
+    <!-- Divider -->
+    <div class="glass-navbar-divider"></div>
+    
+    <!-- Bottom Section (Links) -->
+    <div class="glass-navbar-bottom px-2 py-3 px-md-4 py-md-3 position-relative">
+      
+      <!-- Mini Logo (Fades in when sticky) -->
+      <div id="sticky-mini-logo" class="d-none d-md-block" style="position: absolute; left: 30px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 10;">
+        <a href="{{ url_for('views.static_html', route='/') }}" style="display: block;">
+          <img src="/themes/core/static/img/Mainpagelogo.png" alt="Blindspot CTF" style="height: 40px; border-radius: 8px;">
+        </a>
+      </div>
 
-    <div class="collapse navbar-collapse" id="base-navbars">
-      <ul class="navbar-nav me-auto">
-        {% for page in Plugins.user_menu_pages %}
+      <!-- Mobile Toggler -->
+      <div class="d-md-none text-center pb-2">
+        <button class="navbar-toggler w-100" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-nav" aria-expanded="false" style="background: rgba(176,38,255,0.1); border: 1px solid rgba(176,38,255,0.3); color: #fff; padding: 8px 10px; border-radius: 8px;">
+          <i class="fas fa-bars pe-2"></i> Menu
+        </button>
+      </div>
+
+      <div class="collapse d-md-block" id="mobile-nav">
+        <ul class="nav flex-column flex-md-row justify-content-center align-items-center" style="gap: 15px; margin: 0; padding: 0;">
+          {% for page in Plugins.user_menu_pages %}
+          <li class="nav-item"><a class="nav-link glass-link" href="{{ page.route }}">{{ page.title }}</a></li>
+          {% endfor %}
+          
+          {% if Configs.account_visibility != 'admins' %}
           <li class="nav-item">
-            <a class="nav-link" href="{{ page.route }}" {% if page.link_target %}target="{{ page.link_target }}"{% endif %}>
-              {{ page.title }}
+            <a class="nav-link glass-link" href="{{ url_for('users.listing') }}">
+              <i class="fas fa-users"></i> Users
             </a>
           </li>
-        {% endfor %}
-
-        {% if Configs.account_visibility != 'admins' %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('users.listing') }}">
-              {% trans %}Users{% endtrans %}
-            </a>
-          </li>
-
           {% if Configs.user_mode == 'teams' %}
+          <li class="nav-item">
+            <a class="nav-link glass-link" href="{{ url_for('teams.listing') }}">
+              <i class="fas fa-users-cog"></i> Teams
+            </a>
+          </li>
+          {% endif %}
+          {% endif %}
+          
+          {% if Configs.account_visibility != 'admins' and Configs.score_visibility != 'admins' %}
+          <li class="nav-item">
+            <a class="nav-link glass-link" href="{{ url_for('scoreboard.listing') }}">
+              <i class="fas fa-trophy"></i> Scoreboard
+            </a>
+          </li>
+          {% endif %}
+          
+          <li class="nav-item">
+            <a class="nav-link glass-link" href="{{ url_for('challenges.listing') }}">
+              <i class="fas fa-flag"></i> Challenges
+            </a>
+          </li>
+          
+          {% if authed() %}
+            {% if is_admin() %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('teams.listing') }}">
-                {% trans %}Teams{% endtrans %}
+              <a class="nav-link glass-link" href="{{ url_for('admin.view') }}">
+                <i class="fas fa-wrench"></i> Admin Panel
+              </a>
+            </li>
+            {% endif %}
+            
+            <li class="nav-item">
+              <a class="nav-link glass-link" href="{{ url_for('views.notifications') }}">
+                <i class="fas fa-bell"></i> Notifications
+              </a>
+            </li>
+            
+            {% if Configs.user_mode == "teams" %}
+            <li class="nav-item">
+              <a class="nav-link glass-link" href="{{ url_for('teams.private') }}">
+                <i class="fas fa-users"></i> Team
+              </a>
+            </li>
+            {% endif %}
+            
+            <li class="nav-item">
+              <a class="nav-link glass-link" href="{{ url_for('users.private') }}">
+                <i class="fas fa-user-circle"></i> Profile
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link glass-link" href="{{ url_for('views.settings') }}">
+                <i class="fas fa-cog"></i> Settings
+              </a>
+            </li>
+            
+            <li class="nav-item d-md-none">
+              <a class="nav-link glass-link" href="{{ url_for('auth.logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </li>
+          {% else %}
+            {% if registration_visible() %}
+            <li class="nav-item">
+              <a class="nav-link glass-link" href="{{ url_for('auth.register') }}">
+                <i class="fas fa-user-plus"></i> Register
+              </a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link glass-link" href="{{ url_for('auth.login') }}">
+                <i class="fas fa-sign-in-alt"></i> Login
               </a>
             </li>
           {% endif %}
-        {% endif %}
-
-        {% if Configs.account_visibility != 'admins' and Configs.score_visibility != 'admins' %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('scoreboard.listing') }}">
-              {% trans %}Scoreboard{% endtrans %}
-            </a>
-          </li>
-        {% endif %}
-
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('challenges.listing') }}">
-            {% trans %}Challenges{% endtrans %}
-          </a>
-        </li>
-      </ul>
-
-      <hr class="d-sm-flex d-md-flex d-lg-none">
-
-      <ul class="navbar-nav ms-md-auto d-block d-sm-flex d-md-flex">
-        {% if authed() %}
-
-          {% if is_admin() %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('admin.view') }}">
-                <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Admin Panel{% endtrans %}">
-                    <i class="fas fa-wrench d-none d-md-inline d-lg-none"></i>
-                </span>
-                <span class="d-sm-inline d-md-none d-lg-inline">
-                  <i class="fas fa-wrench pe-1"></i>
-                  {% trans %}Admin Panel{% endtrans %}
-                </span>
-              </a>
-            </li>
-          {% endif %}
-
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.notifications') }}">
-              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Notifications{% endtrans %}">
-                <i class="fas fa-bell d-none d-md-inline d-lg-none"></i>
-              </span>
-              <span class="d-sm-inline d-md-none d-lg-inline">
-                  <i class="fas fa-bell pe-1"></i>
-                  <span x-data x-show="$store.unread_count > 0" x-text="$store.unread_count" class="badge rounded-pill bg-danger badge-notification"></span>
-                  {% trans %}Notifications{% endtrans %}
-              </span>
-            </a>
-          </li>
-
-          {% if Configs.user_mode == "teams" %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('teams.private') }}">
-                <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Team{% endtrans %}">
-                  <i class="fas fa-users d-none d-md-inline d-lg-none"></i>
-                </span>
-                <span class="d-sm-inline d-md-none d-lg-inline">
-                  <i class="fas fa-users pe-1"></i>
-                  {% trans %}Team{% endtrans %}
-                </span>
-              </a>
-            </li>
-          {% endif %}
-
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('users.private') }}">
-              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Profile{% endtrans %}">
-                <i class="fas fa-user-circle d-none d-md-inline d-lg-none"></i>
-              </span>
-              <span class="d-sm-inline d-md-none d-lg-inline">
-                <i class="fas fa-user-circle pe-1"></i>
-                {% trans %}Profile{% endtrans %}
-              </span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.settings') }}">
-              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Settings{% endtrans %}">
-                <i class="fas fa-cogs d-none d-md-inline d-lg-none"></i>
-              </span>
-              <span class="d-sm-inline d-md-none d-lg-inline">
-                <i class="fas fa-cogs pe-1"></i>
-                {% trans %}Settings{% endtrans %}
-              </span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('auth.logout') }}">
-              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Logout{% endtrans %}">
-                <i class="fas fa-sign-out-alt d-none d-md-inline d-lg-none"></i>
-              </span>
-              <span class="d-sm-inline d-md-none d-lg-inline">
-                <i class="fas fa-sign-out-alt pe-1"></i><span class="d-lg-none">
-                  {% trans %}Logout{% endtrans %}
-                </span>
-              </span>
-            </a>
-          </li>
-        {% else %}
-
-          {% if registration_visible() %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('auth.register') }}">
-                <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Register{% endtrans %}">
-                  <i class="fas fa-user-plus d-none d-md-inline d-lg-none"></i>
-                </span>
-                <span class="d-sm-inline d-md-none d-lg-inline">
-                  <i class="fas fa-user-plus pe-1"></i>
-                  {% trans %}Register{% endtrans %}
-                </span>
-              </a>
-            </li>
-          {% endif %}
-
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('auth.login') }}">
-              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Login{% endtrans %}">
-                <i class="fas fa-sign-in-alt d-none d-md-inline d-lg-none"></i>
-              </span>
-              <span class="d-sm-inline d-md-none d-lg-inline">
-                <i class="fas fa-sign-in-alt pe-1"></i>
-                {% trans %}Login{% endtrans %}
-              </span>
-            </a>
-          </li>
-        {% endif %}
-
-        <li class="nav-item dropdown">
-          <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-language d-none d-md-inline"></i>
-            <span class="d-sm-inline d-md-none">
-              <i class="fas fa-language pe-1"></i>
-              {% trans %}Change language{% endtrans %}
-            </span>
-          </button>
-          <form x-data="LanguageForm">
-            <ul class="dropdown-menu dropdown-menu-end">
-              {% set curr_lang = get_locale() %}
-              {%- for lang in Languages.names.items() %}
-              <li>
-                  <span class="dropdown-item {{ 'bg-primary text-white' if (curr_lang == lang[0]) }}" @click="set" value="{{ lang[0] }}">
-                    {{ lang[1] }}
-                  </span>
-              </li>
-              {%- endfor %}
-            </ul>
-          </form>
-        </li>
-
-        <li class="nav-item">
-          <button class="nav-link theme-switch" type="button">
-            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Toggle theme{% endtrans %}">
-              <i class="fas fa-sun d-none d-md-inline"></i>
-            </span>
-            <span class="d-sm-inline d-md-none">
-              <i class="fas fa-sun pe-1"></i>
-              {% trans %}Toggle theme{% endtrans %}
-            </span>
-          </button>
-        </li>
-      </ul>
+        </ul>
+      </div>
     </div>
   </div>
-</nav>
+</div>
+
+<!-- Profile Image Fullscreen Modal -->
+<div class="modal fade" id="profileImageModal" tabindex="-1" aria-labelledby="profileImageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen modal-dialog-centered" style="background: rgba(10, 5, 20, 0.95); backdrop-filter: blur(8px);">
+    <div class="modal-content" style="background: transparent; border: none; ">
+      <div class="modal-header border-0 position-absolute w-100 p-4" style="top: 0; z-index: 1055; right: 0; display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-link text-white text-decoration-none" data-bs-dismiss="modal" aria-label="Close" style="font-size: 2rem; opacity: 1; ">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body d-flex align-items-center justify-content-center p-0">
+        <img src="{{ url_for('views.themes', path='img/dean sir.png') }}" class="img-fluid rounded-4 shadow-lg" style="max-height: 90vh; max-width: 95vw; object-fit: contain; border: 1px solid rgba(176,38,255,0.3); " alt="Dr. G. Anand Kumar Details">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+/* CYBER NAVBAR REDESIGN */
+.glass-navbar {
+  background: linear-gradient(135deg, rgba(40, 18, 65, 0.7), rgba(20, 5, 35, 0.9));
+  border-bottom: 1px solid rgba(176, 38, 255, 0.25);
+  
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+}
+.glass-navbar-divider {
+  height: 1px;
+  background: rgba(176, 38, 255, 0.2);
+  width: 100%;
+  
+}
+.glass-link {
+  color: #e0e0e0 !important;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.5rem 0.5rem !important;
+}
+.glass-link i {
+  color: #b026ff;
+  font-size: 1.15rem;
+  transition: 0.3s ease;
+}
+.glass-link:hover {
+  color: #fff !important;
+  
+}
+.glass-link:hover i {
+  color: #fff;
+  
+}
+
+.active-glass-link {
+  color: #fff !important;
+  
+}
+.active-glass-link i {
+  color: #fff;
+  
+}
+
+.logo-hover-glow:hover {
+  
+  transform: scale(1.05);
+}
+
+@media (min-width: 768px) {
+  #mobile-nav .nav {
+    gap: 40px !important;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const currentPath = window.location.pathname;
+    const links = document.querySelectorAll('.glass-link');
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        
+        const cleanPath = currentPath.replace(/\/$/, '') || '/';
+        const cleanHref = href.replace(/\/$/, '') || '/';
+
+        if (cleanHref !== '/' && cleanPath.startsWith(cleanHref)) {
+            link.classList.add('active-glass-link');
+        } else if (cleanHref === '/' && cleanPath === '/') {
+            link.classList.add('active-glass-link');
+        }
+    });
+
+    const stickyWrapper = document.getElementById('sticky-nav-wrapper');
+    const topSection = document.getElementById('glass-navbar-top-section');
+    const miniLogo = document.getElementById('sticky-mini-logo');
+    
+    if (stickyWrapper && topSection) {
+        // Use ResizeObserver to handle dynamic height changes (e.g. image loads)
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                stickyWrapper.style.top = `-${entry.target.offsetHeight}px`;
+            }
+        });
+        resizeObserver.observe(topSection);
+
+        // Show mini logo when scrolled past the top section
+        window.addEventListener('scroll', () => {
+            if (miniLogo) {
+                if (window.scrollY > topSection.offsetHeight - 5) {
+                    miniLogo.style.opacity = '1';
+                    miniLogo.style.pointerEvents = 'auto';
+                } else {
+                    miniLogo.style.opacity = '0';
+                    miniLogo.style.pointerEvents = 'none';
+                }
+            }
+        });
+    }
+});
+</script>

@@ -1,34 +1,204 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div class="jumbotron">
+	<div class="jumbotron cyber-jumbotron text-center pt-5 pb-3">
 		<div class="container">
-			<h1>
-				{% trans %}Notifications{% endtrans %}
+			<h1 class="cyber-page-title text-purple" style="letter-spacing: 4px; ">
+				{% trans %}NOTIFICATIONS{% endtrans %}
 			</h1>
-		</div>
-	</div>
-	<div class="container">
-		{% if not notifications %}
-		<h2 class="text-center">
-			{% trans %}There are no notifications yet{% endtrans %}
-		</h2>
-		{% endif %}
-		{% for notification in notifications %}
-		<div class="card bg-body-tertiary mb-4">
-			<div class="card-body">
-				<h3 class="card-title">{{ notification.title }}</h3>
-				<blockquote class="blockquote mb-0">
-					<p>{{ notification.html }}</p>
-					<small class="text-muted"><span data-time="{{ notification.date | isoformat }}"></span></small>
-				</blockquote>
+			<div class="cyber-title-decor d-flex justify-content-center gap-2 mt-2">
+				<div style="width: 15px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
+				<div style="width: 30px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
+				<div style="width: 15px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
 			</div>
 		</div>
-		{% endfor %}
 	</div>
+
+	<div class="container cyber-container pb-5 mt-4">
+		{% if not notifications %}
+		<h3 class="text-center text-muted" style="letter-spacing: 2px;">
+			{% trans %}THERE ARE NO NOTIFICATIONS YET{% endtrans %}
+		</h3>
+		{% endif %}
+
+        <div class="d-flex flex-column gap-4 align-items-center">
+		{% for notification in notifications %}
+            {% set color = '#00ff00' %}
+            {% set icon = 'fa-puzzle-piece' %}
+            {% set nhtml = notification.html | string %}
+            
+            {% if 'Web Exploitation' in nhtml %}
+              {% set color = '#b026ff' %}
+              {% set icon = 'fa-bullseye' %}
+            {% elif 'OSINT' in nhtml %}
+              {% set color = '#00f0ff' %}
+              {% set icon = 'fa-globe' %}
+            {% elif 'Cryptography' in nhtml %}
+              {% set color = '#ff003c' %}
+              {% set icon = 'fa-key' %}
+            {% elif 'Reverse Engineering' in nhtml %}
+              {% set color = '#ff9d00' %}
+              {% set icon = 'fa-cogs' %}
+            {% endif %}
+
+            <div class="cyber-notif-card w-100" style="--notif-color: {{ color }};">
+                <div class="d-flex flex-column flex-md-row align-items-md-center p-3 p-md-4 gap-3 gap-md-4 position-relative">
+                    
+                    <!-- Left Bracketed Icon -->
+                    <div class="cyber-notif-icon-box flex-shrink-0 d-flex align-items-center justify-content-center">
+                        <i class="fas {{ icon }} fs-1"></i>
+                    </div>
+
+                    <!-- Middle Content -->
+                    <div class="cyber-notif-content flex-grow-1 d-flex flex-column justify-content-center">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="cyber-notif-badge">NEW CHALLENGE</span>
+                            <div class="cyber-notif-dots d-flex gap-1">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                        <h3 class="cyber-notif-title text-white mb-2 fw-bold">{{ notification.title }}</h3>
+                        <div class="cyber-notif-text text-muted">{{ notification.html | safe }}</div>
+                    </div>
+
+                    <!-- Right Info & Action -->
+                    <div class="cyber-notif-action flex-shrink-0 d-flex flex-row flex-md-column justify-content-between align-items-center align-items-md-end ms-md-auto mt-3 mt-md-0" style="min-width: 120px;">
+                        <div class="cyber-notif-time mb-md-3">
+                            <span data-time="{{ notification.date | isoformat }}"></span>
+                        </div>
+                        <div class="cyber-notif-close d-flex align-items-center justify-content-center" title="Dismiss" onclick="this.closest('.cyber-notif-card').style.display='none'">
+                            <i class="fas fa-times fs-4"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+		{% endfor %}
+        </div>
+	</div>
+
+<style>
+/* CYBERPUNK NOTIFICATIONS PAGE STYLES */
+body {
+    background-color: #05050a;
+    color: #fff;
+}
+
+.cyber-notif-card {
+    background: rgba(10, 5, 20, 0.6);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    position: relative;
+    
+    transition: 0.3s ease;
+    overflow: hidden;
+    max-width: 900px;
+}
+.cyber-notif-card:hover {
+    
+    transform: translateY(-2px);
+}
+
+/* Glowing Neon Outer Border with Clip Path equivalent */
+.cyber-notif-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 2px solid var(--notif-color);
+    pointer-events: none;
+    clip-path: polygon(15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px), 0 15px);
+    margin: 2px;
+    
+    opacity: 0.7;
+}
+
+/* Bracketed Icon Box */
+.cyber-notif-icon-box {
+    width: 80px;
+    height: 80px;
+    color: var(--notif-color);
+    position: relative;
+    
+}
+.cyber-notif-icon-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0; width: 15px;
+    border-top: 2px solid var(--notif-color);
+    border-left: 2px solid var(--notif-color);
+    border-bottom: 2px solid var(--notif-color);
+    opacity: 0.6;
+}
+.cyber-notif-icon-box::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; width: 15px;
+    border-top: 2px solid var(--notif-color);
+    border-right: 2px solid var(--notif-color);
+    border-bottom: 2px solid var(--notif-color);
+    opacity: 0.6;
+}
+
+/* Badge */
+.cyber-notif-badge {
+    background: var(--notif-color);
+    color: #000;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    
+}
+
+/* Dots */
+.cyber-notif-dots span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--notif-color);
+    
+    opacity: 0.8;
+}
+
+/* Title and Text */
+.cyber-notif-title {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+.cyber-notif-text {
+    font-size: 0.95rem;
+    color: #aaa !important;
+}
+.cyber-notif-text p {
+    margin: 0;
+}
+
+/* Right Section */
+.cyber-notif-time {
+    color: var(--notif-color);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    
+}
+
+/* Close Button */
+.cyber-notif-close {
+    width: 40px;
+    height: 40px;
+    color: var(--notif-color);
+    cursor: pointer;
+    transition: 0.3s;
+}
+.cyber-notif-close:hover {
+    color: #fff;
+    
+    transform: scale(1.1);
+}
+</style>
 {% endblock %}
 
 {% block scripts %}
   {{ Assets.js("assets/js/notifications.js") }}
 {% endblock %}
-

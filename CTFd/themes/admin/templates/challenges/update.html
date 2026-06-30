@@ -22,6 +22,26 @@
 	</div>
 	{% endblock %}
 
+	{% block author %}
+	<div class="form-group">
+		<label>
+			Author<br>
+			<small class="form-text text-muted">Challenge Author</small>
+		</label>
+		<input type="text" class="form-control chal-author" name="author" value="{{ challenge.author }}">
+	</div>
+	{% endblock %}
+
+	{% block difficulty %}
+	<div class="form-group">
+		<label>
+			Difficulty<br>
+			<small class="form-text text-muted">Challenge Difficulty</small>
+		</label>
+		<input type="text" class="form-control chal-difficulty" name="difficulty" value="{{ challenge.difficulty }}">
+	</div>
+	{% endblock %}
+
 	{% block message %}
 	<div class="form-group">
 		<label>
@@ -31,6 +51,23 @@
 			</small>
 		</label>
 		<textarea id="desc-editor" class="form-control chal-desc-editor markdown" name="description" rows="10">{{ challenge.description }}</textarea>
+	</div>
+	{% endblock %}
+
+	{% block hint %}
+	<div class="form-group">
+		<label>
+			Hint<br>
+			<small class="form-text text-muted">
+				Use this to give a hint to users who are struggling with the challenge.
+			</small>
+		</label>
+		<textarea id="hint-editor" class="form-control chal-hint-editor markdown" name="hint" rows="5">{{ challenge.hint or '' }}</textarea>
+		<div class="form-check mt-2">
+			<input type="hidden" name="hint_enabled" value="false">
+			<input type="checkbox" class="form-check-input" id="hint_enabled" name="hint_enabled" value="true" {% if challenge.hint_enabled %}checked{% endif %}>
+			<label class="form-check-label" for="hint_enabled">Enable Hint for Participants</label>
+		</div>
 	</div>
 	{% endblock %}
 

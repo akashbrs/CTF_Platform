@@ -92,7 +92,7 @@
 									<input type="checkbox" class="form-check-input" value="{{ challenge.id }}" autocomplete="off" data-challenge-id="{{ challenge.id }}" data-solution-id="{{ challenge.solution_id }}">&nbsp;
 								</div>
 							</td>
-							<td class="text-center">{{ challenge.id }}</td>
+							<td class="text-center">{{ loop.index }}</td>
 							<td><a href="{{ url_for('admin.challenges_detail', challenge_id=challenge.id) }}">{{ challenge.name }}</a></td>
 							<td>{{ challenge.category }}</td>
 							<td class="text-center">{{ challenge.value }}</td>

@@ -104,6 +104,8 @@ class BaseChallenge(object):
             "name": challenge.name,
             "value": challenge.value,
             "description": challenge.description,
+            "hint": challenge.hint,
+            "hint_enabled": challenge.hint_enabled,
             "attribution": challenge.attribution,
             "connection_info": challenge.connection_info,
             "next_id": challenge.next_id,

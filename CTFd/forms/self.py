@@ -24,6 +24,7 @@ def SettingsForm(*args, **kwargs):
         password = PasswordField(_l("Password"))
         confirm = PasswordField(_l("Current Password"))
         affiliation = StringField(_l("Affiliation"))
+        roll_no = StringField(_l("Roll No"))
         website = URLField(_l("Website"))
         country = SelectField(_l("Country"), choices=SELECT_COUNTRIES_LIST)
         submit = SubmitField(_l("Submit"))

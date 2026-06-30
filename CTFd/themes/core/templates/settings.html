@@ -20,11 +20,13 @@
               data-bs-target="#profile" role="tab"
           >{% trans %}Profile{% endtrans %}
           </button>
+          {% if is_admin() %}
           <button
               class="nav-link" id="settings-tokens-tab" data-bs-toggle="pill" data-bs-target="#tokens"
               role="tab"
           >{% trans %}Access Tokens{% endtrans %}
           </button>
+          {% endif %}
         </div>
       </div>
 
@@ -48,12 +50,20 @@
 
                 <div class="mb-3">
                   <b>{{ form.email.label(class="form-label") }}</b>
-                  {{ form.email(class="form-control", value=email) }}
+                  {% if is_admin() %}
+                    {{ form.email(class="form-control", value=email) }}
+                  {% else %}
+                    {{ form.email(class="form-control", value=email, readonly=True) }}
+                  {% endif %}
                 </div>
 
                 <div class="mb-3">
                   <b>{{ form.language.label(class="form-label") }}</b>
-                  {{ form.language(class="form-select", value=language) }}
+                  {% if is_admin() %}
+                    {{ form.language(class="form-select", value=language) }}
+                  {% else %}
+                    {{ form.language(class="form-select", value=language, disabled=True) }}
+                  {% endif %}
                 </div>
 
                 <hr>
@@ -71,15 +81,35 @@
 
                 <div class="mb-3">
                   <b>{{ form.affiliation.label(class="form-label") }}</b>
-                  {{ form.affiliation(class="form-control", value=affiliation or "") }}
+                  {% if is_admin() %}
+                    {{ form.affiliation(class="form-control", value=affiliation or "") }}
+                  {% else %}
+                    {{ form.affiliation(class="form-control", value=affiliation or "", readonly=True) }}
+                  {% endif %}
+                </div>
+                <div class="mb-3">
+                  <b>{{ form.roll_no.label(class="form-label") }}</b>
+                  {% if is_admin() %}
+                    {{ form.roll_no(class="form-control", value=roll_no or "") }}
+                  {% else %}
+                    {{ form.roll_no(class="form-control", value=roll_no or "", readonly=True) }}
+                  {% endif %}
                 </div>
                 <div class="mb-3">
                   <b>{{ form.website.label(class="form-label") }}</b>
-                  {{ form.website(class="form-control", value=website or "") }}
+                  {% if is_admin() %}
+                    {{ form.website(class="form-control", value=website or "") }}
+                  {% else %}
+                    {{ form.website(class="form-control", value=website or "", readonly=True) }}
+                  {% endif %}
                 </div>
                 <div class="mb-3">
                   <b>{{ form.country.label(class="form-label") }}</b>
-                  {{ form.country(class="form-select", value=country) }}
+                  {% if is_admin() %}
+                    {{ form.country(class="form-select", value=country) }}
+                  {% else %}
+                    {{ form.country(class="form-select", value=country, disabled=True) }}
+                  {% endif %}
                 </div>
 
                 <hr>
@@ -118,6 +148,7 @@
             {% endwith %}
           </div>
 
+          {% if is_admin() %}
           <div class="tab-pane fade" id="tokens" role="tabpanel">
 
             {% with form = Forms.self.TokensForm() %}
@@ -255,6 +286,7 @@
             {% endif %}
 
           </div>
+          {% endif %}
         </div>
       </div>
     </div>
