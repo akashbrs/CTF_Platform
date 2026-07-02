@@ -16,9 +16,12 @@
       <div class="cyber-toast-wrapper">
         <div class="d-flex position-relative">
           <!-- Left Icon -->
-          <div class="cyber-toast-icon-wrapper p-3 d-flex align-items-center justify-content-center">
-            <div class="cyber-toast-icon">
-              <i class="fas fa-globe text-purple fs-3"></i>
+          <div class="cyber-toast-icon-wrapper p-3 pe-4 d-flex align-items-center justify-content-center" style="border-right: 1px solid rgba(255,255,255,0.1); margin-right: 10px;">
+            <div class="notif-bell-container-toast">
+                <div class="circle-1-toast"></div>
+                <div class="circle-2-toast"></div>
+                <div class="circle-3-toast"></div>
+                <i class="fas fa-bell bell-icon-toast"></i>
             </div>
           </div>
           
@@ -28,28 +31,13 @@
             
             <div class="d-flex align-items-center mb-2 pe-4">
               <span class="cyber-badge-new me-2">NEW</span>
-              <strong class="text-white fs-6" style="letter-spacing: 1px;" x-text="$store.toast.title"></strong>
+              <strong class="fs-6" style="color: #f8f8ff; letter-spacing: 1px;" x-text="$store.toast.title"></strong>
             </div>
             
             <div class="text-light mb-3 cyber-toast-text" style="font-size: 0.9rem;" x-html="$store.toast.html"></div>
             
-            <div class="d-flex align-items-center justify-content-between mb-2 pe-3">
-              <span class="text-success fw-bold font-monospace" style="font-size: 0.85rem;">+250 POINTS</span>
-              <button class="btn cyber-view-btn-small" data-bs-dismiss="toast" onclick="window.location.href='/challenges'">VIEW CHALLENGE</button>
-            </div>
           </div>
 
-          <!-- Right Icon -->
-          <div class="p-3 d-flex align-items-center justify-content-center opacity-50">
-            <div class="cyber-toast-icon" style="border-radius: 50%;">
-              <i class="fas fa-trophy text-purple fs-2"></i>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="cyber-toast-footer text-center py-2">
-          <small class="text-muted" style="font-size: 0.75rem;">This message will disappear in <span class="text-purple">0<span x-text="timeLeft"></span>s</span></small>
         </div>
       </div>
 
@@ -60,8 +48,8 @@
 <style>
 /* CYBERPUNK TOAST STYLES */
 .cyber-toast {
-  background: rgba(10, 5, 20, 0.95);
-  border: 1px solid #b026ff;
+  background: rgba(54, 69, 79, 0.95);
+  border: 1px solid #f8f8ff;
   border-radius: 8px;
   
   overflow: hidden;
@@ -71,23 +59,47 @@
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  border: 2px solid rgba(176,38,255,0.5);
+  border: 2px solid rgba(248, 248, 255, 0.5);
   pointer-events: none;
   clip-path: polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
   margin: 3px;
 }
-.cyber-toast-icon {
-  width: 50px;
-  height: 50px;
-  border: 1px dashed rgba(176,38,255,0.6);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
+.notif-bell-container-toast {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.circle-1-toast, .circle-2-toast, .circle-3-toast {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.circle-1-toast { width: 26px; height: 26px; }
+.circle-2-toast { width: 42px; height: 42px; }
+.circle-3-toast { width: 58px; height: 58px; }
+
+.circle-3-toast::before, .circle-3-toast::after, .circle-2-toast::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #1a73e8;
+    border-radius: 50%;
+}
+.circle-3-toast::before { top: -2px; left: 50%; transform: translateX(-50%); }
+.circle-3-toast::after { bottom: -2px; left: 50%; transform: translateX(-50%); }
+.circle-2-toast::before { left: -2px; top: 50%; transform: translateY(-50%); }
+
+.bell-icon-toast {
+    font-size: 1.2rem;
+    color: #1a73e8;
+    z-index: 2;
 }
 .cyber-badge-new {
-  background: #b026ff;
+  background: #333333;
   color: #fff;
   font-size: 0.6rem;
   font-weight: bold;
@@ -97,7 +109,7 @@
 }
 .cyber-toast-text {
   line-height: 1.4;
-  color: #ccc !important;
+  color: #f8f8ff !important;
 }
 .cyber-toast-text p {
   margin: 0;
@@ -118,7 +130,7 @@
   
 }
 .cyber-toast-footer {
-  border-top: 1px solid rgba(176,38,255,0.2);
+  border-top: 1px solid rgba(248, 248, 255, 0.2);
   background: rgba(0,0,0,0.3);
 }
 </style>

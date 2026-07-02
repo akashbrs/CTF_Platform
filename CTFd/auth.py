@@ -121,14 +121,7 @@ def confirm(data=None):
 @ratelimit(method="POST", limit=10, interval=60)
 def reset_password(data=None):
     if config.can_send_mail() is False and data is None:
-        return render_template(
-            "reset_password.html",
-            errors=[
-                markup(
-                    "This CTF is not configured to send email.<br> Please contact an organizer to have your password reset."
-                )
-            ],
-        )
+        return render_template("reset_password.html")
 
     if data is not None:
         try:

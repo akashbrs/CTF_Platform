@@ -3,13 +3,14 @@
 {% block content %}
   <div class="jumbotron cyber-jumbotron text-center pt-5 pb-3">
     <div class="container">
-      <h1 class="cyber-page-title text-purple" style="letter-spacing: 4px; ">
+      <h1 class="cyber-page-title" style="letter-spacing: 4px; color: #0f172a; font-weight: 800;">
         CHALLENGES
       </h1>
       <div class="cyber-title-decor d-flex justify-content-center gap-2 mt-2">
-        <div style="width: 15px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
-        <div style="width: 15px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
-        <div style="width: 30px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
+        <div style="width: 50px; height: 4px; background: linear-gradient(90deg, transparent, #0066ff); transform: skewX(-30deg);"></div>
+        <div style="width: 15px; height: 4px; background: #0066ff; transform: skewX(-30deg);"></div>
+        <div style="width: 15px; height: 4px; background: #0066ff; transform: skewX(-30deg);"></div>
+        <div style="width: 15px; height: 4px; background: #0066ff; transform: skewX(-30deg);"></div>
       </div>
     </div>
   </div>
@@ -34,7 +35,7 @@
       <div x-show="!loaded">
         <div class="min-vh-50 d-flex align-items-center">
           <div class="text-center w-100">
-            <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner text-purple"></i>
+            <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner text-primary"></i>
           </div>
         </div>
       </div>
@@ -61,7 +62,7 @@
           <!-- Secondary Filters -->
           <div class="d-flex flex-wrap gap-3 align-items-center cyber-secondary-filters p-3 rounded">
             <div class="flex-grow-1 position-relative" style="min-width: 250px;">
-              <i class="fas fa-search position-absolute text-muted" style="left: 15px; top: 12px;"></i>
+              <i class="fas fa-search position-absolute" style="color: #0066ff; left: 15px; top: 12px;"></i>
               <input type="text" class="form-control cyber-search-input w-100 ps-5" placeholder="Search challenges..." x-model="searchQuery">
             </div>
             
@@ -117,7 +118,7 @@
               <!-- Info Box (Name, Desc) -->
               <div class="cyber-row-info flex-grow-1">
                 <div class="d-flex align-items-center gap-3 mb-1">
-                  <h4 class="m-0 text-white font-weight-bold" x-text="c.name"></h4>
+                  <h4 class="m-0 font-weight-bold cyber-row-title" style="color: #0f172a;" x-text="c.name"></h4>
                   <span class="cyber-badge-new">NEW</span>
                 </div>
                 <div class="text-muted small cyber-row-desc">
@@ -132,24 +133,25 @@
                 <div class="cyber-category-pill" :style="'color: ' + getCategoryConfig(c.category).color + '; border-color: ' + getCategoryConfig(c.category).color">
                   <span x-text="c.category"></span>
                 </div>
-                <div class="d-flex align-items-center gap-2 mt-md-2">
-                  <div class="d-flex cyber-difficulty-bars">
-                    <div class="cyber-bar" :class="getDifficulty(c) === 'Easy' ? 'cyber-bar-easy' : (getDifficulty(c) === 'Medium' ? 'cyber-bar-med' : 'cyber-bar-hard')"></div>
-                    <div class="cyber-bar" :class="(getDifficulty(c) === 'Medium' || getDifficulty(c) === 'Hard') ? (getDifficulty(c) === 'Medium' ? 'cyber-bar-med' : 'cyber-bar-hard') : 'cyber-bar-inactive'"></div>
-                    <div class="cyber-bar" :class="getDifficulty(c) === 'Hard' ? 'cyber-bar-hard' : 'cyber-bar-inactive'"></div>
+                  <div class="d-flex align-items-center gap-2 mt-md-2">
+                    <div class="d-flex gap-1 cyber-difficulty-dots align-items-center">
+                      <div class="diff-dot filled"></div>
+                      <div class="diff-dot" :class="(getDifficulty(c) === 'Medium' || getDifficulty(c) === 'Hard') ? 'filled' : 'empty'"></div>
+                      <div class="diff-dot" :class="getDifficulty(c) === 'Hard' ? 'filled' : 'empty'"></div>
+                      <div class="diff-dot empty"></div>
+                    </div>
+                    <span class="small font-weight-bold" style="color: #0066ff;" x-text="getDifficulty(c).toUpperCase()"></span>
                   </div>
-                  <span class="small font-weight-bold" :class="getDifficulty(c) === 'Easy' ? 'text-success' : (getDifficulty(c) === 'Medium' ? 'text-warning' : 'text-danger')" x-text="getDifficulty(c).toUpperCase()"></span>
-                </div>
               </div>
               
               <!-- Points -->
               <div class="cyber-row-points text-center d-flex flex-row flex-md-column align-items-center justify-content-between" style="min-width: 80px;">
-                <div class="fs-4 text-purple font-monospace mb-md-0" x-text="c.value"></div>
+                <div class="fs-5 font-weight-bold mb-md-0" x-text="c.value"></div>
                 <div class="text-muted small" style="letter-spacing: 1px; font-size: 0.65rem;">POINTS</div>
               </div>
               
               <div class="cyber-row-solves text-center d-flex flex-row flex-md-column align-items-center justify-content-between" style="min-width: 80px;">
-                <div class="fs-4 text-success font-monospace mb-md-0" x-text="c.solves || 0"></div>
+                <div class="fs-5 font-weight-bold mb-md-0" x-text="c.solves || 0"></div>
                 <div class="text-muted small" style="letter-spacing: 1px; font-size: 0.65rem;">SOLVES</div>
               </div>
               
@@ -157,7 +159,7 @@
               <div class="cyber-row-action ms-md-3 mt-3 mt-md-0">
                 <button class="btn cyber-view-btn w-100" @click="loadChallenge(c.id)">
                   <span x-show="!c.solved_by_me">View Challenge <i class="fas fa-chevron-right ms-2 small"></i></span>
-                  <span x-show="c.solved_by_me" class="text-success"><i class="fas fa-check me-2"></i> Solved</span>
+                  <span x-show="c.solved_by_me" class="text-primary"><i class="fas fa-check me-2"></i> Solved</span>
                 </button>
               </div>
               
@@ -231,11 +233,12 @@
 
         getCategoryConfig(category) {
             const cat = category ? category.toLowerCase() : '';
-            if (cat.includes('web')) return { color: '#b026ff', icon: 'fa-globe', textClass: 'text-purple' };
-            if (cat.includes('osint')) return { color: '#00f0ff', icon: 'fa-search', textClass: 'text-info' };
-            if (cat.includes('crypto')) return { color: '#ff003c', icon: 'fa-key', textClass: 'text-danger' };
-            if (cat.includes('reverse') || cat.includes('pwn')) return { color: '#ff9d00', icon: 'fa-cogs', textClass: 'text-warning' };
-            return { color: '#00ff00', icon: 'fa-puzzle-piece', textClass: 'text-success' }; 
+            if (cat.includes('web')) return { color: '#0066ff', icon: 'fa-laptop-code', textClass: 'text-primary' };
+            if (cat.includes('osint')) return { color: '#0066ff', icon: 'fa-globe', textClass: 'text-primary' };
+            if (cat.includes('crypto')) return { color: '#0066ff', icon: 'fa-lock', textClass: 'text-primary' };
+            if (cat.includes('reverse') || cat.includes('pwn')) return { color: '#0066ff', icon: 'fa-microchip', textClass: 'text-primary' };
+            if (cat.includes('sanity')) return { color: '#0066ff', icon: 'fa-cube', textClass: 'text-primary' };
+            return { color: '#0066ff', icon: 'fa-puzzle-piece', textClass: 'text-primary' }; 
         },
         
         getDifficulty(c) {
@@ -251,153 +254,163 @@
   </script>
   {{ Assets.js("assets/js/challenges.js") }}
   <style>
-    /* CYBERPUNK CHALLENGES BOARD STYLES */
+    /* ICE WHITE CHALLENGES BOARD STYLES */
     body {
-      background-color: #05050a;
-      color: #fff;
+      background-color: #f4f6f9;
+      background-image: 
+        linear-gradient(rgba(0, 102, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 102, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      color: #333;
     }
     
-    .text-purple { color: #b026ff !important; }
+    .text-primary { color: #0066ff !important; }
     
     /* Filters */
     .cyber-domain-btn {
-      background: rgba(15, 10, 25, 0.6);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #aaa;
-      padding: 8px 20px;
-      border-radius: 6px;
+      background: #0f172a;
+      border: 1px solid #0f172a;
+      color: #000000;
+      padding: 10px 24px;
+      border-radius: 8px;
       font-weight: 600;
-      transition: 0.3s;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .cyber-domain-btn i {
+      color: #0066ff !important;
     }
     .cyber-domain-btn:hover {
-      border-color: rgba(176,38,255,0.5);
-      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
     .cyber-domain-btn.active {
-      border-color: #b026ff;
-      background: rgba(176,38,255,0.1);
-      color: #fff;
-      
+      border-color: #0066ff;
+      background: #ffffff;
+      color: #0066ff;
+    }
+    .cyber-domain-btn.active i {
+      color: #0066ff !important;
     }
     
     .cyber-secondary-filters {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.05);
+      background: transparent;
+      border: none;
+      padding: 0 !important;
     }
     
     .cyber-search-input, .cyber-select {
-      background: rgba(0,0,0,0.5) !important;
-      border: 1px solid rgba(255,255,255,0.1) !important;
-      color: #fff !important;
-      border-radius: 4px;
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      color: #4a5568 !important;
+      border-radius: 8px !important;
+      padding: 10px 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     .cyber-search-input:focus, .cyber-select:focus {
-      border-color: #b026ff !important;
-      
+      border-color: #0066ff !important;
+      box-shadow: 0 0 0 3px rgba(0,102,255,0.1) !important;
+    }
+    .cyber-search-input {
+        padding-left: 45px !important;
     }
     .cyber-select option {
-      background: #111;
-      color: #fff;
+      background: #fff;
+      color: #333;
     }
     
     /* Rows */
     .cyber-row {
-      background: rgba(15, 10, 25, 0.6);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
       position: relative;
-      transition: 0.3s;
-      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     }
     .cyber-row:hover {
-      border-color: var(--cat-color, #b026ff);
-      
-      transform: translateX(5px);
+      box-shadow: 0 8px 25px rgba(0,102,255,0.1);
+      transform: translateY(-2px);
     }
     
-    /* Corner cuts on rows */
-    .cyber-row::after {
+    /* Left blue line accent */
+    .cyber-row::before {
       content: '';
       position: absolute;
-      top: -1px; left: -1px; bottom: -1px;
-      width: 4px;
-      background: var(--cat-color, #b026ff);
-      
+      top: 0; left: 0; bottom: 0;
+      width: 5px;
+      background: #0066ff;
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
     }
+    .cyber-row::after { display: none; } /* Remove old corner cuts */
     
     .cyber-row-icon {
-      width: 70px;
-      height: 70px;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      color: var(--cat-color, #b026ff);
-      background: rgba(255,255,255,0.02);
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      color: #0066ff !important;
+      background: #eef2ff;
+      border: none;
       position: relative;
     }
-    /* Add corner brackets to icon */
-    .cyber-row-icon::before {
-      content: '';
-      position: absolute;
-      top: 5px; left: 5px; width: 10px; height: 10px;
-      border-top: 2px solid var(--cat-color, #b026ff);
-      border-left: 2px solid var(--cat-color, #b026ff);
-      opacity: 0.5;
-    }
-    .cyber-row-icon::after {
-      content: '';
-      position: absolute;
-      bottom: 5px; right: 5px; width: 10px; height: 10px;
-      border-bottom: 2px solid var(--cat-color, #b026ff);
-      border-right: 2px solid var(--cat-color, #b026ff);
-      opacity: 0.5;
-    }
+    .cyber-row-icon i { color: #0066ff !important; }
+    .cyber-row-icon::before, .cyber-row-icon::after { display: none; } /* Remove old corner brackets */
     
     .cyber-badge-new {
-      background: rgba(176,38,255,0.2);
-      border: 1px solid #b026ff;
-      color: #d285ff;
-      font-size: 0.6rem;
-      padding: 2px 6px;
+      background: #eef2ff;
+      border: none;
+      color: #0066ff;
+      font-size: 0.65rem;
+      padding: 3px 8px;
       border-radius: 4px;
+      font-weight: 700;
       letter-spacing: 1px;
     }
     
     .cyber-category-pill {
-      border: 1px solid;
-      padding: 2px 10px;
-      border-radius: 12px;
+      border: 1px solid #0066ff !important;
+      padding: 4px 14px;
+      border-radius: 20px;
       font-size: 0.75rem;
-      background: rgba(255,255,255,0.03);
+      color: #0066ff !important;
+      background: transparent;
+      font-weight: 600;
     }
     
-    /* Bars */
-    .cyber-difficulty-bars { gap: 2px; }
-    .cyber-bar { width: 10px; height: 5px; transform: skewX(-20deg); }
-    .cyber-bar-easy { background: #00ff00;  }
-    .cyber-bar-med { background: #ffc107;  }
-    .cyber-bar-hard { background: #ff003c;  }
-    .cyber-bar-inactive { background: #333; }
+    /* Difficulty Dots */
+    .cyber-difficulty-dots { gap: 4px; }
+    .diff-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .diff-dot.filled { background: #0066ff; }
+    .diff-dot.empty { background: #cbd5e1; }
+    
+    .cyber-row-points .fs-5, .cyber-row-solves .fs-5 { color: #0066ff; }
     
     /* View Button */
     .cyber-view-btn {
-      background: transparent;
-      color: #fff;
-      border: 1px solid rgba(176,38,255,0.5);
-      border-radius: 6px;
-      padding: 10px 20px;
+      background: #ffffff;
+      color: #4a5568;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 24px;
       font-weight: 600;
-      transition: 0.3s;
+      transition: all 0.3s ease;
       white-space: nowrap;
     }
     .cyber-view-btn:hover {
-      background: rgba(176,38,255,0.2);
-      border-color: #b026ff;
-      
+      background: #f8fafc;
+      border-color: #0066ff;
+      color: #0066ff;
     }
     
     /* Solved State */
+    .cyber-solved-row .cyber-view-btn {
+      color: #0066ff;
+      background: #f8fafc;
+      border-color: #e2e8f0;
+    }
     .cyber-solved-row {
-      opacity: 0.6;
+      opacity: 0.8;
     }
     .cyber-solved-row:hover {
       opacity: 1;
@@ -405,22 +418,46 @@
     
     /* Pagination */
     .cyber-pagination .page-link {
-      background: rgba(15, 10, 25, 0.6);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #fff;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #4a5568;
+      border-radius: 6px;
+      margin: 0 2px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     .cyber-pagination .page-item.active .page-link {
-      background: #b026ff;
-      border-color: #b026ff;
-      
+      background: #0066ff;
+      border-color: #0066ff;
+      color: #000000;
     }
     .cyber-pagination .page-link:hover:not(:disabled) {
-      background: rgba(176,38,255,0.2);
-      border-color: #b026ff;
+      background: #f8fafc;
+      border-color: #0066ff;
+      color: #0066ff;
     }
     .cyber-pagination .page-item.disabled .page-link {
-      background: rgba(0,0,0,0.5);
-      color: #555;
+      background: #f1f5f9;
+      color: #94a3b8;
+    }
+
+    /* Fix ice white text issue on light theme */
+    .text-muted {
+        color: #111111 !important;
+        opacity: 0.8;
+    }
+    
+    /* Make unselected domain buttons text readable */
+    .cyber-domain-btn {
+        color: #ffffff !important;
+    }
+    .cyber-domain-btn.active {
+        color: #0066ff !important;
     }
   </style>
 {% endblock %}

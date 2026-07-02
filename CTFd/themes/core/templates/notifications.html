@@ -1,200 +1,231 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div class="jumbotron cyber-jumbotron text-center pt-5 pb-3">
-		<div class="container">
-			<h1 class="cyber-page-title text-purple" style="letter-spacing: 4px; ">
-				{% trans %}NOTIFICATIONS{% endtrans %}
-			</h1>
-			<div class="cyber-title-decor d-flex justify-content-center gap-2 mt-2">
-				<div style="width: 15px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
-				<div style="width: 30px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
-				<div style="width: 15px; height: 4px; background: #b026ff; transform: skewX(-30deg);"></div>
-			</div>
-		</div>
-	</div>
+<div class="light-notifications-page pb-5">
+    <div class="container pt-5 pb-4 text-center">
+        <h1 class="page-title fw-bold" style="letter-spacing: 1px; color: #2d3748;">
+            {% trans %}NOTIFICATIONS{% endtrans %}
+        </h1>
+        <div class="title-decor d-flex justify-content-center gap-2 mt-3 mb-2">
+            <div style="width: 16px; height: 4px; border-radius: 2px; background: #1a73e8; transform: skewX(-15deg);"></div>
+            <div style="width: 32px; height: 4px; border-radius: 2px; background: #1a73e8; transform: skewX(-15deg);"></div>
+            <div style="width: 16px; height: 4px; border-radius: 2px; background: #1a73e8; transform: skewX(-15deg);"></div>
+        </div>
+    </div>
 
-	<div class="container cyber-container pb-5 mt-4">
-		{% if not notifications %}
-		<h3 class="text-center text-muted" style="letter-spacing: 2px;">
-			{% trans %}THERE ARE NO NOTIFICATIONS YET{% endtrans %}
-		</h3>
-		{% endif %}
+    <div class="container light-container pb-5 mt-3">
+        {% if not notifications %}
+        <h3 id="no-notifications" class="text-center fw-bold mt-4" style="letter-spacing: 1px; color: #a0aec0;">
+            {% trans %}THERE ARE NO NOTIFICATIONS YET{% endtrans %}
+        </h3>
+        {% endif %}
 
-        <div class="d-flex flex-column gap-4 align-items-center">
-		{% for notification in notifications %}
-            {% set color = '#00ff00' %}
-            {% set icon = 'fa-puzzle-piece' %}
-            {% set nhtml = notification.html | string %}
-            
-            {% if 'Web Exploitation' in nhtml %}
-              {% set color = '#b026ff' %}
-              {% set icon = 'fa-bullseye' %}
-            {% elif 'OSINT' in nhtml %}
-              {% set color = '#00f0ff' %}
-              {% set icon = 'fa-globe' %}
-            {% elif 'Cryptography' in nhtml %}
-              {% set color = '#ff003c' %}
-              {% set icon = 'fa-key' %}
-            {% elif 'Reverse Engineering' in nhtml %}
-              {% set color = '#ff9d00' %}
-              {% set icon = 'fa-cogs' %}
-            {% endif %}
-
-            <div class="cyber-notif-card w-100" style="--notif-color: {{ color }};">
-                <div class="d-flex flex-column flex-md-row align-items-md-center p-3 p-md-4 gap-3 gap-md-4 position-relative">
+        <div class="d-flex flex-column gap-4 align-items-center mx-auto w-100" x-data="{
+            init() {
+                this.$watch('$store.toast', value => {
+                    if (value && value.title) {
+                        this.addNotification(value);
+                    }
+                });
+            },
+            addNotification(notification) {
+                let dateIso = notification.date || new Date().toISOString();
+                let cardHtml = `
+            <div class='light-notif-card w-100'>
+                <div class='card-left-indicator'></div>
+                <div class='d-flex flex-column flex-md-row align-items-md-center w-100'>
                     
-                    <!-- Left Bracketed Icon -->
-                    <div class="cyber-notif-icon-box flex-shrink-0 d-flex align-items-center justify-content-center">
-                        <i class="fas {{ icon }} fs-1"></i>
+                    <div class='notif-bell-section flex-shrink-0 d-flex align-items-center justify-content-center'>
+                        <div class='notif-bell-container'>
+                            <div class='circle-1'></div>
+                            <div class='circle-2'></div>
+                            <div class='circle-3'></div>
+                            <i class='fas fa-bell bell-icon'></i>
+                        </div>
                     </div>
 
-                    <!-- Middle Content -->
-                    <div class="cyber-notif-content flex-grow-1 d-flex flex-column justify-content-center">
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="cyber-notif-badge">NEW CHALLENGE</span>
-                            <div class="cyber-notif-dots d-flex gap-1">
+                    <div class='light-notif-content flex-grow-1 d-flex flex-column justify-content-center ps-md-4 mt-3 mt-md-0'>
+                        <div class='d-flex align-items-center gap-2 mb-2'>
+                            <span class='light-notif-badge'>NEW CHALLENGE</span>
+                            <div class='light-notif-dots d-flex gap-1 ms-1'>
                                 <span></span><span></span><span></span>
                             </div>
                         </div>
-                        <h3 class="cyber-notif-title text-white mb-2 fw-bold">{{ notification.title }}</h3>
-                        <div class="cyber-notif-text text-muted">{{ notification.html | safe }}</div>
+                        <h4 class='light-notif-title mb-1 fw-bold text-dark'>${notification.title}</h4>
+                        <div class='light-notif-text text-muted'>${notification.html}</div>
                     </div>
 
-                    <!-- Right Info & Action -->
-                    <div class="cyber-notif-action flex-shrink-0 d-flex flex-row flex-md-column justify-content-between align-items-center align-items-md-end ms-md-auto mt-3 mt-md-0" style="min-width: 120px;">
-                        <div class="cyber-notif-time mb-md-3">
-                            <span data-time="{{ notification.date | isoformat }}"></span>
+                    <div class='light-notif-action flex-shrink-0 d-flex flex-row flex-md-column justify-content-between align-items-center align-items-md-end ms-md-auto mt-3 mt-md-0'>
+                        <div class='light-notif-time text-primary fw-medium'>
+                            <i class='far fa-clock me-1'></i><span data-time='${dateIso}'></span>
                         </div>
-                        <div class="cyber-notif-close d-flex align-items-center justify-content-center" title="Dismiss" onclick="this.closest('.cyber-notif-card').style.display='none'">
-                            <i class="fas fa-times fs-4"></i>
+                    </div>
+
+                </div>
+            </div>`;
+                
+                this.$el.insertAdjacentHTML('afterbegin', cardHtml);
+                let noNotif = document.getElementById('no-notifications');
+                if (noNotif) noNotif.remove();
+            }
+        }">
+        {% for notification in notifications %}
+            <div class="light-notif-card w-100">
+                <div class="card-left-indicator"></div>
+                <div class="d-flex flex-column flex-md-row align-items-md-center w-100">
+                    
+                    <div class="notif-bell-section flex-shrink-0 d-flex align-items-center justify-content-center">
+                        <div class="notif-bell-container">
+                            <div class="circle-1"></div>
+                            <div class="circle-2"></div>
+                            <div class="circle-3"></div>
+                            <i class="fas fa-bell bell-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="light-notif-content flex-grow-1 d-flex flex-column justify-content-center ps-md-4 mt-3 mt-md-0">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="light-notif-badge">NEW CHALLENGE</span>
+                            <div class="light-notif-dots d-flex gap-1 ms-1">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                        <h4 class="light-notif-title mb-1 fw-bold text-dark">{{ notification.title }}</h4>
+                        <div class="light-notif-text text-muted">{{ notification.html | safe }}</div>
+                    </div>
+
+                    <div class="light-notif-action flex-shrink-0 d-flex flex-row flex-md-column justify-content-between align-items-center align-items-md-end ms-md-auto mt-3 mt-md-0">
+                        <div class="light-notif-time text-primary fw-medium">
+                            <i class="far fa-clock me-1"></i><span data-time="{{ notification.date | isoformat }}"></span>
                         </div>
                     </div>
 
                 </div>
             </div>
-		{% endfor %}
+        {% endfor %}
         </div>
-	</div>
+    </div>
+</div>
 
 <style>
-/* CYBERPUNK NOTIFICATIONS PAGE STYLES */
+/* LIGHT CLEAN NOTIFICATIONS STYLES */
 body {
-    background-color: #05050a;
-    color: #fff;
+    background-color: #f8f9fa !important;
 }
 
-.cyber-notif-card {
-    background: rgba(10, 5, 20, 0.6);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 12px;
-    position: relative;
-    
-    transition: 0.3s ease;
-    overflow: hidden;
-    max-width: 900px;
+.light-notifications-page {
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 200px);
+    background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+    background-size: 30px 30px;
 }
-.cyber-notif-card:hover {
-    
+
+.text-primary {
+    color: #1a73e8 !important;
+}
+
+.light-notif-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    position: relative;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    transition: 0.3s ease;
+}
+.light-notif-card:hover {
+    box-shadow: 0 15px 40px rgba(26, 115, 232, 0.08);
     transform: translateY(-2px);
 }
 
-/* Glowing Neon Outer Border with Clip Path equivalent */
-.cyber-notif-card::before {
-    content: '';
+.card-left-indicator {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    border: 2px solid var(--notif-color);
-    pointer-events: none;
-    clip-path: polygon(15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px), 0 15px);
-    margin: 2px;
-    
-    opacity: 0.7;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 70%;
+    background: #1a73e8;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
-/* Bracketed Icon Box */
-.cyber-notif-icon-box {
+.notif-bell-section {
+    border-right: 1px solid #edf2f7;
+    padding-right: 32px;
+    margin-right: 10px;
+}
+
+.notif-bell-container {
+    position: relative;
     width: 80px;
     height: 80px;
-    color: var(--notif-color);
-    position: relative;
-    
-}
-.cyber-notif-icon-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; bottom: 0; width: 15px;
-    border-top: 2px solid var(--notif-color);
-    border-left: 2px solid var(--notif-color);
-    border-bottom: 2px solid var(--notif-color);
-    opacity: 0.6;
-}
-.cyber-notif-icon-box::after {
-    content: '';
-    position: absolute;
-    top: 0; right: 0; bottom: 0; width: 15px;
-    border-top: 2px solid var(--notif-color);
-    border-right: 2px solid var(--notif-color);
-    border-bottom: 2px solid var(--notif-color);
-    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Badge */
-.cyber-notif-badge {
-    background: var(--notif-color);
-    color: #000;
-    font-size: 0.65rem;
-    font-weight: 800;
-    padding: 3px 8px;
-    border-radius: 3px;
-    letter-spacing: 1px;
-    
+.circle-1, .circle-2, .circle-3 {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
 }
+.circle-1 { width: 36px; height: 36px; }
+.circle-2 { width: 56px; height: 56px; }
+.circle-3 { width: 76px; height: 76px; }
 
-/* Dots */
-.cyber-notif-dots span {
+/* Small decorative dots on the circles to mimic the radar design */
+.circle-3::before, .circle-3::after, .circle-2::before {
+    content: '';
+    position: absolute;
     width: 4px;
     height: 4px;
+    background: #a0aec0;
     border-radius: 50%;
-    background: var(--notif-color);
-    
-    opacity: 0.8;
+}
+.circle-3::before { top: -2.5px; left: 50%; transform: translateX(-50%); }
+.circle-3::after { bottom: -2.5px; left: 50%; transform: translateX(-50%); }
+.circle-2::before { left: -2.5px; top: 50%; transform: translateY(-50%); }
+
+.bell-icon {
+    font-size: 1.6rem;
+    color: #1a73e8;
+    z-index: 2;
 }
 
-/* Title and Text */
-.cyber-notif-title {
-    font-size: 1.4rem;
+.light-notif-badge {
+    background: #1a73e8;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
     letter-spacing: 0.5px;
 }
-.cyber-notif-text {
-    font-size: 0.95rem;
-    color: #aaa !important;
+
+.light-notif-dots span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #1a73e8;
 }
-.cyber-notif-text p {
+
+.light-notif-title {
+    font-size: 1.3rem;
+    color: #1a202c !important;
+}
+.light-notif-text {
+    font-size: 0.95rem;
+    color: #4a5568 !important;
+}
+.light-notif-text p {
     margin: 0;
 }
 
-/* Right Section */
-.cyber-notif-time {
-    color: var(--notif-color);
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    
-}
-
-/* Close Button */
-.cyber-notif-close {
-    width: 40px;
-    height: 40px;
-    color: var(--notif-color);
-    cursor: pointer;
-    transition: 0.3s;
-}
-.cyber-notif-close:hover {
-    color: #fff;
-    
-    transform: scale(1.1);
+.light-notif-time {
+    font-size: 0.95rem;
 }
 </style>
 {% endblock %}

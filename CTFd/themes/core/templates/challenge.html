@@ -1,620 +1,220 @@
-<div class="modal-dialog modal-xl cyber-challenge-dialog" role="document" x-data="Challenge" x-init='id = {{ challenge.id }}; max_attempts = {{ max_attempts }}; attempts = {{ attempts }}; ratingValue = {{ (rating.get("value") if rating else None) | tojson }}; ratingReview = {{ (rating.get("review", "") if rating else None) | tojson }};'>
-  <div class="cyber-modal-wrapper">
-    <div class="cyber-frame-tl"></div>
-    <div class="cyber-frame-tr"></div>
-    <div class="cyber-frame-bl"></div>
-    <div class="cyber-frame-br"></div>
+<div class="modal-dialog modal-xl modal-dialog-centered" role="document" style="max-width: 1250px; width: 95vw;" x-data="Challenge" x-init='id = {{ challenge.id }}; max_attempts = {{ max_attempts }}; attempts = {{ attempts }}; ratingValue = {{ (rating.get("value") if rating else None) | tojson }}; ratingReview = {{ (rating.get("review", "") if rating else None) | tojson }};'>
+  <div class="modal-content" style="border: none; border-radius: 16px; background-color: #f8fafc; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
     
-    <div class="modal-content cyber-modal-content">
-      <div class="modal-body p-0 position-relative cyber-modal-body">
-        
-        {% set cat_lower = challenge.category | lower if challenge.category else '' %}
-        {% set cat_color = '#00ff00' %}
-        {% set cat_icon = 'fa-puzzle-piece' %}
-        {% if 'web' in cat_lower %}
-            {% set cat_color = '#b026ff' %}
-            {% set cat_icon = 'fa-globe' %}
-        {% elif 'osint' in cat_lower %}
-            {% set cat_color = '#00f0ff' %}
-            {% set cat_icon = 'fa-search' %}
-        {% elif 'crypto' in cat_lower %}
-            {% set cat_color = '#ff003c' %}
-            {% set cat_icon = 'fa-key' %}
-        {% elif 'reverse' in cat_lower or 'pwn' in cat_lower %}
-            {% set cat_color = '#ff9d00' %}
-            {% set cat_icon = 'fa-cogs' %}
-        {% endif %}
+    {% set cat_lower = challenge.category | lower if challenge.category else '' %}
+    {% set cat_icon = 'fa-puzzle-piece' %}
+    {% if 'web' in cat_lower %}
+        {% set cat_icon = 'fa-laptop-code' %}
+    {% elif 'osint' in cat_lower %}
+        {% set cat_icon = 'fa-globe' %}
+    {% elif 'crypto' in cat_lower %}
+        {% set cat_icon = 'fa-lock' %}
+    {% elif 'reverse' in cat_lower or 'pwn' in cat_lower %}
+        {% set cat_icon = 'fa-microchip' %}
+    {% elif 'sanity' in cat_lower %}
+        {% set cat_icon = 'fa-cube' %}
+    {% endif %}
 
-        {% set diff_text = challenge.difficulty if challenge.difficulty else 'Medium' %}
-        {% set diff_color = '#ff9d00' %}
-        {% set diff_bars = 2 %}
-        {% set t_val = diff_text | lower %}
-        {% if t_val == 'easy' %}
-            {% set diff_color = '#00ff00' %}
-            {% set diff_bars = 1 %}
-        {% elif t_val == 'hard' %}
-            {% set diff_color = '#ff003c' %}
-            {% set diff_bars = 3 %}
-        {% endif %}
-        <!-- HEADER -->
-        <div class="cyber-header d-flex justify-content-between align-items-center p-3 px-4 pt-4">
-          <button class="btn btn-link cyber-back-btn text-decoration-none d-flex align-items-center gap-2 p-0" data-bs-dismiss="modal" aria-label="Close">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> 
-            <span>BACK TO CHALLENGES</span>
+    {% set diff_text = challenge.difficulty if challenge.difficulty else 'Medium' %}
+    {% set t_val = diff_text | lower %}
+    {% set diff_bars = 2 %}
+    {% if t_val == 'easy' %}
+        {% set diff_bars = 1 %}
+    {% elif t_val == 'hard' %}
+        {% set diff_bars = 3 %}
+    {% endif %}
+
+    <div class="modal-body p-4 p-md-5 position-relative" style="background-image: radial-gradient(circle at 10px 10px, #e2e8f0 1.5px, transparent 1.5px); background-size: 24px 24px; min-height: 70vh;">
+      
+      <!-- Top Bar -->
+      <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom" style="border-color: #e2e8f0 !important;">
+        <button class="btn btn-link text-dark text-decoration-none d-flex align-items-center gap-2 p-0" data-bs-dismiss="modal" style="font-weight: 600;">
+          <i class="fas fa-arrow-left"></i> 
+          <span>Back to Challenges</span>
+        </button>
+        
+        <div class="d-flex align-items-center gap-4">
+          <div class="d-flex align-items-center gap-3">
+             <span style="color: #ff3333; border: 1px solid #ffccdd; background: #fff0f5; padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;">{{ diff_text | upper }}</span>
+             <div class="d-flex gap-1 align-items-center">
+               <div style="width: 8px; height: 8px; border-radius: 50%; {% if diff_bars >= 1 %}background: #ff3333;{% else %}border: 1px solid #ccc; background: transparent;{% endif %}"></div>
+               <div style="width: 8px; height: 8px; border-radius: 50%; {% if diff_bars >= 2 %}background: #ff3333;{% else %}border: 1px solid #ccc; background: transparent;{% endif %}"></div>
+               <div style="width: 8px; height: 8px; border-radius: 50%; {% if diff_bars >= 3 %}background: #ff3333;{% else %}border: 1px solid #ccc; background: transparent;{% endif %}"></div>
+               <div style="width: 8px; height: 8px; border-radius: 50%; border: 1px solid #ccc; background: transparent;"></div>
+             </div>
+          </div>
+          
+          <div class="d-flex flex-column align-items-center" style="line-height: 1.1;">
+            <span style="color: #0066ff; font-weight: 800; font-size: 1.4rem;">{{ challenge.value }}</span>
+            <span style="color: #94a3b8; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px;">POINTS</span>
+          </div>
+          
+          <button class="btn p-0 border-0 ms-2" data-bs-dismiss="modal" aria-label="Close" style="background: transparent; color: #111;">
+            <i class="fas fa-times fs-4"></i>
           </button>
-          <div class="cyber-header-stats d-flex align-items-center">
-            <div class="cyber-difficulty me-5 d-flex align-items-center">
-              <span class="cyber-stat-label">DIFFICULTY</span>
-              <span class="cyber-badge-medium ms-3" style="border-color: {{ diff_color }}; color: {{ diff_color }};  background: {{ diff_color }}0D;">{{ diff_text | upper }}</span>
-              <div class="ms-3 d-flex cyber-difficulty-bars">
-                <div class="cyber-bar" style="{% if diff_bars >= 1 %}background: {{ diff_color }}; {% else %}border: 1px solid rgba(255,255,255,0.2);{% endif %}"></div>
-                <div class="cyber-bar" style="{% if diff_bars >= 2 %}background: {{ diff_color }}; {% else %}border: 1px solid rgba(255,255,255,0.2);{% endif %}"></div>
-                <div class="cyber-bar" style="{% if diff_bars >= 3 %}background: {{ diff_color }}; {% else %}border: 1px solid rgba(255,255,255,0.2);{% endif %}"></div>
-                <div class="cyber-bar cyber-bar-inactive"></div>
+        </div>
+      </div>
+
+      <div class="row g-3 m-0">
+        <!-- LEFT COLUMN -->
+        <div class="col-lg-7 p-0 pe-lg-3">
+          
+          <!-- Header (Icon, Title) -->
+          <div class="d-flex flex-column flex-sm-row gap-3 align-items-start mb-3">
+            <div class="flex-shrink-0 d-flex align-items-center justify-content-center position-relative" style="width: 90px; height: 90px; background: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 102, 255, 0.08);">
+              <!-- Target corners -->
+              <div style="position: absolute; top: 10px; left: 10px; width: 8px; height: 8px; border-top: 2px solid #0066ff; border-left: 2px solid #0066ff;"></div>
+              <div style="position: absolute; top: 10px; right: 10px; width: 8px; height: 8px; border-top: 2px solid #0066ff; border-right: 2px solid #0066ff;"></div>
+              <div style="position: absolute; bottom: 10px; left: 10px; width: 8px; height: 8px; border-bottom: 2px solid #0066ff; border-left: 2px solid #0066ff;"></div>
+              <div style="position: absolute; bottom: 10px; right: 10px; width: 8px; height: 8px; border-bottom: 2px solid #0066ff; border-right: 2px solid #0066ff;"></div>
+              
+              <div style="width: 55px; height: 55px; background: radial-gradient(circle, #eef2ff 0%, #ffffff 70%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fas {{ cat_icon }}" style="font-size: 1.8rem; color: #0066ff;"></i>
               </div>
             </div>
-            <div class="cyber-points d-flex align-items-center">
-              <div class="d-flex flex-column align-items-end me-3">
-                <span class="cyber-stat-label">POINTS</span>
-                <span class="cyber-points-val">{{ challenge.value }}</span>
+            
+            <div class="mt-1">
+              <div class="d-inline-flex align-items-center gap-2 mb-1 px-3 py-1" style="background: #eef2ff; color: #0066ff; border-radius: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">
+                <i class="fas fa-globe"></i> {{ challenge.category | upper }}
+              </div>
+              <h1 class="m-0 text-dark mb-1" style="font-weight: 800; font-size: 1.8rem;">{{ challenge.name }}</h1>
+              <div class="d-flex align-items-center gap-2">
+                <div style="width: 60px; height: 3px; background: #0066ff; border-radius: 2px;"></div>
+                <div style="display: flex; gap: 4px;">
+                  <div style="width: 4px; height: 4px; background: #e2e8f0; border-radius: 50%;"></div>
+                  <div style="width: 4px; height: 4px; background: #e2e8f0; border-radius: 50%;"></div>
+                  <div style="width: 4px; height: 4px; background: #e2e8f0; border-radius: 50%;"></div>
+                </div>
               </div>
             </div>
-            <!-- Close Button per Mockup -->
-            <button class="btn ms-4 p-0 border-0" data-bs-dismiss="modal" aria-label="Close" style="background: transparent; outline: none; " onmouseover="this.querySelector('svg').style.filter='drop-shadow(0 0 8px #b026ff)'" onmouseout="this.querySelector('svg').style.filter='drop-shadow(0 0 4px #b026ff)'">
-              <svg width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="#b026ff" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" style=" transition: all 0.2s;">
-                <path d="M 25 20 L 50 45 L 75 20 L 80 25 L 55 50 L 80 75 L 75 80 L 50 55 L 25 80 L 20 75 L 45 50 L 20 25 Z" />
-                <line x1="22.5" y1="22.5" x2="12" y2="12" stroke-width="6"/>
-                <line x1="77.5" y1="22.5" x2="88" y2="12" stroke-width="6"/>
-                <line x1="77.5" y1="77.5" x2="88" y2="88" stroke-width="6"/>
-                <line x1="22.5" y1="77.5" x2="12" y2="88" stroke-width="6"/>
-              </svg>
-            </button>
+          </div>
+
+          <!-- Description Box -->
+          <div class="p-4" style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-left: 4px solid #0066ff;">
+            <h5 class="mb-2 d-flex align-items-center gap-2" style="color: #0066ff; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px;">
+              <i class="far fa-file-alt"></i> DESCRIPTION
+            </h5>
+            
+            <div class="text-dark mb-2" style="font-size: 0.9rem; line-height: 1.5;">
+              {{ challenge.html | safe }}
+            </div>
+            
+            <!-- Standard Note Box per Mockup -->
+            <div class="p-2 mt-2" style="background: #f4f6f9; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <div class="d-flex align-items-center gap-2 mb-1" style="color: #0066ff; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px;">
+                <i class="fas fa-info-circle"></i> NOTE
+              </div>
+              <div class="text-dark" style="font-size: 0.85rem;">
+                The flag is in the format: <span style="color: #0066ff;">BSCTF{**********}</span>
+              </div>
+              {% if challenge.connection_info %}
+              <div class="text-dark mt-1" style="font-size: 0.85rem; font-family: monospace;">
+                {{ challenge.connection_info }}
+              </div>
+              {% endif %}
+            </div>
           </div>
         </div>
-        
-        <div class="cyber-body row g-4 px-4 pb-4 m-0">
-          <!-- LEFT COLUMN -->
-          <div class="col-lg-7 d-flex flex-column gap-3 p-0 pe-lg-3">
-            
-            <!-- HEADER BOX: Icon, Category, Title -->
-            <div class="d-flex flex-column flex-sm-row gap-4 align-items-start mt-2">
-              <div class="cyber-icon-box flex-shrink-0 d-flex align-items-center justify-content-center" style="border-color: {{ cat_color }}66; background: radial-gradient(circle at center, {{ cat_color }}26 0%, transparent 70%);">
-                <i class="fas {{ cat_icon }}" style="font-size: 3.5rem; color: {{ cat_color }};"></i>
-                <div class="cyber-icon-corners top-left" style="border-color: {{ cat_color }}"></div>
-                <div class="cyber-icon-corners top-right" style="border-color: {{ cat_color }}"></div>
-                <div class="cyber-icon-corners bottom-left" style="border-color: {{ cat_color }}"></div>
-                <div class="cyber-icon-corners bottom-right" style="border-color: {{ cat_color }}"></div>
-                <div class="cyber-icon-base" style="border-top-color: {{ cat_color }}; "></div>
-              </div>
-              <div>
-                <div class="cyber-category-badge mb-2 d-inline-flex align-items-center gap-2" style="background: {{ cat_color }}26; color: {{ cat_color }};">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                  {{ challenge.category | upper }}
-                </div>
-                <h1 class="cyber-challenge-title text-white mb-2">{{ challenge.name }}</h1>
-                <div class="cyber-title-underline mb-3" style="background: {{ cat_color }}; "></div>
-              </div>
-            </div>
-            
-            <!-- DESCRIPTION BOX -->
-            <div class="cyber-panel p-4 mt-3">
-              <h5 class="cyber-section-title text-purple mb-4 d-flex align-items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                DESCRIPTION <span class="cyber-decorative-dots">....</span>
-              </h5>
-              
-              <div class="text-light mb-4 cyber-desc-text">
-                {{ challenge.html | safe }}
-              </div>
-              
-              <!-- NOTE BOX -->
-              <div class="cyber-note-box mt-4 p-3">
-                <div class="cyber-note-title d-flex align-items-center gap-2 mb-2">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                  NOTE
-                </div>
-                <div class="cyber-note-text">
-                  The flag is in the format: <span class="text-purple">BSCTF{*********}</span>
-                </div>
-              </div>
-            </div>
-            
-          </div>
-          
-          <!-- RIGHT COLUMN -->
-          <div class="col-lg-5 d-flex flex-column gap-3 p-0 ps-lg-3 mt-4 mt-lg-0">
-            <!-- INFO BOX -->
-            <div class="cyber-panel p-4 h-100">
-              <h5 class="cyber-section-title text-purple mb-4 d-flex align-items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                CHALLENGE INFO
-              </h5>
-              <ul class="list-unstyled text-light m-0 cyber-info-list">
-                <li class="d-flex justify-content-between mb-4 pb-2">
-                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Category</span>
-                  <span class="text-purple">{{ challenge.category }}</span>
-                </li>
-                <li class="d-flex justify-content-between mb-4 pb-2">
-                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ diff_color }}" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Difficulty</span>
-                  <span style="color: {{ diff_color }}; font-weight: 600;">{{ diff_text }}</span>
-                </li>
-                <li class="d-flex justify-content-between mb-4 pb-2">
-                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b026ff" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> Points</span>
-                  <span class="text-purple">{{ challenge.value }}</span>
-                </li>
-                <li class="d-flex justify-content-between mb-4 pb-2">
-                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Solves</span>
-                  <span class="text-info">{{ solves if solves != None else 0 }}</span>
-                </li>
-                <li class="d-flex justify-content-between {% if challenge.hint and challenge.hint_enabled %}mb-4 pb-2{% endif %}">
-                  <span class="d-flex align-items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff00" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Author</span>
-                  <span class="text-success">{{ challenge.author if challenge.author else "CyberNinja_07" }}</span>
-                </li>
 
-                {% if challenge.hint and challenge.hint_enabled %}
-                <li class="d-flex flex-column mt-3 pt-3" style="border-top: 1px dashed rgba(255,255,255,0.1);" x-data="{ hintRevealed: false }">
-                  <div class="cyber-hint-box" 
-                       @click="hintRevealed = !hintRevealed"
-                       style="cursor: pointer; background: rgba(10,10,15,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);"
-                       :style="hintRevealed ? 'border-color: rgba(255, 234, 0, 0.6);  background: rgba(255, 234, 0, 0.03);' : ''">
-                    <div class="d-flex align-items-center gap-3">
-                      <div class="hint-icon-wrapper" 
-                           style="width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; transition: all 0.4s ease; border: 1px solid;"
-                           :style="hintRevealed ? 'background: rgba(255, 234, 0, 0.1); border-color: rgba(255, 234, 0, 0.4); ' : 'background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1);'">
-                        <!-- Off Bulb -->
-                        <i class="far fa-lightbulb" x-show="!hintRevealed" style="font-size: 1.4rem; color: rgba(255,255,255,0.4);"></i>
-                        <!-- Glowing Bulb -->
-                        <i class="fas fa-lightbulb" x-show="hintRevealed" style="font-size: 1.4rem; color: #ffea00;  display: none;"></i>
-                      </div>
-                      <div class="flex-grow-1">
-                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 2px; transition: all 0.3s ease;"
-                             :style="hintRevealed ? 'color: #ffea00;' : 'color: rgba(255,255,255,0.4);'">
-                          Intelligence
-                        </div>
-                        <div class="fw-bold" style="font-size: 1.05rem; transition: all 0.3s ease;" :style="hintRevealed ? 'color: #fff; ' : 'color: rgba(255,255,255,0.8);'">
-                          <span x-text="hintRevealed ? 'Classified Hint Revealed' : 'Access Encrypted Hint'"></span>
-                        </div>
-                      </div>
-                      <div class="hint-toggle-icon" style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;"
-                           :style="hintRevealed ? 'background: rgba(255, 234, 0, 0.15); color: #ffea00; ' : 'background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5);'">
-                        <i class="fas" :class="hintRevealed ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-                      </div>
-                    </div>
-                    
-                    <div x-show="hintRevealed" 
-                         x-transition:enter="transition ease-out duration-300" 
-                         x-transition:enter-start="opacity-0 transform scale-95" 
-                         x-transition:enter-end="opacity-100 transform scale-100" 
-                         class="mt-4 pt-3" 
-                         style="border-top: 1px dashed rgba(255, 234, 0, 0.3); display: none;">
-                      <div class="hint-content p-3 rounded" style="background: rgba(0,0,0,0.4); border-left: 3px solid #ffea00; color: rgba(255,255,255,0.9); font-size: 0.95rem; line-height: 1.7; letter-spacing: 0.3px; ">
-                        <div class="d-flex align-items-center gap-2 mb-2" style="color: #ffea00; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">
-                          <i class="fas fa-lock-open" style=""></i> Decrypted Data
-                        </div>
-                        <div style="word-break: break-word;">
-                          {{ challenge.hint | safe }}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                {% endif %}
-              </ul>
-            </div>
+        <!-- RIGHT COLUMN -->
+        <div class="col-lg-5 p-0 ps-lg-3">
+          <div class="p-4 h-100" style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+            <h5 class="mb-3 d-flex align-items-center gap-2" style="color: #0066ff; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px;">
+              <i class="fas fa-info-circle"></i> CHALLENGE INFO
+            </h5>
             
-            <!-- FILES BOX -->
-            <div class="cyber-panel p-4 h-100 mt-3" {% if not files %}style="display:none;"{% endif %}>
-              <h5 class="cyber-section-title text-purple mb-4 d-flex align-items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-                FILES
-              </h5>
-              {% if files %}
-              {% for file in files %}
-              {% set segments = file.split('/') %}
-              {% set token = file.split('?') | last %}
-              {% if token %}
-                {% set filename = segments | last | replace("?" + token, "") %}
-              {% else %}
-                {% set filename = segments | last %}
-              {% endif %}
-              <div class="cyber-file-item d-flex justify-content-between align-items-center p-3 mb-3">
-                <div class="d-flex align-items-center gap-3">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d285ff" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                  <div>
-                    <div class="text-light text-truncate" style="max-width: 150px; font-weight: 500;">{{ filename }}</div>
-                    <div class="text-muted small">FILE</div>
+            <ul class="list-unstyled m-0">
+              <li class="d-flex justify-content-between align-items-center mb-2 pb-2" style="border-bottom: 1px solid #f1f5f9;">
+                <span class="d-flex align-items-center gap-2 text-dark" style="font-weight: 500; font-size: 0.85rem;">
+                  <i class="fas fa-globe" style="color: #111;"></i> Category
+                </span>
+                <span style="color: #0066ff; font-weight: 600; font-size: 0.85rem;">{{ challenge.category }}</span>
+              </li>
+              
+              <li class="d-flex justify-content-between align-items-center mb-2 pb-2" style="border-bottom: 1px solid #f1f5f9;">
+                <span class="d-flex align-items-center gap-2 text-dark" style="font-weight: 500; font-size: 0.85rem;">
+                  <i class="fas fa-signal" style="color: #111;"></i> Difficulty
+                </span>
+                <span style="color: #ff3333; font-weight: 600; font-size: 0.85rem;">{{ diff_text }}</span>
+              </li>
+              
+              <li class="d-flex justify-content-between align-items-center mb-2 pb-2" style="border-bottom: 1px solid #f1f5f9;">
+                <span class="d-flex align-items-center gap-2 text-dark" style="font-weight: 500; font-size: 0.85rem;">
+                  <i class="fas fa-trophy" style="color: #111;"></i> Points
+                </span>
+                <span style="color: #0066ff; font-weight: 600; font-size: 0.85rem;">{{ challenge.value }}</span>
+              </li>
+              
+              <li class="d-flex justify-content-between align-items-center mb-2 pb-2" style="border-bottom: 1px solid #f1f5f9;">
+                <span class="d-flex align-items-center gap-2 text-dark" style="font-weight: 500; font-size: 0.85rem;">
+                  <i class="far fa-user" style="color: #111;"></i> Solves
+                </span>
+                <span style="color: #0066ff; font-weight: 600; font-size: 0.85rem;">{{ solves if solves != None else 0 }}</span>
+              </li>
+              
+              <li class="d-flex justify-content-between align-items-center {% if not challenge.hint %}mb-0 pb-0 border-0{% else %}mb-2 pb-2{% endif %}" {% if challenge.hint %}style="border-bottom: 1px solid #f1f5f9;"{% endif %}>
+                <span class="d-flex align-items-center gap-2 text-dark" style="font-weight: 500; font-size: 0.85rem;">
+                  <i class="fas fa-pencil-alt" style="color: #111;"></i> Author
+                </span>
+                <span style="color: #0066ff; font-weight: 600; font-size: 0.85rem;">{{ challenge.author if challenge.author else "Aeries" }}</span>
+              </li>
+              
+              {% if challenge.hint or not challenge.hint %}
+              <li class="mt-3" x-data="{ hintRevealed: false }">
+                <div class="p-2" @click="hintRevealed = !hintRevealed" style="cursor: pointer; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s;">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                      <i :class="hintRevealed ? 'fas fa-lightbulb' : 'far fa-lightbulb'" style="font-size: 1rem;" :style="hintRevealed ? 'color: #0066ff;' : 'color: #64748b;'"></i>
+                      <div>
+                        <div style="font-size: 0.65rem; color: #111; font-weight: 600;">Intelligence</div>
+                        <div class="text-dark" style="font-weight: 700; font-size: 0.8rem;" x-text="hintRevealed ? 'Access Decrypted Hint revealed' : 'Access Encrypted Hint'"></div>
+                      </div>
+                    </div>
+                    <i class="fas fa-chevron-down" :class="hintRevealed ? 'fa-chevron-up text-primary' : 'text-muted'"></i>
+                  </div>
+                  
+                  <div x-show="hintRevealed" style="display: none;" class="mt-2 pt-2 border-top">
+                    <div class="text-dark" style="font-size: 0.85rem;">
+                      {{ challenge.hint | safe if challenge.hint else 'No hints available.' }}
+                    </div>
                   </div>
                 </div>
-                <a href="{{ file }}" class="btn btn-outline-info cyber-download-btn px-3 d-flex align-items-center gap-2">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> DOWNLOAD
-                </a>
-              </div>
-              {% endfor %}
+              </li>
               {% endif %}
-            </div>
-          </div>
-          
-          <!-- FULL WIDTH FOOTER (SUBMIT FLAG) -->
-          <div class="col-12 p-0 mt-4">
-            <div class="cyber-panel p-4">
-              <h5 class="cyber-section-title text-purple mb-4 d-flex align-items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
-                SUBMIT FLAG
-              </h5>
-              
-              <div class="d-flex flex-column flex-md-row gap-4 align-items-md-center">
-                <div class="flex-grow-1 position-relative cyber-input-wrapper">
-                  <input type="text" class="form-control cyber-input w-100" :placeholder="$store.challenge.data.solved_by_me ? 'Challenge already solved' : 'Enter flag here...'" x-model="submission" @keyup.enter="submitChallenge()" :disabled="$store.challenge.data.solved_by_me || (response && (response.data.status === 'correct' || response.data.status === 'already_solved'))">
-                  <div class="cyber-input-corner"></div>
-                </div>
-                
-                <div class="d-flex gap-3 shrink-0">
-                  <button class="btn btn-purple cyber-submit-btn px-4 d-flex align-items-center gap-2" @click.debounce.500ms="submitChallenge()" :disabled="$store.challenge.data.solved_by_me || (response && (response.data.status === 'correct' || response.data.status === 'already_solved'))">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> SUBMIT FLAG
-                  </button>
-                </div>
-              </div>
-              
-              <!-- ALERT RESPONSES -->
-              <template x-if="response">
-                <div class="alert text-center w-100 cyber-alert mt-4 mb-0"
-                    :class="{
-                      'alert-success': response.data.status == 'correct',
-                      'alert-info': response.data.status == 'already_solved',
-                      'alert-danger': response.data.status == 'incorrect',
-                      'alert-warning': response.data.status == 'paused',
-                    }" role="alert">
-                  <strong x-text="response.data.message"></strong>
-                </div>
-              </template>
-            </div>
+            </ul>
           </div>
         </div>
       </div>
+
+      <!-- BOTTOM ROW (SUBMIT) -->
+      <div class="mt-4 p-4 mx-0" style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-left: 4px solid #0066ff;">
+        <h5 class="mb-2 d-flex align-items-center gap-2" style="color: #0066ff; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px;">
+          <i class="far fa-flag"></i> SUBMIT FLAG
+        </h5>
+        
+        <div class="d-flex flex-column flex-md-row gap-2">
+          <input type="text" class="form-control flex-grow-1 shadow-none" 
+                 id="challenge-id"
+                 placeholder="Challenge already solved" 
+                 x-model="submission"
+                 @keypress.enter="submitChallenge()"
+                 style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; height: 40px; font-size: 0.85rem; color: #333;">
+          <button class="btn d-flex align-items-center justify-content-center gap-2 px-3" 
+                  @click="submitChallenge()"
+                  style="background: #eef2ff; color: #0066ff; border-radius: 6px; font-weight: 700; font-size: 0.85rem; height: 40px; border: none; min-width: 140px;">
+            <i class="far fa-paper-plane"></i> SUBMIT FLAG
+          </button>
+        </div>
+        
+        <!-- Alerts/Errors -->
+        <template x-if="response">
+          <div class="mt-3 alert" :class="{'alert-success': response.data.status == 'correct', 'alert-danger': response.data.status != 'correct'}" role="alert" style="border-radius: 6px; font-weight: 500; padding: 12px 15px; margin-bottom: 0;">
+            <i class="fas" :class="{'fa-check-circle': response.data.status == 'correct', 'fa-times-circle': response.data.status != 'correct'}" class="me-2"></i>
+            <span x-text="response.data.message"></span>
+          </div>
+        </template>
+      </div>
+
     </div>
   </div>
 </div>
-
-<style>
-/* FULL SCREEN MODAL BEHAVIOR */
-.modal-backdrop {
-  background-color: #05010a !important;
-}
-.modal-backdrop.show {
-  opacity: 0.98 !important;
-}
-
-.cyber-challenge-dialog {
-  max-width: 1200px !important;
-  margin: 1.75rem auto;
-}
-
-/* CYBERPUNK HUD WRAPPER */
-.cyber-modal-wrapper {
-  position: relative;
-  background: #05010a;
-  padding: 3px;
-  border-radius: 8px;
-  z-index: 1;
-}
-
-/* Decorative SVG-like border using absolute positioning */
-.cyber-modal-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border: 1px solid #b026ff;
-  border-radius: 8px;
-  
-  pointer-events: none;
-  clip-path: polygon(
-    0% 30px, 30px 0%, 
-    calc(100% - 30px) 0%, 100% 30px, 
-    100% calc(100% - 30px), calc(100% - 30px) 100%, 
-    30px 100%, 0% calc(100% - 30px)
-  );
-}
-
-.cyber-frame-tl, .cyber-frame-tr, .cyber-frame-bl, .cyber-frame-br {
-  position: absolute;
-  width: 30px; height: 30px;
-  border: 2px solid #b026ff;
-  pointer-events: none;
-  z-index: 3;
-}
-.cyber-frame-tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
-.cyber-frame-tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
-.cyber-frame-bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
-.cyber-frame-br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
-
-.cyber-modal-content {
-  background-color: transparent !important;
-  border: none !important;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  overflow: hidden;
-}
-
-/* HEADER STATS */
-.cyber-back-btn {
-  color: #b026ff;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  font-size: 0.9rem;
-}
-.cyber-back-btn:hover {
-  color: #d285ff;
-}
-
-.cyber-stat-label {
-  letter-spacing: 2px;
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.5);
-}
-
-.cyber-badge-medium {
-  border: 1px solid #ff9d00;
-  color: #ff9d00;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  letter-spacing: 2px;
-  font-weight: 600;
-  
-  background: rgba(255, 157, 0, 0.05);
-}
-
-.cyber-difficulty-bars {
-  gap: 4px;
-}
-.cyber-bar {
-  width: 18px;
-  height: 8px;
-  transform: skewX(-30deg);
-}
-.cyber-bar-active {
-  background: #ff9d00;
-  
-}
-.cyber-bar-inactive {
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-.cyber-points-val {
-  line-height: 1;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #d285ff;
-  
-  font-family: 'Orbitron', sans-serif;
-}
-
-.cyber-target-icon {
-  
-}
-
-/* PANELS */
-.cyber-panel {
-  background: rgba(12, 8, 20, 0.8);
-  border: 1px solid rgba(176,38,255,0.2);
-  border-radius: 12px;
-  position: relative;
-  backdrop-filter: blur(10px);
-}
-.cyber-panel::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; right: -1px;
-  width: 15px; height: 15px;
-  border-bottom: 2px solid #b026ff;
-  border-right: 2px solid #b026ff;
-  border-bottom-right-radius: 12px;
-}
-.cyber-panel::before {
-  content: '';
-  position: absolute;
-  top: -1px; left: -1px;
-  width: 15px; height: 15px;
-  border-top: 2px solid #b026ff;
-  border-left: 2px solid #b026ff;
-  border-top-left-radius: 12px;
-}
-
-/* ICON BOX */
-.cyber-icon-box {
-  width: 130px;
-  height: 130px;
-  border: 1px solid rgba(176,38,255,0.4);
-  border-radius: 16px;
-  position: relative;
-  background: radial-gradient(circle at center, rgba(176,38,255,0.15) 0%, rgba(176,38,255,0) 70%);
-}
-.cyber-icon-corners {
-  position: absolute;
-  width: 12px; height: 12px;
-  border-color: #b026ff;
-  border-style: solid;
-}
-.top-left { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
-.top-right { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
-.bottom-left { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
-.bottom-right { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
-
-.cyber-icon-base {
-  position: absolute;
-  bottom: -5px;
-  width: 70%;
-  height: 10px;
-  border-top: 2px solid #b026ff;
-  border-radius: 50%;
-  
-  opacity: 0.5;
-}
-
-.cyber-category-badge {
-  background: rgba(176,38,255,0.15);
-  color: #d285ff;
-  padding: 4px 12px;
-  font-size: 0.75rem;
-  letter-spacing: 1.5px;
-  font-weight: 600;
-  border-radius: 4px;
-}
-
-.cyber-challenge-title {
-  font-weight: 700;
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 1px;
-  
-}
-
-.cyber-title-underline {
-  width: 100px;
-  height: 2px;
-  background: #b026ff;
-  
-}
-.cyber-title-underline::after {
-  content: '///';
-  color: #b026ff;
-  font-size: 0.5rem;
-  letter-spacing: 4px;
-  margin-left: 110px;
-  position: absolute;
-  margin-top: -6px;
-}
-
-/* SECTION TITLES */
-.cyber-section-title {
-  font-weight: 600;
-  letter-spacing: 2px;
-  font-size: 0.95rem;
-  color: #d285ff !important;
-  
-}
-.cyber-decorative-dots {
-  letter-spacing: 4px;
-  color: rgba(176,38,255,0.5);
-}
-
-.cyber-desc-text {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #e0e0e0 !important;
-}
-
-/* NOTE BOX */
-.cyber-note-box {
-  background: rgba(176,38,255,0.05);
-  border: 1px solid rgba(176,38,255,0.3);
-  border-radius: 8px;
-  position: relative;
-}
-.cyber-note-title {
-  color: #d285ff;
-  font-size: 0.85rem;
-  letter-spacing: 2px;
-  font-weight: 600;
-}
-.cyber-note-text {
-  font-size: 0.95rem;
-  color: #ccc;
-}
-
-/* INFO LIST */
-.cyber-info-list li {
-  font-size: 1rem;
-  border-bottom: 1px dashed rgba(255,255,255,0.1);
-}
-.cyber-info-list li:last-child {
-  border-bottom: none;
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* FILES */
-.cyber-file-item {
-  background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(176,38,255,0.2);
-  border-radius: 8px;
-}
-.cyber-download-btn {
-  color: #00f0ff;
-  border: 1px solid #00f0ff;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  font-weight: 600;
-  
-  transition: all 0.3s ease;
-}
-.cyber-download-btn:hover {
-  background: rgba(0, 240, 255, 0.1);
-  color: #00f0ff;
-  
-}
-
-/* SUBMIT FLAG */
-.cyber-input-wrapper {
-  background: rgba(0,0,0,0.4);
-  border: 1px solid rgba(176,38,255,0.3);
-  border-radius: 8px;
-}
-.cyber-input {
-  background: transparent !important;
-  border: none !important;
-  color: #fff !important;
-  padding: 15px 20px;
-  font-family: 'Orbitron', monospace;
-  
-}
-.cyber-input:focus {
-  
-}
-.cyber-input-corner {
-  position: absolute;
-  right: 15px;
-  bottom: 12px;
-  width: 10px;
-  height: 10px;
-  border-bottom: 2px solid rgba(176,38,255,0.5);
-  border-right: 2px solid rgba(176,38,255,0.5);
-}
-
-.btn-purple {
-  background: rgba(176,38,255,0.1);
-  color: #d285ff;
-  border: 1px solid #b026ff;
-  
-  transition: all 0.3s ease;
-  font-weight: 600;
-  letter-spacing: 1px;
-  padding: 12px 20px;
-}
-.btn-purple:hover {
-  background: rgba(176,38,255,0.25);
-  color: #fff;
-  
-}
-
-.cyber-help-btn {
-  color: #00f0ff;
-  border: 1px solid rgba(0, 240, 255, 0.5);
-  font-weight: 600;
-  letter-spacing: 1px;
-  padding: 12px 20px;
-}
-.cyber-help-btn:hover {
-  background: rgba(0, 240, 255, 0.1);
-  color: #00f0ff;
-  
-}
-
-.cyber-alert {
-  background: rgba(0,0,0,0.8);
-  border-left: 4px solid;
-}
-.alert-success { border-color: #00ff00; color: #00ff00; }
-.alert-danger { border-color: #ff003c; color: #ff003c; }
-.alert-warning { border-color: #ffc107; color: #ffc107; }
-.alert-info { border-color: #00f0ff; color: #00f0ff; }
-</style>

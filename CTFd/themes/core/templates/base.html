@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html data-bs-theme="dark">
+<html data-bs-theme="dark" data-theme="dark">
 
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&display=swap" rel="stylesheet">
   <title>{{ title or Configs.ctf_name }}</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="{{ url_for('views.themes', path='img/logoctf.png') }}" type="image/png">
+  <link rel="shortcut icon" href="{{ url_for('views.themes', path='img/mainpagelogo.png') }}" type="image/png">
 
   {{ meta | safe }}
 
@@ -38,18 +41,14 @@
 
   <style>
     body {
-      background-color: #0d001a;
-      background-image: radial-gradient(ellipse at 50% 0%, #461274 0%, #1a0033 45%, #05000a 100%);
-      background-attachment: fixed;
-      background-size: cover;
+      font-family: 'Geist Pixel', sans-serif !important;
+      background-color: #f4f6f9;
+      background-image: none;
+      color: #1a1a1a !important;
       min-height: 100vh;
       margin: 0;
       position: relative;
     }
-
-    /* ==============================================================
-       CYBERPUNK GLOBAL COMPONENT STYLES (Scoreboard, Users, Settings)
-       ============================================================== */
 
     /* Layout Gap Fixes */
     main>.container,
@@ -58,7 +57,6 @@
       padding-top: 0 !important;
     }
 
-    /* Override any default 14vh padding on CTFd index page */
     main .container>.row>div>img {
       padding-top: 20px !important;
     }
@@ -73,11 +71,10 @@
     }
 
     .jumbotron h1 {
-      font-family: 'Orbitron', sans-serif;
-      color: #fff;
-      font-weight: 700;
+      font-family: 'Geist Pixel', sans-serif;
+      color: #111;
+      font-weight: 800;
       letter-spacing: 2px;
-      
       text-transform: uppercase;
       display: inline-block;
       margin-bottom: 0;
@@ -87,51 +84,45 @@
       content: '';
       display: block;
       width: 100px;
-      border-top: 3px solid #b026ff;
-      
+      border-top: 3px solid #0066ff;
       margin: 15px auto 0;
     }
 
     /* Global Forms & Search Bars */
     .form-control,
     .form-select {
-      background: rgba(8, 2, 15, 0.6) !important;
-      border: 1px solid #7a00ff !important;
-      color: #fff !important;
+      background: #fff !important;
+      border: 1px solid #ccc !important;
+      color: #333 !important;
       border-radius: 4px;
-      
     }
 
     .form-control:focus,
     .form-select:focus {
-      
-      border-color: #b026ff !important;
+      border-color: #0066ff !important;
     }
 
     .form-control::placeholder {
-      color: rgba(255, 255, 255, 0.5) !important;
+      color: #888 !important;
     }
 
     .btn-primary {
-      background: linear-gradient(45deg, #7a00ff, #b026ff) !important;
+      background: linear-gradient(45deg, #7a00ff, #0066ff) !important;
       border: none !important;
-      
       transition: 0.3s ease;
       color: #fff !important;
     }
 
     .btn-primary:hover {
       transform: scale(1.05);
-      
     }
 
     /* Global Data Tables */
     .table {
-      background: rgba(8, 2, 15, 0.7);
-      border: 1px solid #7a00ff;
+      background: #fff;
+      border: 1px solid #dee2e6;
       border-radius: 8px;
-      
-      color: #e0e0e0;
+      color: #333;
       margin-bottom: 30px;
       overflow: hidden;
     }
@@ -139,15 +130,15 @@
     .table> :not(caption)>*>* {
       background-color: transparent !important;
       color: inherit;
-      border-bottom-color: rgba(122, 0, 255, 0.2);
+      border-bottom-color: #dee2e6;
     }
 
     .table thead th {
-      background: rgba(122, 0, 255, 0.15) !important;
-      color: #b026ff !important;
-      font-family: 'Orbitron', sans-serif;
+      background: #f8f9fa !important;
+      color: #111 !important;
+      font-family: 'Geist Pixel', sans-serif;
       letter-spacing: 1px;
-      border-bottom: 2px solid #7a00ff !important;
+      border-bottom: 2px solid #dee2e6 !important;
       border-top: none !important;
       text-transform: uppercase;
       font-size: 0.9rem;
@@ -155,13 +146,12 @@
 
     .table tbody tr {
       transition: 0.3s ease;
-      border-bottom: 1px solid rgba(122, 0, 255, 0.2);
+      border-bottom: 1px solid #dee2e6;
     }
 
     .table tbody tr:hover td,
     .table tbody tr:hover th {
-      background: rgba(176, 38, 255, 0.1) !important;
-      
+      background: #f1f3f5 !important;
     }
 
     .table tbody td {
@@ -171,67 +161,73 @@
     }
 
     .table a {
-      color: #fff;
+      color: #333;
       text-decoration: none;
       font-weight: 500;
       transition: 0.3s ease;
     }
 
     .table a:hover {
-      color: #b026ff;
-      
+      color: #0066ff;
     }
 
     /* Navigation Pills (Scoreboard/Settings Tabs) */
     .nav-pills .nav-link {
-      color: #fff;
-      border: 1px solid rgba(176, 38, 255, 0.3);
+      background: #fff;
+      color: #333;
+      border: 1px solid #ccc;
       margin: 0 5px;
       transition: 0.3s ease;
-      background: rgba(8, 2, 15, 0.5);
     }
 
     .nav-pills .nav-link.active,
     .nav-pills .nav-link:hover {
-      background: rgba(176, 38, 255, 0.2) !important;
-      border-color: #b026ff;
-      
-      color: #b026ff !important;
+      background: rgba(0, 102, 255, 0.1) !important;
+      border-color: #0066ff;
+      color: #0066ff !important;
     }
 
     /* Challenge Board Buttons Override */
     .challenge-button {
-      background: rgba(8, 2, 15, 0.6) !important;
-      border: 1px solid #7a00ff !important;
+      background: #fff !important;
+      border: 1px solid #ccc !important;
       border-radius: 8px;
-      
-      color: #fff !important;
+      color: #333 !important;
       transition: 0.3s ease !important;
     }
 
     .challenge-button:hover {
-      border-color: #b026ff !important;
-      
+      border-color: #0066ff !important;
       transform: scale(1.02);
     }
 
     .challenge-solved {
-      background: rgba(0, 209, 64, 0.1) !important;
+      background: #e6f9ec !important;
       border-color: #00d140 !important;
-      
-    }
-
-    .challenge-solved:hover {
-      
     }
 
     /* Pagination */
     .page-select {
-      background: rgba(8, 2, 15, 0.8);
-      border: 1px solid #7a00ff;
-      color: #fff;
+      background: #fff;
+      border: 1px solid #ccc;
+      color: #333;
       padding: 2px 10px;
       border-radius: 4px;
+    }
+
+    /* Modal overrides */
+    .modal-content {
+      background: #fff !important;
+      color: #111 !important;
+    }
+
+    .modal-header,
+    .modal-footer {
+      border-color: #dee2e6 !important;
+    }
+
+    main {
+      color: #111;
     }
   </style>
 
@@ -251,10 +247,10 @@
   <footer class="mt-auto">
     <style>
       .cyber-footer {
-        background: linear-gradient(135deg, rgba(40, 18, 65, 0.7), rgba(20, 5, 35, 0.9));
-        border-top: 1px solid rgba(176, 38, 255, 0.25);
-        border-bottom: 1px solid rgba(176, 38, 255, 0.25);
-        
+        background: #36454F;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: none;
+
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
         position: relative;
@@ -282,12 +278,12 @@
 
       .footer-section.left {
         justify-content: flex-start;
-        border-right: 1px solid rgba(176, 38, 255, 0.3);
+        border-right: 1px solid rgba(0, 102, 255, 0.3);
       }
 
       .footer-section.center {
         justify-content: center;
-        border-right: 1px solid rgba(176, 38, 255, 0.3);
+        border-right: 1px solid rgba(0, 102, 255, 0.3);
       }
 
       .footer-section.right {
@@ -297,7 +293,7 @@
       .footer-logo {
         max-height: 50px;
         margin-right: 20px;
-        
+
       }
 
       .footer-malla-logo {
@@ -314,7 +310,7 @@
 
       .footer-title {
         color: #fff;
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Geist Pixel', sans-serif;
         font-weight: 700;
         font-size: 1.4rem;
         letter-spacing: 2px;
@@ -322,13 +318,13 @@
       }
 
       .footer-title span {
-        color: #b026ff;
-        
+        color: #0066ff;
+
       }
 
       .footer-tagline {
-        color: #b026ff;
-        font-family: 'Inter', sans-serif;
+        color: #ffffff;
+        font-family: 'Geist Pixel', sans-serif;
         font-size: 0.65rem;
         letter-spacing: 2px;
         font-weight: 600;
@@ -336,12 +332,12 @@
       }
 
       .footer-center-text {
-        color: #b026ff;
-        font-family: 'Inter', sans-serif;
+        color: #ffffff;
+        font-family: 'Geist Pixel', sans-serif;
         font-size: 0.85rem;
         line-height: 1.4;
         letter-spacing: 0.5px;
-        
+
       }
 
       .footer-email-box {
@@ -353,31 +349,31 @@
       .footer-email-icon {
         width: 48px;
         height: 48px;
-        border: 2px solid #b026ff;
+        border: 2px solid #ffffff;
         border-radius: 14px;
         display: flex;
         justify-content: center;
         align-items: center;
-        
-        background: rgba(176, 38, 255, 0.05);
+
+        background: rgba(0, 102, 255, 0.05);
         transition: all 0.3s ease;
       }
 
       .footer-email-icon:hover {
-        
-        background: rgba(176, 38, 255, 0.15);
+
+        background: rgba(0, 102, 255, 0.15);
         transform: translateY(-2px);
       }
 
       .footer-email-icon svg {
         width: 26px;
-        fill: #b026ff;
-        
+        fill: #ffffff;
+
       }
 
       .footer-email-text {
-        color: #d0d0d0;
-        font-family: 'Inter', sans-serif;
+        color: #ffffff;
+        font-family: 'Geist Pixel', sans-serif;
         font-size: 0.9rem;
         letter-spacing: 1px;
       }
@@ -390,10 +386,10 @@
 
       .ctfd-credit small {
         color: #fff;
-        opacity: 0.02;
+        opacity: 0.3;
         /* Extremely subtle, looks like it's barely there */
         font-size: 0.75rem;
-        font-family: 'Inter', sans-serif;
+        font-family: 'Geist Pixel', sans-serif;
         transition: opacity 0.3s ease;
         cursor: default;
       }
@@ -411,7 +407,7 @@
         .footer-section.left,
         .footer-section.center {
           border-right: none;
-          border-bottom: 1px solid rgba(176, 38, 255, 0.3);
+          border-bottom: 1px solid rgba(0, 102, 255, 0.3);
           padding-bottom: 25px;
           width: 100%;
           justify-content: center;
@@ -432,41 +428,37 @@
           margin-right: 15px;
         }
       }
+
     </style>
 
     <div class="cyber-footer">
       <div class="footer-content-wrapper">
         <!-- LEFT: Logo & Title -->
         <div class="footer-section left">
-          <img src="{{ url_for('views.themes', path='img/blindspot.png') }}" class="footer-logo" alt="Blindspot Eye">
+          <img src="{{ url_for('views.themes', path='img/footer.png') }}" class="footer-logo" alt="Blindspot Eye">
           <div class="footer-text-block">
             <div class="footer-title" style="line-height: 1;">
               BLIND<span>S</span>P<svg viewBox="0 0 24 24"
-                style="width: 0.95em; height: 0.95em; vertical-align: -0.1em; fill: none; stroke: #b026ff; stroke-width: 3;  margin: 0 2px;">
+                style="width: 0.95em; height: 0.95em; vertical-align: -0.1em; fill: none; stroke: #0066ff; stroke-width: 3;  margin: 0 2px;">
                 <circle cx="12" cy="12" r="6" />
                 <path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke-linecap="round" />
               </svg>T<span style="font-size: 0.75em; margin-left: 5px;">-CTF-</span>
             </div>
             <div style="display: flex; align-items: center; margin-top: 6px;">
-              <div
-                style="height: 2px; width: 25px; background: #b026ff;  border-radius: 2px;">
+              <div style="height: 2px; width: 25px; background: #0066ff;  border-radius: 2px;">
               </div>
               <div
-                style="color: #fff; font-family: 'Inter', sans-serif; font-size: 0.65rem; letter-spacing: 1.5px; font-weight: 700; margin: 0 8px; text-transform: none;">
-                Find what others <span style="color: #b026ff; ">miss</span>
+                style="color: #fff; font-family: 'Geist Pixel', sans-serif; font-size: 0.65rem; letter-spacing: 1.5px; font-weight: 700; margin: 0 8px; text-transform: none;">
+                Find what others <span style="color: #0066ff; ">miss</span>
               </div>
-              <div
-                style="height: 2px; width: 15px; background: #b026ff;  border-radius: 2px;">
+              <div style="height: 2px; width: 15px; background: #0066ff;  border-radius: 2px;">
               </div>
               <div style="display: flex; gap: 4px; margin-left: 6px;">
-                <div
-                  style="width: 7px; height: 10px; background: #b026ff; transform: skewX(-30deg); ">
+                <div style="width: 7px; height: 10px; background: #0066ff; transform: skewX(-30deg); ">
                 </div>
-                <div
-                  style="width: 7px; height: 10px; background: #b026ff; transform: skewX(-30deg); ">
+                <div style="width: 7px; height: 10px; background: #0066ff; transform: skewX(-30deg); ">
                 </div>
-                <div
-                  style="width: 7px; height: 10px; background: #b026ff; transform: skewX(-30deg); ">
+                <div style="width: 7px; height: 10px; background: #0066ff; transform: skewX(-30deg); ">
                 </div>
               </div>
             </div>
@@ -476,14 +468,18 @@
         <!-- CENTER: Malla Reddy text -->
         <div class="footer-section center" style="flex-direction: column;">
           <div style="display: flex; align-items: center;">
-            <img src="{{ url_for('views.themes', path='img/MRUH.jpg') }}" class="footer-malla-logo"
+            <img src="{{ url_for('views.themes', path='img/MRUH_dark.png') }}" class="footer-malla-logo mruh-dark"
               alt="Malla Reddy University">
+            <img src="{{ url_for('views.themes', path='img/MRUH_light.png') }}" class="footer-malla-logo mruh-light"
+              style="display: none;" alt="Malla Reddy University">
             <div class="footer-text-block footer-center-text" style="text-align: left;">
               <div>BlindspotCTF by Malla Reddy University</div>
               <div>Department of Cyber Security</div>
             </div>
           </div>
-          <div class="footer-center-text" style="opacity: 0.15; margin-top: 10px; text-align: center;  transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='0.15'">
+          <div class="footer-center-text"
+            style="opacity: 0.15; margin-top: 10px; text-align: center;  transition: opacity 0.3s ease;"
+            onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='0.15'">
             Inspired by CTFd
           </div>
         </div>
@@ -515,14 +511,17 @@
   {% endblock %}
 
   {{ Plugins.scripts }}
-  
+
   <!-- Full Screen Image Modal -->
   <div class="modal fade" id="profileImageModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content" style="background: transparent; border: none; ">
         <div class="modal-body text-center position-relative p-0">
-          <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1050; padding: 10px; background-color: rgba(176,38,255,0.6); border-radius: 50%; "></button>
-          <img src="{{ url_for('views.themes', path='img/anand_kumar.jpg') }}" class="img-fluid" style="max-height: 90vh; border-radius: 16px; border: 2px solid #b026ff; " alt="G. Anand Kumar">
+          <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+            data-bs-dismiss="modal" aria-label="Close"
+            style="z-index: 1050; padding: 10px; background-color: rgba(0,102,255,0.6); border-radius: 50%; "></button>
+          <img src="{{ url_for('views.themes', path='img/anand_kumar.jpg') }}" class="img-fluid"
+            style="max-height: 90vh; border-radius: 16px; border: 2px solid #ffffff; " alt="G. Anand Kumar">
         </div>
       </div>
     </div>
