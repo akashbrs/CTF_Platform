@@ -1,0 +1,199 @@
+import os
+
+users_html_path = r"d:\Experiment\CTFd\CTFd\themes\core\templates\users\users.html"
+
+new_content = """{% extends "base.html" %}
+
+{% block content %}
+<div class="cyber-container py-5">
+  <div class="container pb-5">
+    {% include "components/errors.html" %}
+
+    <div class="d-flex justify-content-center align-items-center mb-5 mt-4">
+        <div class="me-3" style="width: 52px; height: 52px; background-color: #e8f0fe; border-radius: 12px; display: flex; justify-content: center; align-items: center;">
+            <i class="fas fa-users" style="color: #0066ff; font-size: 1.5rem;"></i>
+        </div>
+        <div style="position: relative;">
+            <h1 class="m-0" style="font-weight: 800; font-size: 2.2rem; color: #111; letter-spacing: 0.5px;">USERS</h1>
+            <div style="position: absolute; bottom: -6px; left: 0; display: flex; gap: 4px;">
+                <div style="width: 25px; height: 3px; background: #0066ff; border-radius: 2px;"></div>
+                <div style="width: 8px; height: 3px; background: #0066ff; transform: skewX(-30deg);"></div>
+                <div style="width: 8px; height: 3px; background: #0066ff; transform: skewX(-30deg);"></div>
+                <div style="width: 8px; height: 3px; background: #0066ff; transform: skewX(-30deg);"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="mb-4 cyber-controls">
+      {% with form = Forms.users.PublicUserSearchForm(field=field, q=q) %}
+      <form method="GET" class="d-flex w-100 align-items-center p-2" style="background: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid #e2e8f0;">
+        
+        <div class="dropdown-wrapper position-relative" style="width: 180px; border-right: 1px solid #e2e8f0;">
+          <select name="field" class="form-select bg-transparent text-dark border-0 shadow-none w-100 ps-3" style="height: 45px; font-weight: 500; cursor: pointer;">
+            <option value="name" {% if field == 'name' %}selected{% endif %}>All Roles</option>
+            <option value="affiliation" {% if field == 'affiliation' %}selected{% endif %}>Affiliation</option>
+            <option value="website" {% if field == 'website' %}selected{% endif %}>Website</option>
+          </select>
+        </div>
+        
+        <div class="flex-grow-1 position-relative px-4 d-flex align-items-center">
+          <i class="fas fa-search text-muted me-3" style="font-size: 1.1rem; opacity: 0.5;"></i>
+          <input type="text" name="q" class="form-control border-0 shadow-none bg-transparent p-0" placeholder="Search by username, roll number or email..." value="{{ q if q else '' }}" style="height: 45px; color: #333; font-size: 0.95rem;">
+        </div>
+
+        <button type="submit" class="btn d-flex align-items-center justify-content-center" style="height: 45px; width: 130px; background: #0066ff; color: #ffffff; border-radius: 6px; font-weight: 500; font-size: 0.95rem;">
+          <i class="fas fa-search me-2"></i> Search
+        </button>
+      </form>
+      {% endwith %}
+    </div>
+
+    <!-- Main Table -->
+    <div class="cyber-table-wrapper" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); overflow: hidden;">
+      <table class="table align-middle m-0 text-dark">
+        <thead>
+          <tr style="background: #fafafa;">
+            <th class="ps-4 py-3 text-uppercase" style="color: #64748b; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0;">USER</th>
+            <th class="py-3 text-uppercase" style="color: #64748b; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0;">ROLL NO.</th>
+            <th class="py-3 text-uppercase" style="color: #64748b; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0;">ROLE</th>
+            <th class="text-center pe-4 py-3 text-uppercase" style="color: #64748b; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0;">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users.items %}
+          <tr style="transition: background 0.2s ease;">
+            <td class="ps-4 py-3" style="border-bottom: 1px solid #f1f5f9;">
+              <div class="d-flex align-items-center">
+                <div class="me-3 position-relative d-flex justify-content-center align-items-center" style="width: 48px; height: 48px; border-radius: 50%; background: #e8f0fe;">
+                   <i class="fas fa-user" style="color: #0066ff; font-size: 1.2rem;"></i>
+                </div>
+                <div>
+                   <a href="{{ url_for('users.public', user_id=user.id) }}" class="text-dark text-decoration-none d-block" style="font-weight: 600; font-size: 0.95rem;">{{ user.name | truncate(50) }}</a>
+                   {% if is_admin() and user.email %}
+                   <small class="text-muted" style="font-size: 0.8rem;">{{ user.email }}</small>
+                   {% endif %}
+                </div>
+              </div>
+            </td>
+            
+            <td class="text-dark py-3" style="font-weight: 500; font-size: 0.9rem; border-bottom: 1px solid #f1f5f9;">
+              {{ user.roll_no or 'N/A' }}
+            </td>
+            
+            <td class="py-3" style="border-bottom: 1px solid #f1f5f9;">
+              {% if user.type == 'admin' %}
+              <span style="color: #5a00a8; background: #f3e8ff; padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">ADMIN</span>
+              {% else %}
+              <span style="color: #0066ff; background: #e8f0fe; padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">PARTICIPANT</span>
+              {% endif %}
+            </td>
+
+            <td class="text-center pe-4 py-3" style="border-bottom: 1px solid #f1f5f9;">
+              <div class="d-flex justify-content-center gap-2">
+                <a href="{{ url_for('users.public', user_id=user.id) }}" class="d-flex justify-content-center align-items-center text-decoration-none hover-border" title="View Profile" style="width: 36px; height: 36px; border: 1px solid #e2e8f0; border-radius: 6px; color: #0066ff; background: #fff; transition: all 0.2s;">
+                  <i class="fas fa-eye" style="font-size: 0.9rem;"></i>
+                </a>
+                {% if is_admin() %}
+                <a href="{{ url_for('admin.users_detail', user_id=user.id) }}" class="d-flex justify-content-center align-items-center text-decoration-none hover-border" title="Edit User" style="width: 36px; height: 36px; border: 1px solid #e2e8f0; border-radius: 6px; color: #0066ff; background: #fff; transition: all 0.2s;">
+                  <i class="fas fa-pencil-alt" style="font-size: 0.9rem;"></i>
+                </a>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if not users.items %}
+      <div class="col-md-12 my-5">
+        <h3 class="text-center text-muted" style="font-weight: 500;">No users found matching your criteria.</h3>
+      </div>
+    {% endif %}
+
+    <!-- Footer / Pagination -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <!-- Text on Left -->
+        <div class="text-muted" style="font-size: 0.85rem; font-weight: 500;">
+            {% if users.total %}
+            Showing {{ users.items|length }} of {{ users.total }} users
+            {% else %}
+            Showing {{ users.items|length }} users
+            {% endif %}
+        </div>
+
+        <!-- Pagination in Center -->
+        {% if users.pages > 1 %}
+        <div class="d-flex justify-content-center m-0">
+          <a href="{{ prev_page if users.page != 1 else '#' }}" class="d-flex justify-content-center align-items-center mx-1 text-decoration-none hover-border {% if users.page == 1 %}disabled opacity-50{% endif %}" style="width: 36px; height: 36px; border: 1px solid #e2e8f0; background: #fff; border-radius: 6px; color: #333; transition: all 0.2s;">
+            <i class="fas fa-chevron-left" style="font-size: 0.8rem;"></i>
+          </a>
+          
+          {% for page in users.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page %}
+              <a href="{{ url_for('users.listing', page=page, q=q, field=field) }}" class="d-flex justify-content-center align-items-center mx-1 text-decoration-none hover-border" style="width: 36px; height: 36px; border: 1px solid {% if users.page == page %}#0066ff{% else %}#e2e8f0{% endif %}; background: {% if users.page == page %}#0066ff{% else %}#fff{% endif %}; color: {% if users.page == page %}#ffffff{% else %}#333{% endif %}; border-radius: 6px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;">
+                {{ page }}
+              </a>
+            {% else %}
+              <span class="d-flex justify-content-center align-items-center mx-1" style="width: 36px; height: 36px; color: #94a3b8; font-weight: bold;">...</span>
+            {% endif %}
+          {% endfor %}
+
+          <a href="{{ next_page if users.next_num else '#' }}" class="d-flex justify-content-center align-items-center mx-1 text-decoration-none hover-border {% if not users.next_num %}disabled opacity-50{% endif %}" style="width: 36px; height: 36px; border: 1px solid #e2e8f0; background: #fff; border-radius: 6px; color: #333; transition: all 0.2s;">
+            <i class="fas fa-chevron-right" style="font-size: 0.8rem;"></i>
+          </a>
+        </div>
+        {% else %}
+        <div></div>
+        {% endif %}
+
+        <!-- Dropdown on Right -->
+        <div class="dropdown">
+            <button class="btn d-flex justify-content-between align-items-center bg-white text-dark shadow-none hover-border" type="button" style="border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.85rem; padding: 8px 14px; width: 130px; font-weight: 500;">
+                10 per page
+                <i class="fas fa-chevron-down text-muted" style="font-size: 0.7rem; margin-left: 10px;"></i>
+            </button>
+        </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* Base page background overrides */
+  body {
+    background-color: #f8fafc !important;
+    background-image: none !important; 
+    /* The screenshot shows a very clean background with subtle decorative circles on the right,
+       we will keep it simple light grey/blue */
+  }
+
+  /* Remove outline from form elements */
+  input:focus, select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Hover effect for buttons and borders */
+  .hover-border:hover:not(.disabled) {
+    border-color: #0066ff !important;
+  }
+  
+  /* Table row hover */
+  tbody tr:hover {
+    background-color: #f8fafc;
+  }
+</style>
+{% endblock %}
+
+{% block scripts %}
+  {{ Assets.js("assets/js/users/list.js") }}
+{% endblock %}
+"""
+
+with open(users_html_path, "w", encoding="utf-8") as f:
+    f.write(new_content)
+
+print("users.html updated successfully!")

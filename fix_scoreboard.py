@@ -1,0 +1,168 @@
+import os
+
+scoreboard_path = r"d:\Experiment\CTFd\CTFd\themes\core\templates\scoreboard.html"
+
+new_content = """{% extends "base.html" %}
+
+{% block content %}
+<div class="cyber-container py-5">
+  <div class="container pb-5">
+    {% include "components/errors.html" %}
+
+    <!-- Scoreboard Header -->
+    <div class="d-flex flex-column align-items-center mb-5 mt-4">
+        <div class="mb-3" style="width: 56px; height: 56px; background-color: #e8f0fe; border-radius: 12px; display: flex; justify-content: center; align-items: center;">
+            <i class="fas fa-trophy" style="color: #0066ff; font-size: 1.6rem;"></i>
+        </div>
+        <h1 class="m-0" style="font-weight: 800; font-size: 2.2rem; color: #111; letter-spacing: 0.5px;">SCOREBOARD</h1>
+        <p class="mt-2 mb-3" style="color: #64748b; font-weight: 500; font-size: 0.95rem; letter-spacing: 1px; text-transform: uppercase;">TOP HACKERS. ELITE MINDS.</p>
+        
+        <!-- Slanted lines underneath -->
+        <div style="display: flex; gap: 4px;">
+            <div style="width: 25px; height: 3px; background: #0066ff; border-radius: 2px;"></div>
+            <div style="width: 8px; height: 3px; background: #0066ff; transform: skewX(-30deg);"></div>
+            <div style="width: 8px; height: 3px; background: #0066ff; transform: skewX(-30deg);"></div>
+            <div style="width: 8px; height: 3px; background: #0066ff; transform: skewX(-30deg);"></div>
+        </div>
+    </div>
+
+    <div id="score-graph" class="d-none"></div>
+
+    <!-- Scoreboard Controls & List -->
+    <div id="scoreboard" x-data="ScoreboardList" x-init="page = 1; perPage = 10">
+      
+      <!-- Controls Bar -->
+      <div class="d-flex justify-content-between align-items-center mb-4 cyber-controls">
+        <div class="dropdown" style="width: 180px;">
+            <select class="form-select bg-white text-dark shadow-none hover-border" x-model="activeBracket" style="height: 45px; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer;">
+                <option value="">All Roles</option>
+                <template x-for="bracket in brackets">
+                    <option :value="bracket.id" x-text="bracket.name"></option>
+                </template>
+            </select>
+        </div>
+        
+        <div class="d-flex align-items-center">
+            <span class="small me-4 d-none d-md-flex align-items-center" style="color: #64748b; font-weight: 500;">
+                <i class="far fa-clock me-2" style="color: #94a3b8; font-size: 1.1rem;"></i>
+                Last Updated: <span class="ms-1" x-text="new Date().toLocaleString('en-GB', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true}).replace(',', '')"></span>
+            </span>
+            <button class="btn d-flex align-items-center justify-content-center" onclick="location.reload()" style="height: 45px; width: 120px; background: #0066ff; color: #ffffff; border-radius: 6px; font-weight: 500;">
+                <i class="fas fa-sync-alt me-2"></i> Refresh
+            </button>
+        </div>
+      </div>
+
+      <!-- Main Table -->
+      <div class="cyber-table-wrapper" x-show="standings.length" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); overflow: hidden;">
+        <table class="table align-middle m-0 text-dark">
+          <thead>
+            <tr style="background: #fafafa;">
+              <th class="text-center py-3 text-uppercase" style="width: 100px; color: #111; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0;">RANK</th>
+              <th class="ps-4 py-3 text-uppercase" style="color: #111; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0;">USER</th>
+              <th class="py-3 text-uppercase" style="color: #111; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0;">ROLL NO.</th>
+              <th class="py-3 text-uppercase" style="color: #111; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0;">ROLE</th>
+              <th class="text-center pe-4 py-3 text-uppercase" style="color: #111; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0;">POINTS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true).slice((page - 1) * perPage, page * perPage)">
+              <tr style="transition: background 0.2s ease; border-bottom: 1px solid #f1f5f9;">
+                  <td class="text-center fw-bold py-3">
+                    <!-- Rank Icon -->
+                    <template x-if="((page - 1) * perPage + index + 1) === 1">
+                      <div style="width: 32px; height: 32px; background: #ffb300; color: #111; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-weight: 700; font-size: 0.9rem;">1</div>
+                    </template>
+                    <template x-if="((page - 1) * perPage + index + 1) === 2">
+                      <div style="width: 32px; height: 32px; background: #94a3b8; color: #fff; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-weight: 700; font-size: 0.9rem;">2</div>
+                    </template>
+                    <template x-if="((page - 1) * perPage + index + 1) === 3">
+                      <div style="width: 32px; height: 32px; background: #b45309; color: #fff; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-weight: 700; font-size: 0.9rem;">3</div>
+                    </template>
+                    <template x-if="((page - 1) * perPage + index + 1) > 3">
+                      <div style="width: 32px; height: 32px; background: transparent; color: #64748b; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-weight: 700; font-size: 0.9rem;" x-text="((page - 1) * perPage + index + 1)"></div>
+                    </template>
+                  </td>
+                  
+                  <td class="ps-4 py-3">
+                    <div class="d-flex align-items-center">
+                      <div class="me-3 position-relative d-flex justify-content-center align-items-center" style="width: 40px; height: 40px; border-radius: 50%; background: #e8f0fe;">
+                         <i class="fas fa-user" style="color: #0066ff; font-size: 1rem;"></i>
+                      </div>
+                      <a :href="standing.account_url" class="text-dark text-decoration-none d-block" style="font-weight: 700; font-size: 0.95rem;" x-text="standing.name"></a>
+                    </div>
+                  </td>
+                  
+                  <td class="py-3" style="color: #64748b; font-weight: 500; font-size: 0.9rem;">
+                    <span x-text="standing.roll_no || 'N/A'"></span>
+                  </td>
+                  
+                  <td class="py-3">
+                    <span style="color: #0066ff; background: #e8f0fe; padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;" x-text="standing.bracket_name ? standing.bracket_name.toUpperCase() : 'PARTICIPANT'"></span>
+                  </td>
+                  
+                  <td class="text-center pe-4 py-3" style="color: #0066ff; font-weight: 700; font-size: 1.1rem;" x-text="standing.score"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-12 my-5" x-show="!standings.length">
+        <h3 class="text-center text-muted">No challenges found matching your criteria.</h3>
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-center mt-5" x-show="standings.length > perPage">
+        <a href="javascript:void(0)" class="d-flex justify-content-center align-items-center mx-1 text-decoration-none hover-border" :class="{'disabled opacity-50': page === 1}" @click="if(page > 1) page--" style="width: 36px; height: 36px; border: 1px solid #e2e8f0; background: #fff; border-radius: 6px; color: #333; transition: all 0.2s;">
+          <i class="fas fa-chevron-left" style="font-size: 0.8rem;"></i>
+        </a>
+        
+        <template x-for="p in Math.ceil(standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true).length / perPage)">
+          <a href="javascript:void(0)" class="d-flex justify-content-center align-items-center mx-1 text-decoration-none hover-border" @click="page = p" :style="page === p ? 'border-color: #0066ff; background: #0066ff; color: #ffffff;' : 'border-color: #e2e8f0; background: #fff; color: #333;'" style="width: 36px; height: 36px; border-radius: 6px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;" x-text="p"></a>
+        </template>
+        
+        <a href="javascript:void(0)" class="d-flex justify-content-center align-items-center mx-1 text-decoration-none hover-border" :class="{'disabled opacity-50': page >= Math.ceil(standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true).length / perPage)}" @click="if(page < Math.ceil(standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true).length / perPage)) page++" style="width: 36px; height: 36px; border: 1px solid #e2e8f0; background: #fff; border-radius: 6px; color: #333; transition: all 0.2s;">
+          <i class="fas fa-chevron-right" style="font-size: 0.8rem;"></i>
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Base page background overrides */
+  body {
+    background-color: #f8fafc !important;
+    background-image: none !important; 
+  }
+
+  /* Remove outline from form elements */
+  select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Hover effect for borders */
+  .hover-border:hover:not(.disabled) {
+    border-color: #0066ff !important;
+  }
+  
+  /* Table row hover */
+  tbody tr:hover {
+    background-color: #f8fafc;
+  }
+</style>
+{% endblock %}
+
+{% block scripts %}
+  <script defer src="{{ url_for('views.themes', theme='core', path='js/echarts.bundle.js') }}"></script>
+  <script defer src="{{ url_for('views.themes', theme='core', path='js/pages/scoreboard.js') }}"></script>
+{% endblock %}
+"""
+
+with open(scoreboard_path, "w", encoding="utf-8") as f:
+    f.write(new_content)
+
+print("scoreboard.html updated successfully!")

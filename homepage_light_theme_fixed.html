@@ -1,0 +1,409 @@
+<div class="row" style="position: relative; z-index: 1; font-family: 'Geist Pixel', sans-serif;">
+    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <!-- Logo -->
+        <div class="text-center" style="padding-top: 2vh; margin-bottom: 20px;">
+            <div class="logo-wrapper">
+                <img class="img-fluid mx-auto blindspot-logo" src="/themes/core/static/img/mainpagelogo.png" alt="Blindspot CTF Logo" />
+            </div>
+        </div>
+        
+        <!-- MRU Branding -->
+        <h2 class="text-center fw-bolder mb-1" style="color: #111;">
+            BLINDSPOT CTF
+        </h2>
+        <p class="text-center fw-medium mb-4" style="color: #444; opacity: 0.8;">
+            Malla Reddy University · Department of Cybersecurity
+        </p>
+
+        <!-- Countdown Timer -->
+        <p class="text-center fw-bold countdown-title">
+            Competition Starts In
+        </p>
+        <div class="d-flex justify-content-center flex-wrap mb-5" style="gap:16px;">
+            <div style="border-radius:12px; padding:15px 20px; text-align:center; min-width:80px;">
+                <div id="cd-d" class="cd-number">00</div>
+                <div class="cd-label">DAYS</div>
+            </div>
+            <div style="border-radius:12px; padding:15px 20px; text-align:center; min-width:80px;">
+                <div id="cd-h" class="cd-number">00</div>
+                <div class="cd-label">HOURS</div>
+            </div>
+            <div style="border-radius:12px; padding:15px 20px; text-align:center; min-width:80px;">
+                <div id="cd-m" class="cd-number">00</div>
+                <div class="cd-label">MINS</div>
+            </div>
+            <div style="border-radius:12px; padding:15px 20px; text-align:center; min-width:80px;">
+                <div id="cd-s" class="cd-number">00</div>
+                <div class="cd-label">SECS</div>
+            </div>
+        </div>
+
+        <!-- Information Cards -->
+        <div class="row mt-5 mb-5 g-4">
+            <!-- Why Participate Card -->
+            <div class="col-md-6">
+                <div class="cyber-panel">
+                    <h3 class="fw-bold d-flex align-items-center mb-4" style="font-size: 1.5rem; color: #111;">
+                        <div class="cyber-icon-box">
+                            <i class="fas fa-crosshairs"></i>
+                        </div>
+                        Why Participate?
+                    </h3>
+                    
+                    <p class="panel-desc" style="line-height: 1.8; font-size: 1.05rem; opacity: 0.85; text-align: justify;">
+                        <span class="text-glow-charcoal">Blindspot CTF</span> is an exclusive, high-stakes Capture The Flag competition designed specifically for <span class="text-glow-charcoal">2nd and 3rd-year students</span> in the Department of Cybersecurity. This event bridges the gap between theoretical knowledge and real-world application, challenging you to uncover hidden vulnerabilities, exploit complex systems, and defend against advanced threats in a simulated adversarial environment.
+                    </p>
+                </div>
+            </div>
+
+            <!-- How It's Different Card -->
+            <div class="col-md-6">
+                <div class="cyber-panel">
+                    <h3 class="fw-bold d-flex align-items-center mb-4" style="font-size: 1.5rem; color: #111;">
+                        <div class="cyber-icon-box">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        How It's Different
+                    </h3>
+                    
+                    <p class="panel-desc" style="line-height: 1.8; font-size: 1.05rem; opacity: 0.85; text-align: justify;">
+                        Unlike standard entry-level competitions, we have engineered custom, scenario-based challenges tailored to your advanced curriculum. By focusing on <span class="text-glow-charcoal">"blindspots"</span>—those easily overlooked security gaps in networks, web apps, and cryptography—this CTF pushes you to think like an elite adversary. It goes beyond simple puzzles, requiring multi-stage exploitation and deep, out-of-the-box critical thinking.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competition Domains Matte Version -->
+        <div class="cyber-header mt-5 mb-5 d-flex align-items-center justify-content-center px-2">
+            <div class="cyber-line-with-dot left"></div>
+            <h3 class="fw-bold mx-2 mx-md-4 mb-0 d-flex align-items-center justify-content-center text-center cyber-title" style="font-size: clamp(1.2rem, 4vw, 2rem); letter-spacing: 2px; text-transform: uppercase; white-space: nowrap;">
+                <i class="fas fa-flag cyber-flag-icon"></i> 
+                COMPETITION DOMAINS
+            </h3>
+            <div class="cyber-line-with-dot right"></div>
+        </div>
+
+        <div class="row justify-content-center g-4 mb-5 px-md-3">
+            <!-- WEB -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new">
+                    <div class="card-icon-area"><i class="fas fa-laptop-code"></i></div>
+                    <h4 class="card-title-new">WEB</h4>
+                </div>
+            </div>
+            
+            <!-- OSINT -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new">
+                    <div class="card-icon-area"><i class="fas fa-globe"></i></div>
+                    <h4 class="card-title-new">OSINT</h4>
+                </div>
+            </div>
+            
+            <!-- CRYPTO -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new">
+                    <div class="card-icon-area"><i class="fas fa-lock"></i></div>
+                    <h4 class="card-title-new">CRYPTO</h4>
+                </div>
+            </div>
+            
+            <!-- REVERSE ENGINEERING -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new">
+                    <div class="card-icon-area"><i class="fas fa-microchip"></i></div>
+                    <h4 class="card-title-new" style="font-size: 1rem; line-height: 1.3;">REVERSE<br>ENGINEERING</h4>
+                </div>
+            </div>
+            
+            <!-- MISC -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new">
+                    <div class="card-icon-area"><i class="fas fa-puzzle-piece"></i></div>
+                    <h4 class="card-title-new">MISC</h4>
+                </div>
+            </div>
+
+            <!-- SANITY -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="domain-card-new">
+                    <div class="card-icon-area"><i class="fas fa-cube"></i></div>
+                    <h4 class="card-title-new">SANITY</h4>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Rules and Regulations Cyberpunk Redesign -->
+        <div class="cyber-rules-container mt-5 mb-5 mx-auto" style="max-width: 900px;">
+            <div class="rules-corner rules-corner-tl"></div>
+            <div class="rules-corner rules-corner-tr"></div>
+            <div class="rules-corner rules-corner-bl"></div>
+            <div class="rules-corner rules-corner-br"></div>
+            
+            <div class="rules-top-accent">
+                <span>000</span>
+            </div>
+
+            <div class="text-center mb-5">
+                <div class="rules-header-icon">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <h3 class="fw-bold mb-2" style="font-size: 2rem; letter-spacing: 2px; color: #111;">
+                    Rules & Regulations
+                </h3>
+                <p class="rules-desc" style="opacity: 0.7; font-size: 0.95rem;">Please read and strictly adhere to the following guidelines.</p>
+            </div>
+
+            <div class="rules-list d-flex flex-column gap-3">
+                <!-- Rule 1 -->
+                <div class="rule-card">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">No Flag Sharing:</span>
+                        <p class="rule-text">Collaboration outside of your assigned team is strictly prohibited. Do not share flags, hints, or solutions.</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Rule 2 -->
+                <div class="rule-card">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">No Infrastructure Attacks:</span>
+                        <p class="rule-text">Do not attack the CTF platform or infrastructure. This includes DoS/DDoS attacks, directory brute-forcing against the main site, or unauthorized scanning.</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Rule 3 -->
+                <div class="rule-card">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">Eligibility:</span>
+                        <p class="rule-text">Only registered 2nd and 3rd-year cybersecurity students from MRU are allowed to compete. Impersonation or using outside help is forbidden.</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Rule 4 -->
+                <div class="rule-card">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">No Flag Bruteforcing:</span>
+                        <p class="rule-text">Do not use automated tools to guess flags on the submission form. Rate limits are in place and violations will be logged.</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Rule 5 -->
+                <div class="rule-card">
+                    <div class="rule-icon-box">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="rule-content">
+                        <span class="rule-title">Learn & Have Fun:</span>
+                        <p class="rule-text">The primary goal of this CTF is education and skill development. Be respectful to fellow participants and admins!</p>
+                    </div>
+                    <div class="rule-chevron">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organizing Team -->
+        <div class="mb-5 mt-5">
+            <div class="text-center mb-5 position-relative">
+                <div class="mb-3 d-flex justify-content-center">
+                    <div class="team-header-icon-box">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-center gap-3 mb-2">
+                    <div class="team-gradient-left"></div>
+                    <h2 class="fw-bold mb-0" style="color: #111; letter-spacing: 4px; font-size: 2rem; ">
+                        ORGANIZING TEAM
+                    </h2>
+                    <div class="team-gradient-right"></div>
+                </div>
+                <p class="mb-0 team-subtitle">The minds behind BlindSpot CTF</p>
+            </div>
+            
+            <div class="row justify-content-center g-4">
+                <!-- Generating Cards dynamically -->
+                <script>
+                    const teamMembers = [
+                        { name: "Pranay\nChakravarty", handle: "Leviathan" },
+                        { name: "V.Ashwith", handle: "Khaos" },
+                        { name: "J.Pradeep", handle: "Slime" },
+                        { name: "Rohit\nChouhan", handle: "Blaze" },
+                        { name: "Sreehari", handle: "Sypherr" },
+                        { name: "Shreya", handle: "Stella" },
+                        { name: "M.Akash\nReddy", handle: "Aeries" },
+                        { name: "K.Sreecharan", handle: "Cherrry" },
+                        { name: "Syed Ata Ur\nRahaman", handle: "Atlee" }
+                    ];
+                    
+                    teamMembers.forEach(member => {
+                        const formattedName = member.name.replace('\n', '<br>');
+                        document.write(`
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="cyber-team-card">
+                                    <div class="team-brackets"></div>
+                                    <div class="team-avatar-container">
+                                        <div class="team-target-wrapper"></div>
+                                        <div class="team-inner-circle">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="crosshair-line crosshair-top"></div>
+                                        <div class="crosshair-line crosshair-bottom"></div>
+                                        <div class="crosshair-line crosshair-left"></div>
+                                        <div class="crosshair-line crosshair-right"></div>
+                                    </div>
+                                    <h5 class="team-name-cyber">${formattedName}</h5>
+                                    <div class="team-handle-cyber">"${member.handle}"</div>
+                                    <div class="team-role-cyber">Organizer & Challenge Author</div>
+                                    <div class="team-socials">
+                                        <a href="#" class="team-social-btn"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" class="team-social-btn"><i class="fas fa-envelope"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                    });
+                </script>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+const target = new Date('2026-06-27T10:30:00');
+function update() {
+    const diff = target - new Date();
+    if (diff <= 0) return;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const elD = document.getElementById('cd-d');
+    const elH = document.getElementById('cd-h');
+    const elM = document.getElementById('cd-m');
+    const elS = document.getElementById('cd-s');
+    if(elD) elD.textContent = String(d).padStart(2,'0');
+    if(elH) elH.textContent = String(h).padStart(2,'0');
+    if(elM) elM.textContent = String(m).padStart(2,'0');
+    if(elS) elS.textContent = String(s).padStart(2,'0');
+}
+update();
+setInterval(update, 1000);
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Base Styles */
+.logo-wrapper { display: inline-flex; padding: 12px; transition: all 0.4s ease; background: transparent; border: 2px solid #36454F; border-radius: 16px; box-shadow: none; }
+.blindspot-logo { max-height: 280px; transition: all 0.4s ease; }
+.logo-wrapper:hover { transform: scale(1.02); }
+
+/* Refactored Inline Styles into Classes */
+.countdown-title { font-size:13px; letter-spacing:3px; text-transform:uppercase; margin-bottom:15px; color: #36454F; }
+.cd-number { font-size:32px; font-weight:800; line-height:1; color: #36454F; }
+.cd-label { font-size:12px; color: #444; margin-top:6px; letter-spacing:2px; font-weight: 600; }
+.cyber-flag-icon { color: #36454F; margin-right: 15px; font-size: clamp(1.5rem, 4.5vw, 2.2rem); }
+.team-header-icon-box { background: rgba(54, 69, 79, 0.1); border: 1px solid rgba(54, 69, 79, 0.5); padding: 12px 22px; border-radius: 12px; display: inline-block; }
+.team-header-icon-box i { color: #36454F; font-size: 1.6rem; }
+.team-gradient-left { height: 2px; width: 60px; background: linear-gradient(90deg, transparent, #36454F); }
+.team-gradient-right { height: 2px; width: 60px; background: linear-gradient(-90deg, transparent, #36454F); }
+.team-subtitle { color: #36454F; opacity: 0.9; font-size: 0.95rem; letter-spacing: 1px; }
+.team-handle-cyber { color: #36454F; font-size: 0.9rem; margin-bottom: 8px; font-weight: 600; letter-spacing: 1px; }
+
+/* Information Panels */
+.cyber-panel { background: #fff; border-radius: 16px; padding: 35px; border: 1px solid #dee2e6; border-top: 4px solid #36454F; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; overflow: hidden; height: 100%; transition: all 0.4s ease; }
+.cyber-panel:hover { transform: translateY(-4px); }
+.cyber-icon-box { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-right: 15px; background: rgba(54, 69, 79, 0.1); color: #36454F; border: 1px solid rgba(54, 69, 79, 0.3); }
+.text-glow-charcoal { color: #36454F; font-weight: 700; }
+.panel-desc { color: #333 !important; }
+
+/* Header Styling */
+.cyber-title { color: #111 !important; }
+.cyber-line-with-dot { display: flex; align-items: center; width: 150px; }
+.cyber-line-with-dot.left::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background-color: #36454F; }
+.cyber-line-with-dot.left::after { content: ''; flex-grow: 1; height: 2px; background-color: #36454F; }
+.cyber-line-with-dot.right::before { content: ''; flex-grow: 1; height: 2px; background-color: #36454F; }
+.cyber-line-with-dot.right::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background-color: #36454F; }
+
+/* The Static Card container */
+.domain-card-new { position: relative; background: #fff; border: 1px solid #dee2e6; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-radius: 8px; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; height: 100%; z-index: 1; transition: all 0.3s ease; }
+.domain-card-new:hover { transform: translateY(-4px); background: #f8f9fa; border-color: #36454F; box-shadow: 0 0 20px rgba(54, 69, 79, 0.15); }
+.card-icon-area i { font-size: 3.2rem; color: transparent; -webkit-text-stroke: 1.2px #36454F; margin-bottom: 25px; transition: all 0.3s ease; z-index: 2; position: relative; }
+.domain-card-new:hover .card-icon-area i { color: rgba(54, 69, 79, 0.1); -webkit-text-stroke: 1.5px #36454F; transform: scale(1.05); }
+.card-title-new { color: #111; font-size: 1.05rem; font-weight: 700; margin-bottom: 0; letter-spacing: 1.5px; text-transform: uppercase; text-align: center; z-index: 2; position: relative; }
+
+/* Rules & Regulations */
+.cyber-rules-container { position: relative; background: #fff; border: 1px solid #dee2e6; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-radius: 16px; padding: 3rem 2.5rem; }
+.cyber-rules-container .rules-corner { position: absolute; width: 50px; height: 50px; border: 2px solid; border-radius: 16px; z-index: 10; pointer-events: none; opacity: 0.8; border-color: #36454F; }
+.cyber-rules-container .rules-corner-tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+.cyber-rules-container .rules-corner-tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+.cyber-rules-container .rules-corner-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+.cyber-rules-container .rules-corner-br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+.rules-top-accent { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); padding: 0 15px; font-size: 0.8rem; letter-spacing: 3px; font-weight: bold; display: flex; align-items: center; gap: 12px; z-index: 2; color: #36454F; background: #fff; }
+.rules-top-accent::before, .rules-top-accent::after { content: ''; display: inline-block; width: 40px; height: 2px; opacity: 0.8; background: #36454F; }
+.rules-header-icon { display: inline-flex; justify-content: center; align-items: center; width: 70px; height: 70px; border-radius: 50%; border: 2px solid #36454F; background: rgba(54, 69, 79, 0.1); color: #36454F; font-size: 2rem; margin-bottom: 1.2rem; }
+.rules-desc { color: #444 !important; }
+
+.rule-card { display: flex; align-items: center; background: #fff; border: 1px solid rgba(54, 69, 79, 0.3); border-radius: 12px; padding: 1.2rem 1.5rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
+.rule-card:hover { transform: translateX(4px); background: #f1f3f5; border-color: #36454F; }
+.rule-icon-box { flex-shrink: 0; width: 60px; height: 60px; border-radius: 14px; border: 2px solid #36454F; background: rgba(54, 69, 79, 0.1); color: #36454F; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; margin-right: 1.5rem; }
+.rule-content { flex-grow: 1; }
+.rule-title { font-size: 1.1rem; font-weight: 700; margin-right: 0.3rem; letter-spacing: 0.5px; color: #36454F; }
+.rule-text { color: #444; font-size: 0.95rem; line-height: 1.6; margin: 0; display: inline; }
+.rule-chevron { flex-shrink: 0; margin-left: 1rem; font-size: 1.2rem; transition: all 0.3s ease; color: #36454F; }
+.rule-card::before { content: ''; position: absolute; left: 5px; top: 50%; transform: translateY(-50%); width: 4px; height: 15px; border-radius: 2px; background: #36454F; }
+
+/* TEAM SECTION MATTE STYLING */
+.cyber-team-card { background: #fff; border: 1px solid #dee2e6; border-radius: 12px; padding: 35px 20px; text-align: center; transition: all 0.4s ease; position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; }
+.cyber-team-card:hover { background: #f8f9fa; border-color: #36454F; transform: translateY(-4px); }
+.team-brackets { position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; pointer-events: none; }
+.team-brackets::before, .team-brackets::after { content: ''; position: absolute; width: 15px; height: 15px; border-style: solid; transition: all 0.3s ease; border-color: rgba(54, 69, 79, 0.4); }
+.team-brackets::before { top: 0; left: 0; border-width: 2px 0 0 2px; border-top-left-radius: 4px; }
+.team-brackets::after { bottom: 0; right: 0; border-width: 0 2px 2px 0; border-bottom-right-radius: 4px; }
+.cyber-team-card:hover .team-brackets::before, .cyber-team-card:hover .team-brackets::after { border-color: #36454F; width: 20px; height: 20px; }
+.team-avatar-container { position: relative; width: 120px; height: 120px; margin: 0 auto 25px auto; display: flex; align-items: center; justify-content: center; }
+.team-target-wrapper { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px dashed rgba(54, 69, 79, 0.4); transition: all 0.3s ease; }
+.cyber-team-card:hover .team-target-wrapper { border-color: #36454F; }
+.team-inner-circle { position: absolute; width: 60px; height: 60px; border-radius: 50%; border: 2px solid #36454F; display: flex; align-items: center; justify-content: center; background: rgba(54, 69, 79, 0.05); z-index: 2; transition: all 0.3s ease; }
+.team-inner-circle i { font-size: 1.8rem; color: #36454F; margin-top: 2px; }
+.cyber-team-card:hover .team-inner-circle { background: rgba(54, 69, 79, 0.15); transform: scale(1.05); }
+.crosshair-line { position: absolute; background: rgba(54, 69, 79, 0.5); transition: all 0.3s ease; }
+.crosshair-top, .crosshair-bottom { width: 2px; height: 8px; left: 50%; transform: translateX(-50%); }
+.crosshair-left, .crosshair-right { width: 8px; height: 2px; top: 50%; transform: translateY(-50%); }
+.crosshair-top { top: -4px; } .crosshair-bottom { bottom: -4px; }
+.crosshair-left { left: -4px; } .crosshair-right { right: -4px; }
+.cyber-team-card:hover .crosshair-line { background: #36454F; }
+.team-name-cyber { color: #111; font-size: 1rem; font-weight: 700; margin-bottom: 8px; line-height: 1.4; letter-spacing: 0.5px; }
+.team-role-cyber { color: #36454F; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+.team-socials { display: flex; justify-content: center; gap: 12px; z-index: 5; position: relative; }
+.team-social-btn { display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 8px; background: transparent; color: #36454F; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(54, 69, 79, 0.3); }
+.team-social-btn i { font-size: 1rem; }
+.team-social-btn:hover { background: rgba(54, 69, 79, 0.15); color: #111; border-color: #36454F; transform: translateY(-3px); }
+</style>
